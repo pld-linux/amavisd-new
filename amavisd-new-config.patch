@@ -37,6 +37,15 @@ diff -uNr amavisd-new-20030616/amavisd.conf-sample amavisd-new-20030616~/amavisd
  
  #$db_home = "$MYHOME/db";	# DB databases directory, default "$MYHOME/db"
  
+@@ -106,6 +106,8 @@
+ # as an IP address or a DNS name (A or CNAME, but MX is ignored)
+ #$forward_method = 'smtp:[127.0.0.1]:10025';  # where to forward checked mail
+ #$notify_method = $forward_method;            # where to submit notifications
++
++# @auth_mech_avail = ('PLAIN','LOGIN'); # empty list disables incoming AUTH
+ 
+ # To make it possible for several hosts to share one content checking daemon,
+ # the IP address and/or the port number in $forward_method and $notify_method
 @@ -143,7 +148,8 @@
  # and see further down what these two lookup lists really mean.
  #

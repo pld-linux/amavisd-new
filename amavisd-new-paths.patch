@@ -1,42 +1,33 @@
-diff -urN amavisd-new-20020630.org/amavis/amavisd.conf.in amavisd-new-20020630/amavis/amavisd.conf.in
---- amavisd-new-20020630.org/amavis/amavisd.conf.in	Mon Sep  9 21:11:20 2002
-+++ amavisd-new-20020630/amavis/amavisd.conf.in	Mon Sep  9 21:17:02 2002
-@@ -203,7 +203,7 @@
+diff -ur amavisd-new-20020517.orig/amavis/amavisd.conf.in amavisd-new-20020517/amavis/amavisd.conf.in
+--- amavisd-new-20020517.orig/amavis/amavisd.conf.in	Fri Sep  6 19:36:07 2002
++++ amavisd-new-20020517/amavis/amavisd.conf.in	Fri Sep  6 19:38:02 2002
+@@ -194,7 +194,7 @@
+ # Location to put infected mail into
  # - empty for not quarantining, may be a file (mailbox),
  #   or a directory (no trailing slash)
- #$QUARANTINEDIR = "/var/log/virusmails";
 -$QUARANTINEDIR = "/var/virusmails";
 +$QUARANTINEDIR = "/var/spool/amavis/virusmails";
  
  # A finer control of quarantining is available through
  # variable $virus_quarantine_to as follows:
-diff -urN amavisd-new-20020630.org/amavis/amavisd.in amavisd-new-20020630/amavis/amavisd.in
---- amavisd-new-20020630.org/amavis/amavisd.in	Mon Sep  9 21:11:20 2002
-+++ amavisd-new-20020630/amavis/amavisd.in	Mon Sep  9 21:17:55 2002
-@@ -131,7 +131,7 @@
- #
- # Receiving mail related
+diff -ur amavisd-new-20020517.orig/amavis/amavisd.in.all amavisd-new-20020517/amavis/amavisd.in.all
+--- amavisd-new-20020517.orig/amavis/amavisd.in.all	Fri May 17 22:53:19 2002
++++ amavisd-new-20020517/amavis/amavisd.in.all	Fri Sep  6 19:36:50 2002
+@@ -3477,7 +3477,7 @@
+ $spamassasin_obj = Mail::SpamAssassin->new({
+ 	dont_copy_prefs => 1, local_tests_only => 1 });
+ $spamassasin_obj->compile_now;	# ensure all modules etc. are preloaded
+-%razor_options = ( listfile  => '/var/amavis/razor.lst' );
++%razor_options = ( listfile  => '/var/spool/amavis/razor.lst' );
  
--$unix_socketname = "/var/amavis/amavisd.sock"; # traditional amavis client protocol
-+$unix_socketname = "/var/spool/amavis/amavisd.sock"; # traditional amavis client protocol
- $inet_socket_port = "10024";      # accept also SMTP on this TCP port
- $inet_socket_bind = "127.0.0.1";  # limit socket bind to loopback interface
- 
-@@ -140,7 +140,7 @@
- $gets_addr_in_quoted_form = 0;
- 
- # Temporary directory
--$TEMPBASE = "/var/amavis";
-+$TEMPBASE = "/var/spool/amavis/runtime";
- 
- 
- $forward_method = \&Amavis::Out::mail_via_smtp;
-@@ -2589,7 +2589,7 @@
- #	stop_at_threshold => 1,
-     });
-     $spamassasin_obj->compile_now;	# ensure all modules etc. are preloaded
--    %razor_options = ( listfile  => '/var/amavis/razor.lst' );
-+    %razor_options = ( listfile  => '/var/spool/amavis/razor.lst' );
- }
- 
- # - returns true if spam detected,
+ # Read config file, which may override default settings
+ read_config();
+@@ -3506,7 +3506,7 @@
+   'spam-quarantine'  => sub { ($QUARANTINEDIR, "$VIRUSFILE.gz") },
+   'archive-by-sender' =>		# just an example
+ 	sub { my($s) = $SENDER; $s =~ s/[^a-zA-Z0-9._=@]/-/; $s =~ s/\@/=/;
+-	      ( '/var/virusmails',	# directory (qmail style mailbox)
++	      ( '/var/spool/amavis/virusmails',	# directory (qmail style mailbox)
+ 		sprintf("archive-%s-%s-%05d.gz",  # suggested file name
+ 			$s, strftime("%Y%m%d-%H%M%S",localtime), $$) );
+ 	    },

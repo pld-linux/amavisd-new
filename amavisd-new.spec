@@ -8,7 +8,7 @@ License:	GPL
 Group:		Applications/Mail
 Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}-p1.tar.gz
 Source1:	%{name}.init
-Patch0:		%{name}-paths.patch
+Patch0:		%{name}-config.patch
 URL:		http://www.amavis.org/
 BuildRequires:	arc
 BuildRequires:	autoconf
@@ -96,7 +96,7 @@ Pakiet ten zawiera back-end dla sendmaila.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_var}/spool/amavis/{runtime,virusmails},%{_var}/run/amavisd,%{_sysconfdir}}
+install -d $RPM_BUILD_ROOT{%{_var}/spool/amavis/{runtime,virusmails},%{_var}/run/amavisd,%{_sysconfdir},%{_sbindir}}
 
 install amavisd{,conf} $RPM_BUILD_ROOT%{_sbindir}/
 install amavisd.conf $RPM_BUILD_ROOT%{_sysconfdir}/
@@ -139,7 +139,7 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc AAAREADME.first INSTALL RELEASE_NOTES README_FILES/* test-messages
-%attr(755,root,root) %{_sbindir}/amavisd
+%attr(755,root,root) %{_sbindir}/amavisd*
 %attr(754,root,root) /etc/rc.d/init.d/*
 %config(noreplace) %{_sysconfdir}/amavisd.conf
 %attr(750,amavis,root) %{_var}/spool/amavis

@@ -16,7 +16,7 @@ diff -ur amavisd-new-20030314.orig/amavisd.conf amavisd-new-20030314/amavisd.con
 @@ -41,17 +41,17 @@
  # $MYHOME serves as a quick default for some other configuration settings.
  # More refined control is available with each individual setting further down.
- # $MYHOME is never used directly by the program. No trailing slash!
+ # $MYHOME is not used directly by the program. No trailing slash!
 -#$MYHOME = '/var/lib/amavis';   # (default is '/var/amavis')
 +#$MYHOME = '/var/spool/amavis/runtime';   # (default is '/var/amavis')
  

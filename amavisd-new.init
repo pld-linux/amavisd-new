@@ -27,7 +27,7 @@ case "$1" in
 		daemon $SERVICE_RUN_NICE_LEVEL /usr/sbin/amavisd -c /etc/amavisd.conf
 		touch /var/lock/subsys/amavisd
 	else
-		msg_Already_Running Amavisd
+		msg_already_running Amavisd
 		exit 1
 	fi
 	;;
@@ -38,7 +38,7 @@ case "$1" in
 		killproc amavisd;
                 rm -f /var/lock/subsys/amavisd >/dev/null 2>&1
         else
-                msg_Not_Running Amavisd
+                msg_not_running Amavisd
                 exit 1
         fi
 	;;

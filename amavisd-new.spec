@@ -11,6 +11,7 @@ Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}-p1.tar.gz
 Source1:	%{name}.init
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-bin.patch
+Patch2:		%{name}-config-mks.patch
 URL:		http://www.amavis.org/
 BuildRequires:	arc
 BuildRequires:	autoconf
@@ -93,6 +94,7 @@ Pakiet ten zawiera back-end dla sendmaila.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 

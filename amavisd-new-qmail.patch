@@ -1,0 +1,14 @@
+diff -urN amavisd-snapshot-20020300.org/configure.in amavisd-snapshot-20020300/configure.in
+--- amavisd-snapshot-20020300.org/configure.in	Thu Jun  6 22:33:49 2002
++++ amavisd-snapshot-20020300/configure.in	Thu Jun  6 22:35:50 2002
+@@ -155,7 +155,8 @@
+ dnl unless --disable-qmail specified
+ dnl
+ 
+-AC_PATH_PROG(qmailinject,qmail-inject,/bin/false,/var/qmail/bin:/usr/local/qmail/bin)
++qmailinject=/usr/lib/qmail/qmail-inject
++AC_SUBST(qmailinject)
+ 
+ qmaildir=`dirname $qmailinject`
+ AC_SUBST(qmaildir)
+ 

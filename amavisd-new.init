@@ -1,0 +1,57 @@
+#!/bin/sh
+#
+# amavisd		Start/Stop the amavisd daemon.
+#
+# chkconfig:	345 40 60
+#
+# description:	amavisd is daemonized antivirus daemon
+#
+# processname:	amavisd
+# config:	/etc/amavisd.conf
+# pidfile:	/var/lock/subsys/amavisd
+
+
+# Source function library
+. /etc/rc.d/init.d/functions
+
+# Get service config
+[ -f /etc/sysconfig/amavisd ] && . /etc/sysconfig/amavisd
+
+
+# See how we were called.
+case "$1" in
+  start)
+	# Check if the service is already running?
+	if [ ! -f /var/lock/subsys/amavisd ]; then
+		msg_starting Amavisd
+		daemon 'su -s /bin/sh amavis -c "/bin/nice /usr/sbin/amavisd"'
+		touch /var/lock/subsys/amavisd
+	else
+		msg_Already_Running Amavisd
+		exit 1
+	fi
+	;;
+  stop)
+        # Stop daemons.
+        if [ -f /var/lock/subsys/amavisd ]; then
+                msg_stopping Amavisd 
+		killproc amavisd;
+                rm -f /var/lock/subsys/amavisd >/dev/null 2>&1
+        else
+                msg_Not_Running Amavisd
+                exit 1
+        fi
+	;;
+  status)
+	status amavisd
+	;;
+  restart)
+	$0 stop
+	$0 start
+	;;
+  *)
+	msg_usage "$0 {start|stop|status|restart}"
+	exit 1
+esac
+
+exit $RETVAL

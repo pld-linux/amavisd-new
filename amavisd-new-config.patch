@@ -1,48 +1,52 @@
-diff -ur amavisd-new-20021227.orig/amavisd amavisd-new-20021227/amavisd
---- amavisd-new-20021227.orig/amavisd	Mon Dec 30 17:36:10 2002
-+++ amavisd-new-20021227/amavisd	Tue Jan  7 18:00:57 2003
-@@ -214,7 +214,7 @@
+diff -ur amavisd-new-20030314.orig/amavisd amavisd-new-20030314/amavisd
+--- amavisd-new-20030314.orig/amavisd	Sat Mar 22 01:52:53 2003
++++ amavisd-new-20030314/amavisd	Tue May  6 14:49:15 2003
+@@ -240,7 +240,7 @@
+ $unicode_aware = $]>=5.008 && length("\x{263a}")==1 && eval { require Encode };
+ 
+ # serves only as a quick default for other configuration settings
+-$MYHOME = '/var/amavis';
++$MYHOME = '/var/spool/amavis/runtime';
+ $mydomain = '!change-mydomain-variable!.example.com';# purposely broken default
+ 
+ # Create debugging output - yes: log to stderr; no: log to syslog/file
+diff -ur amavisd-new-20030314.orig/amavisd.conf amavisd-new-20030314/amavisd.conf
+--- amavisd-new-20030314.orig/amavisd.conf	Fri Mar 21 18:19:23 2003
++++ amavisd-new-20030314/amavisd.conf	Tue May  6 14:53:29 2003
+@@ -41,17 +41,17 @@
+ # $MYHOME serves as a quick default for some other configuration settings.
+ # More refined control is available with each individual setting further down.
+ # $MYHOME is never used directly by the program. No trailing slash!
+-#$MYHOME = '/var/lib/amavis';   # (default is '/var/amavis')
++#$MYHOME = '/var/spool/amavis/runtime';   # (default is '/var/amavis')
+ 
+ # $mydomain serves as a quick default for some other configuration settings.
+ # More refined control is available with each individual setting further down.
+ # $mydomain is never used directly by the program.
+-$mydomain = 'example.com';      # (no useful default)
++$mydomain = 'localhost';      # (no useful default)
+ 
+ # Set the user and group to which the daemon will change if started as root
+ # (otherwise just keep the UID unchanged, and these settings have no effect):
+-$daemon_user  = 'vscan';	# (no default;  customary: vscan or amavis)
+-$daemon_group = 'sweep';	# (no default;  customary: vscan or amavis)
++$daemon_user  = 'amavis';	# (no default;  customary: vscan or amavis)
++$daemon_group = 'nobody';	# (no default;  customary: vscan or amavis)
+ 
+ # Runtime working directory (cwd), and a place where
+ # temporary directories for unpacking mail are created.
+@@ -164,7 +164,7 @@
+ # directly, or read from a file, one domain per line; comments and empty lines
+ # are ignored, a dot before a domain name implies its subdomains:
  #
- # Receiving mail related
+-#read_hash(\%local_domains, '/var/amavis/local_domains');
++#read_hash(\%local_domains, '/var/spool/amavis/local_domains');
  
--# $unix_socketname = '/var/amavis/amavisd.sock'; # traditional amavis client protocol
-+# $unix_socketname = '/var/spool/amavis/runtime/amavisd.sock'; # traditional amavis client protocol
- # $inet_socket_port = 10024;      # accept SMTP on this TCP port
- $inet_socket_bind = '127.0.0.1';  # limit socket bind to loopback interface
- 
-@@ -223,7 +223,7 @@
- $gets_addr_in_quoted_form = 0;
- 
- # Temporary directory
--$TEMPBASE = "/var/amavis";
-+$TEMPBASE = "/var/spool/amavis/runtime";
- 
- $notify_method  = 'smtp:127.0.0.1:10025';
- $forward_method = 'smtp:127.0.0.1:10025';
-diff -ur amavisd-new-20021227.orig/amavisd.conf amavisd-new-20021227/amavisd.conf
---- amavisd-new-20021227.orig/amavisd.conf	Fri Dec 27 16:04:17 2002
-+++ amavisd-new-20021227/amavisd.conf	Tue Jan  7 18:00:02 2003
-@@ -40,7 +40,7 @@
- $daemon_group = 'amavis';	# (no default)
- 
- # Runtime directory (no trailing slash, defaults to '/var/amavis')
--$TEMPBASE = '/var/amavis';
-+$TEMPBASE = '/var/spool/amavis/runtime';
- 
- 
- # MTA SETTINGS, UNCOMMENT AS APPROPRIATE, defaults to 'smtp:127.0.0.1:10025'
-@@ -59,7 +59,7 @@
- #$notify_method = 'pipe:flags=q argv=/usr/sbin/sendmail -i -f ${sender} -- ${recipient}';
- 
- 
--#$daemon_chroot_dir = '/var/amavis';    # (default is undef => do not chroot)
-+#$daemon_chroot_dir = '/var/spool/amavis';    # (default is undef => do not chroot)
- 
- #$pid_file  = "$TEMPBASE/amavisd.pid";  # (default: "$TEMPBASE/amavisd.pid")
- #$lock_file = "$TEMPBASE/amavisd.lock"; # (default: "$TEMPBASE/amavisd.lock")
-@@ -221,12 +221,12 @@
- # assigning new text to template variables, or by reading template text
- # from files:
+ #or alternatively(B), using a list of regular expressions:
+ # $local_domains_re = new_RE( qr'[@.]example\.com$'i );
+@@ -297,12 +297,12 @@
+ # or later; second argument is ignored otherwise. See PerlIO::encoding,
+ # Encode::PerlIO and perluniintro man pages.
  #
 -# $notify_sender_templ      = read_text('/var/amavis/notify_sender.txt');
 -# $notify_virus_sender_templ= read_text('/var/amavis/notify_virus_sender.txt');
@@ -57,46 +61,26 @@ diff -ur amavisd-new-20021227.orig/amavisd.conf amavisd-new-20021227/amavisd.con
 +# $notify_spam_sender_templ = read_text('/var/spool/amavis/notify_spam_sender.txt');
 +# $notify_spam_admin_templ  = read_text('/var/spool/amavis/notify_spam_admin.txt');
  
- # Treat envelope sender address as unreliable and don't send 
- # sender notification if name(s) of detected virus(es) match the list.
-@@ -255,9 +255,9 @@
- #   for compatibility, which in turn defaults to undef (empty) )
- #
- $mailfrom_notify_sender    = '';   # null reserse path. Should not be changed!
--$mailfrom_notify_admin     = 'virusalert@example.com';
--$mailfrom_notify_recip     = 'virusalert@example.com';
--$mailfrom_notify_spamadmin = 'spam.police@example.com';
-+$mailfrom_notify_admin     = 'virusalert@localhost';
-+$mailfrom_notify_recip     = 'virusalert@localhost';
-+$mailfrom_notify_spamadmin = 'spam.police@localhost';
  
- # 'From' HEADER FIELD for sender and admin notifications.
- # This should be a replyable address, see rfc1894. Not to be confused
-@@ -285,7 +285,7 @@
- 
- # $virus_admin = undef;   # do not send virus admin notifications (default)
- # $virus_admin = {'not.example.com' => '', '.' => 'virusalert@example.com'};
--$virus_admin = 'virus-admin@example.com';
-+$virus_admin = 'virus-admin@localhost';
- 
- # equivalent to $virus_admin, but for spam admin notifications:
- # $spam_admin = undef;    # do not send spam admin notifications (default)
-@@ -309,7 +309,7 @@
+ # Here is an overall picture (sequence of events) of how pieces fit together
+@@ -468,7 +468,7 @@
  #   or a directory (no trailing slash)
- # (the default value is undef, meaning no quarantine)
+ #   (the default value is undef, meaning no quarantine)
  #
 -$QUARANTINEDIR = '/var/virusmails';
 +$QUARANTINEDIR = '/var/spool/amavis/virusmails';
  
- 
- # A finer control of quarantining is available through variable
-@@ -638,7 +638,7 @@
+ #$virus_quarantine_method = "local:virus-%i-%n";    # default
+ #$spam_quarantine_method  = "local:spam-%b-%i-%n";  # default
+@@ -835,7 +835,7 @@
  # a hash lookup table can be read from a file,
  # one address per line, comments and empty lines are permitted:
  #
--read_hash(\%whitelist_sender, '/var/amavis/whitelist_sender');
-+read_hash(\%whitelist_sender, '/var/spool/amavis/whitelist_sender');
+-# read_hash(\%whitelist_sender, '/var/amavis/whitelist_sender');
++# read_hash(\%whitelist_sender, '/var/spool/amavis/whitelist_sender');
  
  # ... or set directly:
  map { $whitelist_sender{lc($_)}=1 } (qw(
-Only in amavisd-new-20021227: amavisd~
+Only in amavisd-new-20030314: amavisd.conf.orig
+Only in amavisd-new-20030314: amavisd.conf.rej
+Only in amavisd-new-20030314: amavisd.conf~

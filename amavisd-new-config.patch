@@ -39,6 +39,17 @@
  
  # $helpers_home sets environment variable HOME, and is passed as option
  # 'home_dir_for_helpers' to Mail::SpamAssassin::new. It should be a directory
+@@ -92,8 +96,8 @@
+ # Run the daemon in the specified chroot jail if nonempty:
+ #$daemon_chroot_dir = $MYHOME;  # (default is undef, meaning: do not chroot)
+ 
+-#$pid_file  = "$MYHOME/amavisd.pid";  # (default is "$MYHOME/amavisd.pid")
+-#$lock_file = "$MYHOME/amavisd.lock"; # (default is "$MYHOME/amavisd.lock")
++$pid_file  = "/var/run/amavisd/amavisd.pid";  # (default is "$MYHOME/amavisd.pid")
++$lock_file = "/var/run/amavisd/amavisd.lock"; # (default is "$MYHOME/amavisd.lock")
+ 
+ # set environment variables if you want (no defaults):
+ $ENV{TMPDIR} = $TEMPBASE;       # wise to set TMPDIR, but not obligatory
 @@ -111,6 +115,9 @@
  #$forward_method = 'smtp:[127.0.0.1]:10025';  # where to forward checked mail
  #$notify_method = $forward_method;            # where to submit notifications
@@ -58,6 +69,15 @@
  #
  # Any setting can be changed with a new assignment, so make sure
  # you do not unintentionally override these settings further down!
+@@ -209,7 +216,7 @@
+ # AMAVIS-CLIENT PROTOCOL INPUT SETTINGS (e.g. with sendmail milter)
+ #   (used with amavis helper clients like amavis-milter.c and amavis.c,
+ #   NOT needed for Postfix or Exim or dual-sendmail - keep it undefined.
+-$unix_socketname = "$MYHOME/amavisd.sock"; # amavis helper protocol socket
++#$unix_socketname = "/var/run/amavisd/amavisd.sock"; # amavis helper protocol socket
+ #$unix_socketname = undef;        # disable listening on a unix socket
+                                   # (default is undef, i.e. disabled)
+                                   # (usual setting is $MYHOME/amavisd.sock)
 @@ -279,7 +286,7 @@
  #$SYSLOG_LEVEL = 'user.info';     # (facility.priority, default 'mail.info')
  

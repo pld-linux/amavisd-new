@@ -20,7 +20,7 @@ case "$1" in
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/amavis-milter ]; then
 		msg_starting Amavis-milter
-		LC_ALL='' LANG='' LC_TYPE='' LC_CTYPE='' daemon su amavis -s /bin/sh -c \"/usr/sbin/amavis-milter -p local:/var/spool/amavis/runtime/amavis-milter.sock\"
+		LC_ALL='' LANG='' LC_TYPE='' LC_CTYPE='' daemon su amavis -s /bin/sh -c \"/usr/sbin/amavis-milter -p local:/var/run/amavisd/amavis-milter.sock\"
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/amavis-milter
 	else

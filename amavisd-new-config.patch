@@ -1,5 +1,14 @@
 --- amavisd-new-20020630/amavis/amavisd.conf.in~	Mon Sep 16 14:57:00 2002
 +++ amavisd-new-20020630/amavis/amavisd.conf.in	Mon Sep 16 15:00:11 2002
+@@ -118,7 +118,7 @@
+ 
+ # yes - syslog, no - file logging
+ $DO_SYSLOG = "@do_syslog@";
+-$SYSLOG_LEVEL = "user.info";
++$SYSLOG_LEVEL = "mail.info";
+ 
+ # Directory to put log entries (if not using syslog)
+ $LOGDIR = "@logdir@";
 @@ -147,11 +147,12 @@
  
  $child_timeout=3*60;  # abort child if it does not complete each task in n sec

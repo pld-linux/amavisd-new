@@ -21,6 +21,7 @@ Patch2:		%{name}-lib64.patch
 Patch3:		%{name}-tools-dbdir.patch
 URL:		http://www.ijs.si/software/amavisd/
 BuildRequires:	autoconf
+BuildRequires:	rpmbuild(macros) >= 1.159
 BuildRequires:	sendmail-devel
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/bin/id

@@ -12,7 +12,7 @@ Source1:	%{name}.init
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-bin.patch
 Patch2:		%{name}-config-mks.patch
-Patch3:		%{name}-cpio-reads-tar.patchx
+Patch3:		%{name}-cpio-reads-tar.patch
 Patch100:	http://www.ijs.si/software/amavisd/amavisd-new-20030616-p3.patch
 URL:		http://www.amavis.org/
 BuildRequires:	arc

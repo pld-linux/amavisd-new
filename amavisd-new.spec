@@ -1,22 +1,23 @@
 # TODO:
 # - Add polish info mail templates
 # - Some perl master check what Patch1 did 
-
+%define		_subver	p8
 %include	/usr/lib/rpm/macros.perl
 Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
 Summary(pl):	Antywirusowy skaner poczty elektronicznej z obs³ug± SpamAssasina - demon
 Name:		amavisd-new
 Version:	20030616
-Release:	9
+Release:	10
 License:	GPL
 Group:		Applications/Mail
-Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}-p7.tar.gz
-# Source0-md5:	e6f35be1e14861e3869debdd9bdfbfba
+Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}-%{_subver}.tar.gz
+# Source0-md5:	5b55cef4ef4cc717b9ee1ed204a1ed96
 Source1:	%{name}.init
 Patch0:		%{name}-config.patch
 # Patch1:	%{name}-bin.patch # I don't get perl and it has rejects
 Patch3:		%{name}-cpio-reads-tar.patch
 Patch4:		%{name}-real_sender.patch
+Patch5:		http://www.ijs.si/software/amavisd/amavisd-new-20030616-p8a.patch
 URL:		http://www.ijs.si/software/amavisd/
 BuildRequires:	arc
 BuildRequires:	autoconf
@@ -69,6 +70,7 @@ Obsoletes:	amavisd-qmail
 Obsoletes:	amavisd-new-postfix
 Obsoletes:	amavisd-new-exim
 Obsoletes:	amavisd-new-qmail
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 AMaViS is a script that interfaces a mail transport agent (MTA) with

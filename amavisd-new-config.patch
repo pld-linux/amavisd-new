@@ -22,7 +22,7 @@
 -$pid_file = '/var/amavis/amavisd.pid';
 +$daemon_group = 'nobody';
 +#$daemon_group = 'sweep';
-+$pid_file = '/var/run/amavisd.pid';
++$pid_file = '/var/run/amavisd/amavisd.pid';
  
  #
  # Part III - Virus stuff

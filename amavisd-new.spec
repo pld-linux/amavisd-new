@@ -7,7 +7,7 @@ Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
 Summary(pl):	Antywirusowy skaner poczty elektronicznej z obs³ug± SpamAssasina - demon
 Name:		amavisd-new
 Version:	20030616
-Release:	5
+Release:	6
 License:	GPL
 Group:		Applications/Mail
 Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}-p6.tar.gz
@@ -60,6 +60,7 @@ Requires:	perl-Mail-SpamAssassin
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	AMaViS
 Obsoletes:	amavis
+Obsoletes:	amavisd
 Obsoletes:	amavisd-daemon
 Obsoletes:	amavisd-postfix
 Obsoletes:	amavisd-exim

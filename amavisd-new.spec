@@ -2,7 +2,7 @@
 Summary:	A Mail Virus Scanner with SpamAssassin support - Daemon
 Summary(pl):	Antywirusowy skaner poczty elektronicznej z obs³ug± SpamAssasina - Demon
 Name:		amavisd-new
-Version:	20021227
+Version:	20030314
 Release:	1
 License:	GPL
 Group:		Applications/Mail
@@ -97,7 +97,7 @@ Pakiet ten zawiera back-end dla sendmaila.
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_var}/spool/amavis/{runtime,virusmails},%{_var}/run/amavisd,%{_sysconfdir},%{_sbindir}}
 
-install amavisd{,conf} $RPM_BUILD_ROOT%{_sbindir}/
+install amavisd $RPM_BUILD_ROOT%{_sbindir}/
 install amavisd.conf $RPM_BUILD_ROOT%{_sysconfdir}/
 install -D %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/amavisd
 

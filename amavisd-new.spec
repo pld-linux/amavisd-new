@@ -39,6 +39,7 @@ BuildRequires:	perl-libnet
 BuildRequires:	perl-Mail-SpamAssassin
 BuildRequires:	perl-Net-Server
 BuildRequires:	sh-utils
+BuildRequires:  sendmail-devel
 BuildRequires:	unarj
 BuildRequires:	unrar
 BuildRequires:	zoo

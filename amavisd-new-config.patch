@@ -147,8 +147,6 @@ diff -uNr amavisd-new-20030616/amavisd.conf amavisd-new-20030616~/amavisd.conf
 +     '-s {}/*', [0], [1,2],
 +     qr/--[ \t]*(.+)/ ],
 +
-+ );
-+
  # always succeeds (uncomment to consider mail clean if all other scanners fail)
  # ['always-clean', sub {0}],
  

@@ -1,13 +1,12 @@
 # TODO:
 # - Add polish info mail templates
 # - Some perl master check what Patch1 did 
-%define		_subver	p9
 %include	/usr/lib/rpm/macros.perl
 Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
 Summary(pl):	Antywirusowy skaner poczty elektronicznej z obs³ug± SpamAssasina - demon
 Name:		amavisd-new
 Version:	20040701
-Release:	2
+Release:	3
 License:	GPL
 Group:		Applications/Mail
 Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}.tar.gz
@@ -17,26 +16,28 @@ Source2:	%{name}-milter.init
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-dirperms.patch
 Patch2:		%{name}-lib64.patch
-#Patch3:		http://www.ijs.si/software/amavisd/amavisd-new-20030616-p8a.patch
 URL:		http://www.ijs.si/software/amavisd/
-#?Requires:	arc
 BuildRequires:	autoconf
-#?Requires:	lha
-#?Requires:	ncompress
-#?Requires:	perl-Archive-Tar
-#?Requires:	perl-Archive-Zip
-#?Requires:	perl-Compress-Zlib
-Requires:	perl-MIME-tools
-Requires:	perl-Unix-Syslog
-#?Requires:	perl-Convert-UUlib
-#?Requires:	perl-Convert-TNEF
+BuildRequires:	sendmail-devel
+Requires:	arc
+Requires:	bzip2
+Requires:	file
+Requires:	lha
+Requires:	ncompress
+Requires:	perl-Archive-Tar
+Requires:	perl-Archive-Zip
+Requires:	perl-Compress-Zlib
+Requires:	perl-Convert-TNEF
+Requires:	perl-Convert-UUlib
 Requires:	perl-libnet
 Requires:	perl-Mail-SpamAssassin
+Requires:	perl-MIME-tools
 Requires:	perl-Net-Server
-BuildRequires:	sendmail-devel
-#?Requires:	unarj
-#?Requires:	unrar
-#?Requires:	zoo
+Requires:	perl-Unix-Syslog
+Requires:	sh-utils
+Requires:	unarj
+Requires:	unrar
+Requires:	zoo
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/bin/id
 Requires(pre):	/usr/sbin/groupadd
@@ -45,21 +46,6 @@ Requires(postun):	/usr/sbin/userdel
 Requires(postun):	/usr/sbin/groupdel
 Requires(post,preun):	/sbin/chkconfig
 Requires:	/usr/lib/sendmail
-Requires:	arc
-Requires:	bzip2
-Requires:	file
-Requires:	lha
-Requires:	ncompress
-Requires:	sh-utils
-Requires:	unarj
-Requires:	unrar
-Requires:	zoo
-Requires:	perl-Mail-SpamAssassin
-Requires:	perl-Convert-TNEF
-Requires:	perl-Convert-UUlib
-Requires:	perl-Compress-Zlib
-Requires:	perl-Archive-Tar
-Requires:	perl-Archive-Zip
 Obsoletes:	AMaViS
 Obsoletes:	amavis
 Obsoletes:	amavisd

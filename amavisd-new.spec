@@ -15,7 +15,7 @@ Source1:	%{name}.init
 Patch0:		%{name}-config.patch
 # Patch1:	%{name}-bin.patch # I don't get perl and it has rejects
 Patch3:		%{name}-cpio-reads-tar.patch
-URL:		http://www.amavis.org/
+URL:		http://www.ijs.si/software/amavisd/
 BuildRequires:	arc
 BuildRequires:	autoconf
 BuildRequires:	automake

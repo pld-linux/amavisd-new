@@ -1,22 +1,22 @@
 # TODO:
 # - Add polish info mail templates
 # - Some perl master check what Patch1 did 
-%define		_subver	p8
+%define		_subver	p9
 %include	/usr/lib/rpm/macros.perl
 Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
 Summary(pl):	Antywirusowy skaner poczty elektronicznej z obs³ug± SpamAssasina - demon
 Name:		amavisd-new
 Version:	20030616
-Release:	10
+Release:	0.1
 License:	GPL
 Group:		Applications/Mail
 Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}-%{_subver}.tar.gz
-# Source0-md5:	5b55cef4ef4cc717b9ee1ed204a1ed96
+# Source0-md5:	4c96fadc57a5de84cc3bc6b548b46aff
 Source1:	%{name}.init
 Patch0:		%{name}-config.patch
 # Patch1:	%{name}-bin.patch # I don't get perl and it has rejects
 Patch3:		%{name}-cpio-reads-tar.patch
-Patch4:		%{name}-real_sender.patch
+#Patch4:		%{name}-real_sender.patch
 Patch5:		http://www.ijs.si/software/amavisd/amavisd-new-20030616-p8a.patch
 URL:		http://www.ijs.si/software/amavisd/
 BuildRequires:	arc
@@ -36,6 +36,7 @@ BuildRequires:	perl-Convert-TNEF
 BuildRequires:	perl-libnet
 BuildRequires:	perl-Mail-SpamAssassin
 BuildRequires:	perl-Net-Server
+BuildRequires:	sendmail
 BuildRequires:	sh-utils
 BuildRequires:	unarj
 BuildRequires:	unrar
@@ -106,9 +107,15 @@ Pakiet ten zawiera back-end dla sendmaila.
 %patch0 -p1
 #%%patch1 -p1
 %patch3 -p1
-%patch4 -p1
+#%patch4 -p1
 
 %build
+cd helper-progs
+./configure --with-sendmail=/usr/sbin/sendmail \
+	--with-runtime-dir=/var/spool/amavis/runtime \
+	--with-sockname=/var/spool/amavis/runtime/amavisd.sock
+%{__make}
+cd ..
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -117,6 +124,8 @@ install -d $RPM_BUILD_ROOT{%{_var}/spool/amavis/{runtime,virusmails},%{_var}/run
 install amavisd $RPM_BUILD_ROOT%{_sbindir}
 install amavisd.conf $RPM_BUILD_ROOT%{_sysconfdir}
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/amavisd
+install helper-progs/amavis $RPM_BUILD_ROOT%{_sbindir}
+install helper-progs/amavis-milter $RPM_BUILD_ROOT%{_sbindir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -173,6 +182,6 @@ fi
 %attr(750,amavis,amavis) %{_var}/spool/amavis
 %attr(755,amavis,root) %{_var}/run/amavisd
 
-#%files sendmail
-#%attr(755,root,root) %{_sbindir}/amavis
-#%attr(755,root,root) %{_sbindir}/amavis-milter
+%files sendmail
+%attr(755,root,root) %{_sbindir}/amavis
+%attr(755,root,root) %{_sbindir}/amavis-milter

@@ -29,11 +29,6 @@ Requires(pre):	/usr/sbin/useradd
 Requires(postun):	/usr/sbin/userdel
 Requires(postun):	/usr/sbin/groupdel
 Requires(post,preun):	/sbin/chkconfig
-Requires:	arc
-Requires:	bzip2
-Requires:	file
-Requires:	lha
-Requires:	ncompress
 Requires:	perl-Archive-Tar
 Requires:	perl-Archive-Zip
 Requires:	perl-Compress-Zlib
@@ -45,9 +40,6 @@ Requires:	perl-MIME-tools
 Requires:	perl-Net-Server
 Requires:	perl-Unix-Syslog
 Requires:	sh-utils
-Requires:	unarj
-Requires:	unrar
-Requires:	zoo
 Requires:	/usr/lib/sendmail
 Provides:	group(amavis)
 Provides:	user(amavis)

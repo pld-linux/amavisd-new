@@ -35,7 +35,7 @@
 +$TEMPBASE = "$MYHOME/runtime";         # (must be set if other config vars use is)
  
 -#$db_home = "$MYHOME/db";	# DB databases directory, default "$MYHOME/db"
-+$db_home = "/var/spool/amavis/db";     # DB databases directory, default "$MYHOME/db"
++$db_home = "$MYHOME/db";     # DB databases directory, default "$MYHOME/db"
  
  # $helpers_home sets environment variable HOME, and is passed as option
  # 'home_dir_for_helpers' to Mail::SpamAssassin::new. It should be a directory

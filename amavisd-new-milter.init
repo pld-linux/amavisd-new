@@ -60,7 +60,7 @@ case "$1" in
 	exit $?
 	;;
   *)
-	msg_usage "$0 {start|stop|restart|force-restart|reload|force-restart|status}"
+	msg_usage "$0 {start|stop|restart|force-restart|reload|force-reload|status}"
 	exit 3
 esac
 

@@ -7,11 +7,11 @@ Summary(pl):	Antywirusowy skaner poczty elektronicznej z obs³ug± SpamAssasina - 
 Name:		amavisd-new
 Version:	2.2.0
 Release:	1
+Epoch:		1
 License:	GPL
 Group:		Applications/Mail
 Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}.tar.gz
 # Source0-md5:	70af3c7b6d06de900b74e216cfcf12f7
-# Source0-size:	464713
 Source1:	%{name}.init
 Source2:	%{name}-milter.init
 Patch0:		%{name}-config.patch
@@ -86,7 +86,7 @@ a jednym lub wiêcej programów antywirusowych. Wersja zdemonizowana.
 Pakiet ten zawiera back-end dla sendmaila.
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -q
 %patch0 -p1
 # %patch1 -p1
 %if "%{_lib}" == "lib64"

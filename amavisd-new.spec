@@ -12,6 +12,7 @@ Source1:	%{name}.init
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-bin.patch
 Patch2:		%{name}-config-mks.patch
+Patch3:		%{name}-cpio-reads-tar.patchx
 Patch100:	http://www.ijs.si/software/amavisd/amavisd-new-20030616-p3.patch
 URL:		http://www.amavis.org/
 BuildRequires:	arc
@@ -100,6 +101,7 @@ Pakiet ten zawiera back-end dla sendmaila.
 %patch0 -p1
 #%patch1 -p1
 #%patch2 -p1
+%patch3 -p1
 
 %build
 

@@ -56,6 +56,7 @@ Obsoletes:	amavisd-qmail
 Obsoletes:	amavisd-new-postfix
 Obsoletes:	amavisd-new-exim
 Obsoletes:	amavisd-new-qmail
+Conflicts:	amavis-stats <= 0.1.12
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description

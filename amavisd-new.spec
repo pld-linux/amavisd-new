@@ -198,6 +198,7 @@ fi
 %attr(755,amavis,root) %{_var}/run/amavisd
 
 %files sendmail
+%defattr(644,root,root,755)
 %attr(754,root,root) %{_sysconfdir}/rc.d/init.d/amavis-milter
 %attr(755,root,root) %{_sbindir}/amavis
 %attr(755,root,root) %{_sbindir}/amavis-milter

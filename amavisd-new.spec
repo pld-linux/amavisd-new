@@ -1,5 +1,6 @@
 # TODO:
 # - Add polish info mail templates
+# - Fix /etc/rc.d/init.d/amavisd-new reload
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	A Mail Virus Scanner with SpamAssassin support - daemon

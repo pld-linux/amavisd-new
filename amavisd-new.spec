@@ -95,10 +95,10 @@ Pakiet ten zawiera back-end dla sendmaila.
 %setup -q -n %{name}-%{_real_ver}
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 %if "%{_lib}" == "lib64"
 %patch2 -p1
 %endif
+%patch3 -p1
 
 %build
 cd helper-progs

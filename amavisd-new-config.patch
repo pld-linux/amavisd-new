@@ -1,6 +1,6 @@
 diff -uNr amavisd-new-20030616/amavisd.conf amavisd-new-20030616~/amavisd.conf
 --- amavisd-new-20030616/amavisd.conf	Tue Mar  9 03:21:38 2004
-+++ amavisd-new-20030616~/amavisd.conf	Sat Mar 13 17:13:34 2004
++++ amavisd-new-20030616~/amavisd.conf	Sun Mar 14 13:37:30 2004
 @@ -51,19 +51,24 @@
  # $MYHOME serves as a quick default for some other configuration settings.
  # More refined control is available with each individual setting further down.
@@ -139,7 +139,7 @@ diff -uNr amavisd-new-20030616/amavisd.conf amavisd-new-20030616~/amavisd.conf
  
    ['MkS_Vir daemon',
      'mksscan', '-s -q {}', [0], [1..7],
-@@ -1444,6 +1451,12 @@
+@@ -1444,6 +1451,10 @@
  # ],
  # # other options to consider: -mime -oe -idedir=/usr/local/sav
  

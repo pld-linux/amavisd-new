@@ -1,0 +1,28 @@
+--- amavisd-new-20020630/amavis/amavisd.conf.in~	Mon Sep 16 14:57:00 2002
++++ amavisd-new-20020630/amavis/amavisd.conf.in	Mon Sep 16 15:00:11 2002
+@@ -147,11 +147,12 @@
+ 
+ $child_timeout=3*60;  # abort child if it does not complete each task in n sec
+ 
+-$daemon_user  = 'vscan';
++$daemon_user  = 'amavis';
++#$daemon_user  = 'vscan';
+ #$daemon_user  = 'sweep';
+-$daemon_group = 'sweep';
+-# $pid_file = '/var/run/amavisd.pid';
+-$pid_file = '/var/amavis/amavisd.pid';
++$daemon_group = 'nobody';
++#$daemon_group = 'sweep';
++$pid_file = '/var/run/amavisd.pid';
+ 
+ #
+ # Part III - Virus stuff
+@@ -351,7 +352,7 @@
+ #@inet_acl = qw( 127.0.0.1 );      # allow SMTP access only from localhost
+ 
+ # when MTA (one or more) is on a different host, use the following
+-@inet_acl = qw(127/8 193.2.4.243 193.2.4.66);
++@inet_acl = qw(127/8);
+ $inet_socket_bind = undef;      # bind to all IP interfaces
+ #   (and make sure you set $relayhost/$relayhost_is_client accordingly)
+ #

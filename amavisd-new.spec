@@ -7,17 +7,19 @@ Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
 Summary(pl):	Antywirusowy skaner poczty elektronicznej z obs³ug± SpamAssasina - demon
 Name:		amavisd-new
 Version:	20030616
-Release:	10.1
+Release:	11
 License:	GPL
 Group:		Applications/Mail
 Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}-%{_subver}.tar.gz
 # Source0-md5:	4c96fadc57a5de84cc3bc6b548b46aff
 Source1:	%{name}.init
+Source2:	%{name}-milter.init
 Patch0:		%{name}-config.patch
 # Patch1:	%{name}-bin.patch # I don't get perl and it has rejects
 Patch3:		%{name}-cpio-reads-tar.patch
-#Patch4:		%{name}-real_sender.patch
+# Patch4:		%{name}-real_sender.patch
 Patch5:		http://www.ijs.si/software/amavisd/amavisd-new-20030616-p8a.patch
+Patch6:		%{name}-dirperms.patch
 URL:		http://www.ijs.si/software/amavisd/
 BuildRequires:	arc
 BuildRequires:	autoconf
@@ -36,7 +38,6 @@ BuildRequires:	perl-Convert-TNEF
 BuildRequires:	perl-libnet
 BuildRequires:	perl-Mail-SpamAssassin
 BuildRequires:	perl-Net-Server
-BuildRequires:	sendmail
 BuildRequires:	sh-utils
 BuildRequires:	unarj
 BuildRequires:	unrar
@@ -105,9 +106,8 @@ Pakiet ten zawiera back-end dla sendmaila.
 %prep
 %setup -q
 %patch0 -p1
-#%%patch1 -p1
 %patch3 -p1
-#%patch4 -p1
+%patch6 -p1
 
 %build
 cd helper-progs
@@ -124,6 +124,7 @@ install -d $RPM_BUILD_ROOT{%{_var}/spool/amavis/{runtime,virusmails},%{_var}/run
 install amavisd $RPM_BUILD_ROOT%{_sbindir}
 install amavisd.conf $RPM_BUILD_ROOT%{_sysconfdir}
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/amavisd
+install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/amavis-milter
 install helper-progs/amavis $RPM_BUILD_ROOT%{_sbindir}
 install helper-progs/amavis-milter $RPM_BUILD_ROOT%{_sbindir}
 
@@ -173,15 +174,35 @@ if [ "$1" = "0" ];then
 	/sbin/chkconfig --del amavisd
 fi
 
+%post sendmail
+/sbin/chkconfig --add amavis-milter
+if [ -f /var/lock/subsys/amavis-milter ]; then
+	/etc/rc.d/init.d/amavis-milter restart >&2
+else
+	echo "Run \"/etc/rc.d/init.d/amavis-milter start\" to start Amavis-milter daemon."
+fi
+
+
+%preun sendmail
+if [ "$1" = "0" ];then
+	if [ -f /var/lock/subsys/amavis-milter ]; then
+		/etc/rc.d/init.d/amavis-milter stop >&2
+	fi
+	/sbin/chkconfig --del amavis-milter
+fi
+
+
+
 %files
 %defattr(644,root,root,755)
 %doc AAAREADME.first INSTALL RELEASE_NOTES README_FILES/* test-messages
 %attr(755,root,root) %{_sbindir}/amavisd*
-%attr(754,root,root) %{_sysconfdir}/rc.d/init.d/*
+%attr(754,root,root) %{_sysconfdir}/rc.d/init.d/amavisd
 %config(noreplace) %{_sysconfdir}/amavisd.conf
 %attr(750,amavis,amavis) %{_var}/spool/amavis
 %attr(755,amavis,root) %{_var}/run/amavisd
 
 %files sendmail
+%attr(754,root,root) %{_sysconfdir}/rc.d/init.d/amavis-milter
 %attr(755,root,root) %{_sbindir}/amavis
 %attr(755,root,root) %{_sbindir}/amavis-milter

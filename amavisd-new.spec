@@ -97,14 +97,11 @@ Pakiet ten zawiera back-end dla sendmaila.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_var}/spool/amavis/{runtime,virusmails},%{_var}/run/amavisd}
+install -d $RPM_BUILD_ROOT{%{_var}/spool/amavis/{runtime,virusmails},%{_var}/run/amavisd,%{_sysconfdir}}
 
-%{__make} install \
-	amavisuser=$(id -u) \
-	DESTDIR=$RPM_BUILD_ROOT
+install amavisd{,conf} $RPM_BUILD_ROOT%{_sbindir}/
+install amavisd.conf $RPM_BUILD_ROOT%{_sysconfdir}/
 install -D %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/amavisd
-
-install amavis/amavisd.{exim,postfix,sendmail} $RPM_BUILD_ROOT%{_sbindir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT

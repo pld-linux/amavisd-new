@@ -6,20 +6,17 @@
 Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
 Summary(pl):	Antywirusowy skaner poczty elektronicznej z obs³ug± SpamAssasina - demon
 Name:		amavisd-new
-Version:	20030616
-Release:	11
+Version:	20040701
+Release:	0.1
 License:	GPL
 Group:		Applications/Mail
-Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}-%{_subver}.tar.gz
-# Source0-md5:	4c96fadc57a5de84cc3bc6b548b46aff
+Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}.tar.gz
+# Source0-md5:	d5566eeaf1e47b6c856f4e676e93d584
 Source1:	%{name}.init
 Source2:	%{name}-milter.init
 Patch0:		%{name}-config.patch
-# Patch1:	%{name}-bin.patch # I don't get perl and it has rejects
-Patch3:		%{name}-cpio-reads-tar.patch
-# Patch4:		%{name}-real_sender.patch
-Patch5:		http://www.ijs.si/software/amavisd/amavisd-new-20030616-p8a.patch
-Patch6:		%{name}-dirperms.patch
+Patch1:		%{name}-dirperms.patch
+#Patch2:		http://www.ijs.si/software/amavisd/amavisd-new-20030616-p8a.patch
 URL:		http://www.ijs.si/software/amavisd/
 BuildRequires:	arc
 BuildRequires:	autoconf
@@ -107,8 +104,7 @@ Pakiet ten zawiera back-end dla sendmaila.
 %prep
 %setup -q
 %patch0 -p1
-%patch3 -p1
-%patch6 -p1
+%patch1 -p1
 
 %build
 cd helper-progs
@@ -120,10 +116,10 @@ cd ..
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_var}/spool/amavis/{runtime,virusmails},%{_var}/run/amavisd,%{_sysconfdir}/rc.d/init.d,%{_sbindir}}
+install -d $RPM_BUILD_ROOT{%{_var}/spool/amavis/{runtime,virusmails,db},%{_var}/run/amavisd,%{_sysconfdir}/rc.d/init.d,%{_sbindir}}
 
 install amavisd $RPM_BUILD_ROOT%{_sbindir}
-install amavisd.conf $RPM_BUILD_ROOT%{_sysconfdir}
+install amavisd.conf-sample $RPM_BUILD_ROOT%{_sysconfdir}/amavisd.conf
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/amavisd
 install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/amavis-milter
 install helper-progs/amavis $RPM_BUILD_ROOT%{_sbindir}

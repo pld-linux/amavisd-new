@@ -30,6 +30,7 @@ BuildRequires:	perl-Convert-TNEF
 BuildRequires:	perl-libnet
 BuildRequires:	perl-Mail-SpamAssassin
 BuildRequires:	perl-Vipuls-Razor-V1
+BuildRequires:	perl-Net-Server
 BuildRequires:	sh-utils
 BuildRequires:	unarj
 BuildRequires:	unrar

@@ -1,0 +1,11 @@
+--- sbin/amavisd~	Tue Aug  5 16:33:10 2003
++++ sbin/amavisd	Tue Aug  5 17:20:41 2003
+@@ -3844,7 +3844,7 @@
+ 	/^\.lzo$/  && defined $lzop
+ 	    && return do_uncompress($part,$tempdir,"$lzop -d -c");
+ 	/^\.cpio$/ && defined $cpio && return do_cpio($part,$tempdir);
+-#	/^\.tar$/  && defined $cpio && return do_cpio($part,$tempdir);
++	/^\.tar$/  && defined $cpio && return do_cpio($part,$tempdir);
+ 	/^\.tar$/  && return do_tar($part,$tempdir);  # fallback
+ 	/^\.zip$/  && return do_unzip($part,0,$tempdir);
+ 	/^\.rar$/  && return do_unrar($part,0,$tempdir);

@@ -12,6 +12,7 @@ License:	GPL
 Group:		Applications/Mail
 Source0:	http://www.ijs.si/software/amavisd/%{name}-%{_real_ver}.tar.gz
 # Source0-md5:	d24bafbe84668dec71a38a074b6bb920
+# Source0-size:	464713
 Source1:	%{name}.init
 Source2:	%{name}-milter.init
 Patch0:		%{name}-config.patch

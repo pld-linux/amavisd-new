@@ -100,11 +100,11 @@ Pakiet ten zawiera back-end dla sendmaila.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_var}/spool/amavis/{runtime,virusmails},%{_var}/run/amavisd,%{_sysconfdir},%{_sbindir}}
+install -d $RPM_BUILD_ROOT{%{_var}/spool/amavis/{runtime,virusmails},%{_var}/run/amavisd,%{_sysconfdir}/rc.d/init.d,%{_sbindir}}
 
-install amavisd $RPM_BUILD_ROOT%{_sbindir}/
-install amavisd.conf $RPM_BUILD_ROOT%{_sysconfdir}/
-install -D %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/amavisd
+install amavisd $RPM_BUILD_ROOT%{_sbindir}
+install amavisd.conf $RPM_BUILD_ROOT%{_sysconfdir}
+install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/amavisd
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -157,7 +157,7 @@ fi
 %defattr(644,root,root,755)
 %doc AAAREADME.first INSTALL RELEASE_NOTES README_FILES/* test-messages
 %attr(755,root,root) %{_sbindir}/amavisd*
-%attr(754,root,root) /etc/rc.d/init.d/*
+%attr(754,root,root) %{_sysconfdir}/rc.d/init.d/*
 %config(noreplace) %{_sysconfdir}/amavisd.conf
 %attr(750,amavis,amavis) %{_var}/spool/amavis
 %attr(755,amavis,root) %{_var}/run/amavisd

@@ -1,24 +1,6 @@
 diff -Nur amavisd-new-20030616.orig/helper-progs/amavis-milter-based-on-1.1.2.3.2.40-v2.c amavisd-new-20030616/helper-progs/amavis-milter-based-on-1.1.2.3.2.40-v2.c
 --- amavisd-new-20030616.orig/helper-progs/amavis-milter-based-on-1.1.2.3.2.40-v2.c	2004-04-01 02:42:23.000000000 +0200
 +++ amavisd-new-20030616/helper-progs/amavis-milter-based-on-1.1.2.3.2.40-v2.c	2004-05-06 16:29:22.000000000 +0200
-@@ -202,7 +202,7 @@
-     int count = 0;
- 
-     if (use_fixed_name) {
--	if (mkdir(s, S_IRWXU) == 0) return s;  /* succeeded */
-+	if (mkdir(s, S_IRWXU|S_IRWXG) == 0) return s;  /* succeeded */
- 	amavis_syslog(DBG_FATAL, "(amavis_mkdtemp) creating directory %s failed: %s",
- 		      s, strerror(errno));
-     }
-@@ -234,7 +234,7 @@
- 	}
- # endif
- 	if (stt) {
--	    if (!mkdir(s, S_IRWXU)) {
-+	    if (!mkdir(s, S_IRWXU|S_IRWXG)) {
- 		return s;
- 	    } else {
- 		continue;
 @@ -884,7 +884,7 @@
      srand48(time(NULL) ^ (mypid + (mypid << 15)));
  #endif

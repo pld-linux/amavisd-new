@@ -184,8 +184,8 @@ fi
 %defattr(644,root,root,755)
 %doc AAAREADME.first INSTALL RELEASE_NOTES README_FILES/* test-messages
 %attr(755,root,root) %{_sbindir}/amavisd*
-%attr(754,root,root) %{_sysconfdir}/rc.d/init.d/amavisd
-%config(noreplace) %{_sysconfdir}/amavisd.conf
+%attr(754,root,root) /etc/rc.d/init.d/amavisd
+%config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/amavisd.conf
 %attr(750,amavis,amavis) %{_var}/spool/amavis
 %attr(755,amavis,root) %{_var}/run/amavisd
 

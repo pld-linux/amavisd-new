@@ -1,5 +1,5 @@
 %include	/usr/lib/rpm/macros.perl
-Summary:	A Mail Virus Scanner with SpamAssasin support - Daemon
+Summary:	A Mail Virus Scanner with SpamAssassin support - Daemon
 Summary(pl):	Antywirusowy skaner poczty elektronicznej z obs³ug± SpamAssasina - Demon
 Name:		amavisd-new
 Version:	20021227

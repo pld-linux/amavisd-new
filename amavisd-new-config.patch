@@ -31,7 +31,7 @@ diff -ur amavisd-new-20030314.orig/amavisd.conf amavisd-new-20030314/amavisd.con
 -$daemon_user  = 'vscan';	# (no default;  customary: vscan or amavis)
 -$daemon_group = 'sweep';	# (no default;  customary: vscan or amavis)
 +$daemon_user  = 'amavis';	# (no default;  customary: vscan or amavis)
-+$daemon_group = 'nobody';	# (no default;  customary: vscan or amavis)
++$daemon_group = 'amavis';	# (no default;  customary: vscan or amavis)
  
  # Runtime working directory (cwd), and a place where
  # temporary directories for unpacking mail are created.

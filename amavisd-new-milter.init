@@ -1,0 +1,55 @@
+#!/bin/sh
+#
+# amavis-milter		Start/Stop the amavis-milter daemon.
+#
+# chkconfig:	345 39 61
+#
+# description:	amavis-milter is daemonized antivirus daemon for sendmail
+#
+# processname:	amavis-milter
+# pidfile:	/var/lock/subsys/amavis-milter
+
+
+# Source function library
+. /etc/rc.d/init.d/functions
+
+RETVAL=0
+# See how we were called.
+case "$1" in
+  start)
+	# Check if the service is already running?
+	if [ ! -f /var/lock/subsys/amavis-milter ]; then
+		msg_starting Amavis-milter
+		su amavis -s /bin/sh -c "/usr/sbin/amavis-milter -p local:/var/spool/amavis/runtime/amavis-milter.sock 2>&1 >/dev/null &" 2>&1 > /dev/null
+		daemon sleep 3
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/amavis-milter
+	else
+		msg_already_running Amavis-milter
+	fi
+	;;
+  stop)
+        # Stop daemons.
+        if [ -f /var/lock/subsys/amavis-milter ]; then
+                msg_stopping Amavis-milter
+		killproc amavis-milter;
+                rm -f /var/lock/subsys/amavis-milter >/dev/null 2>&1
+        else
+                msg_not_running Amavis-milter
+        fi
+	;;
+  status)
+	status amavis-milter
+	exit $?
+	;;
+  restart)
+	$0 stop
+	$0 start
+	exit $?
+	;;
+  *)
+	msg_usage "$0 {start|stop|restart|status}"
+	exit 3
+esac
+
+exit $RETVAL

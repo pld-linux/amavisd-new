@@ -8,8 +8,7 @@ License:	GPL
 Group:		Applications/Mail
 Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}-p1.tar.gz
 Source1:	%{name}.init
-Patch0:		%{name}-notest-mta.patch
-Patch1:		%{name}-paths.patch
+Patch0:		%{name}-paths.patch
 URL:		http://www.amavis.org/
 BuildRequires:	arc
 BuildRequires:	autoconf
@@ -48,6 +47,7 @@ Requires:	unarj
 Requires:	unrar
 Requires:	zoo
 Requires:	perl-Mail-SpamAssassin
+#Requires:	perl-SAVI
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	AMaViS
 Obsoletes:	amavis
@@ -91,7 +91,6 @@ Pakiet ten zawiera back-end dla sendmaila.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
 
 %build
 

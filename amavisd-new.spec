@@ -7,6 +7,7 @@ Release:	1
 License:	GPL
 Group:		Applications/Mail
 Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}-p1.tar.gz
+# Source0-md5:	3dcee8ad46afbf23d09bdea64621e5a3
 Source1:	%{name}.init
 Patch0:		%{name}-config.patch
 URL:		http://www.amavis.org/

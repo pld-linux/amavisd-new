@@ -11,7 +11,6 @@ Source1:	%{name}.init
 Patch0:		%{name}-notest-mta.patch
 Patch1:		%{name}-nomilter.patch
 Patch2:		%{name}-qmail.patch
-Patch3:		%{name}-mks_vir.patch
 Patch4:		%{name}-clamav.patch
 URL:		http://www.amavis.org/
 BuildRequires:	arc
@@ -30,6 +29,7 @@ BuildRequires:	perl-Convert-UUlib
 BuildRequires:	perl-Convert-TNEF
 BuildRequires:	perl-libnet
 BuildRequires:	perl-Mail-SpamAssassin
+BuildRequires:	perl-Vipuls-Razor-V1
 BuildRequires:	sh-utils
 BuildRequires:	unarj
 BuildRequires:	unrar
@@ -49,6 +49,7 @@ Requires:	unarj
 Requires:	unrar
 Requires:	zoo
 Requires:	perl-Mail-SpamAssassin
+Requires:	perl-Vipuls-Razor-V1
 Requires:	amavisd-daemon
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	AMaViS
@@ -158,11 +159,10 @@ a jednym lub wiêcej programów antywirusowych. Wersja zdemonizowana.
 Pakiet ten zawiera back-end dla sendmaila.
 
 %prep
-%setup -q -n %{name}-snapshot-%{version}
+%setup -q -n %{name}-%{version}
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 %patch4 -p1
 
 %build

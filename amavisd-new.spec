@@ -1,13 +1,12 @@
 # TODO:
 # - Add polish info mail templates
-# - Add triggered adding user clamav to group amavis (like mks does)
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
 Summary(pl):	Antywirusowy skaner poczty elektronicznej z obs³ug± SpamAssasina - demon
 Name:		amavisd-new
 Version:	20030616
-Release:	2.4
+Release:	3
 License:	GPL
 Group:		Applications/Mail
 Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}-p5.tar.gz

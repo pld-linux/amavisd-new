@@ -24,7 +24,7 @@ case "$1" in
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/amavisd ]; then
 		msg_starting Amavisd
-		daemon $SERVICE_RUN_NICE_LEVEL /usr/sbin/amavisd -c /etc/amavisd.conf
+		LC_ALL='' LANG='' LC_TYPE='' LC_CTYPE='' daemon $SERVICE_RUN_NICE_LEVEL /usr/sbin/amavisd -c /etc/amavisd.conf
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/amavisd
 	else
@@ -49,7 +49,7 @@ case "$1" in
 	if [ -f /var/lock/subsys/amavisd ]; then
 		msg_reloading Amavisd
 		busy
-		LANG=C /usr/sbin/amavisd reload
+		LC_ALL='' LANG='' LC_TYPE='' LC_CTYPE='' /usr/sbin/amavisd reload
 		RETVAL=$?
 		ok
 		[ $RETVAL -ne 0 ] && RETVAL=7

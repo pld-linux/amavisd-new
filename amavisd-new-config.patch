@@ -1,7 +1,7 @@
-diff -urN amavisd-new-20030616.org/amavisd.conf amavisd-new-20030616/amavisd.conf
---- amavisd-new-20030616.org/amavisd.conf	Mon Dec  1 21:43:19 2003
-+++ amavisd-new-20030616/amavisd.conf	Mon Dec  1 21:44:53 2003
-@@ -51,17 +51,22 @@
+diff -uNr amavisd-new-20030616/amavisd.conf amavisd-new-20030616~/amavisd.conf
+--- amavisd-new-20030616/amavisd.conf	Tue Mar  9 03:21:38 2004
++++ amavisd-new-20030616~/amavisd.conf	Sat Mar 13 17:13:34 2004
+@@ -51,19 +51,24 @@
  # $MYHOME serves as a quick default for some other configuration settings.
  # More refined control is available with each individual setting further down.
  # $MYHOME is not used directly by the program. No trailing slash!
@@ -19,16 +19,18 @@ diff -urN amavisd-new-20030616.org/amavisd.conf amavisd-new-20030616/amavisd.con
 +# existing host ( virusalert@localhost.whatever.your.domain.is )
 +$mydomain = 'mail.whatever.your.domain.is';      # (no useful default)
  
+ # $myhostname = 'host.example.com';  # fqdn of this host, default by uname(3)
+ 
  # Set the user and group to which the daemon will change if started as root
  # (otherwise just keeps the UID unchanged, and these settings have no effect):
 -$daemon_user  = 'vscan';	# (no default;  customary: vscan or amavis)
 -$daemon_group = 'sweep';	# (no default;  customary: vscan or amavis)
-+$daemon_user  = 'amavis';
-+$daemon_group = 'amavis';
++$daemon_user  = 'amavis';	# (no default;  customary: vscan or amavis)
++$daemon_group = 'amavis';	# (no default;  customary: vscan or amavis)
  
  # Runtime working directory (cwd), and a place where
  # temporary directories for unpacking mail are created.
-@@ -141,7 +146,8 @@
+@@ -143,7 +148,8 @@
  # and see further down what these two lookup lists really mean.
  #
  # @bypass_virus_checks_acl = qw( . );  # uncomment to DISABLE anti-virus code
@@ -38,7 +40,7 @@ diff -urN amavisd-new-20030616.org/amavisd.conf amavisd-new-20030616/amavisd.con
  #
  # Any setting can be changed with a new assignment, so make sure
  # you do not unintentionally override these settings further down!
-@@ -177,7 +183,7 @@
+@@ -179,7 +185,7 @@
  # directly, or read from a file, one domain per line; comments and empty lines
  # are ignored, a dot before a domain name implies its subdomains:
  #
@@ -47,8 +49,8 @@ diff -urN amavisd-new-20030616.org/amavisd.conf amavisd-new-20030616/amavisd.con
  
  #or alternatively(B), using a list of regular expressions:
  # $local_domains_re = new_RE( qr'[@.]example\.com$'i );
-@@ -265,7 +271,7 @@
- #$SYSLOG_LEVEL = 'user.info';     # (defaults to 'mail.info')
+@@ -267,7 +273,7 @@
+ #$SYSLOG_LEVEL = 'user.info';     # (facility.priority, default 'mail.info')
  
  # Log file (if not using syslog)
 -$LOGFILE = "$MYHOME/amavis.log";  # (defaults to empty, no log)
@@ -56,7 +58,7 @@ diff -urN amavisd-new-20030616.org/amavisd.conf amavisd-new-20030616/amavisd.con
  
  #NOTE: levels are not strictly observed and are somewhat arbitrary
  # 0: startup/exit/failure messages, viruses detected
-@@ -274,7 +280,7 @@
+@@ -276,7 +282,7 @@
  # 3: server, client
  # 4: decompose parts
  # 5: more debug details
@@ -65,7 +67,7 @@ diff -urN amavisd-new-20030616.org/amavisd.conf amavisd-new-20030616/amavisd.con
  
  # Customizable template for the most interesting log file entry (e.g. with
  # $log_level=0) (take care to properly quote Perl special characters like '\')
-@@ -406,21 +412,21 @@
+@@ -408,21 +414,21 @@
  # Bounces or rejects produce non-delivery status notification anyway.
  
  # Notify virus sender?
@@ -81,7 +83,8 @@ diff -urN amavisd-new-20030616.org/amavisd.conf amavisd-new-20030616/amavisd.con
 +$warnbannedsender = 1;	# (defaults to false (undef))
  
  # Notify sender of syntactically invalid header containing non-ASCII characters?
- #$warnbadhsender = 1;	# (defaults to false (undef))
+-#$warnbadhsender = 1;	# (defaults to false (undef))
++# $warnbadhsender = 1;	# (defaults to false (undef))
  
  # Notify virus (or banned files) RECIPIENT?
  #  (not very useful, but some policies demand it)
@@ -92,7 +95,7 @@ diff -urN amavisd-new-20030616.org/amavisd.conf amavisd-new-20030616/amavisd.con
  
  # Notify also non-local virus/banned recipients if $warn*recip is true?
  #  (including those not matching local_domains*)
-@@ -510,7 +516,8 @@
+@@ -516,7 +522,8 @@
  #   or a directory (no trailing slash)
  #   (the default value is undef, meaning no quarantine)
  #
@@ -102,16 +105,17 @@ diff -urN amavisd-new-20030616.org/amavisd.conf amavisd-new-20030616/amavisd.con
  
  #$virus_quarantine_method = "local:virus-%i-%n";    # default
  #$spam_quarantine_method  = "local:spam-%b-%i-%n";  # default
-@@ -1166,12 +1173,12 @@
+@@ -1193,13 +1200,12 @@
  # ['Sophos SAVI', \&sophos_savi ],
  
- # ### http://clamav.elektrapro.com/
+ # ### http://www.clamav.net/
 -# ['Clam Antivirus-clamd',
--#   \&ask_daemon, ["CONTSCAN {}\n", '/var/amavis/clamd'],
+-#   \&ask_daemon, ["CONTSCAN {}\n", "/var/run/clamav/clamd"],
 -#   qr/\bOK$/, qr/\bFOUND$/,
 -#   qr/^.*?: (?!Infected Archive)(.*) FOUND$/ ],
--# # NOTE: run clamd under the same user as amavisd,
--# # match the socket name in clamav.conf to the socket name in this entry
+-# # NOTE: run clamd under the same user as amavisd;  match the socket
+-# # name (LocalSocket) in clamav.conf to the socket name in this entry
+-# # When running chrooted one may prefer: ["CONTSCAN {}\n","$MYHOME/clamd"],
 +  ['Clam Antivirus-clamd',
 +    \&ask_daemon, ["CONTSCAN {}\n", '/var/lib/clamav/clamd.socket'],
 +    qr/\bOK$/, qr/\bFOUND$/,
@@ -121,7 +125,7 @@ diff -urN amavisd-new-20030616.org/amavisd.conf amavisd-new-20030616/amavisd.con
  
  # ### http://www.openantivirus.org/
  # ['OpenAntiVirus ScannerDaemon (OAV)',
-@@ -1281,9 +1288,10 @@
+@@ -1316,9 +1322,10 @@
      '-sec -nex {}', [0], [100],
      qr/was infected by virus (.+)/ ],
  
@@ -135,14 +139,16 @@ diff -urN amavisd-new-20030616.org/amavisd.conf amavisd-new-20030616/amavisd.con
  
    ['MkS_Vir daemon',
      'mksscan', '-s -q {}', [0], [1..7],
-@@ -1400,6 +1408,10 @@
- # # sub {$ENV{SAV_IDE}='/usr/local/sav'},
+@@ -1444,6 +1451,12 @@
  # ],
+ # # other options to consider: -mime -oe -idedir=/usr/local/sav
  
 +   ['MkS_Vir for Linux (beta)', ['mks32','mks'],
 +     '-s {}/*', [0], [1,2],
 +     qr/--[ \t]*(.+)/ ],
 +
- );
- 
++ );
++
+ # always succeeds (uncomment to consider mail clean if all other scanners fail)
+ # ['always-clean', sub {0}],
  

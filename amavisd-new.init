@@ -17,7 +17,7 @@
 # Get service config
 [ -f /etc/sysconfig/amavisd ] && . /etc/sysconfig/amavisd
 
-
+RETVAL=0
 # See how we were called.
 case "$1" in
   start)
@@ -25,10 +25,10 @@ case "$1" in
 	if [ ! -f /var/lock/subsys/amavisd ]; then
 		msg_starting Amavisd
 		daemon $SERVICE_RUN_NICE_LEVEL /usr/sbin/amavisd -c /etc/amavisd.conf
-		touch /var/lock/subsys/amavisd
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/amavisd
 	else
 		msg_already_running Amavisd
-		exit 1
 	fi
 	;;
   stop)
@@ -39,22 +39,31 @@ case "$1" in
                 rm -f /var/lock/subsys/amavisd >/dev/null 2>&1
         else
                 msg_not_running Amavisd
-                exit 1
         fi
 	;;
   status)
 	status amavisd
+	exit $?
 	;;
-  reload)
-	/usr/sbin/amavisd reload
+  reload|force-roload)
+	if [ -f /var/lock/subsys/amavisd ]; then
+		msg_reloading Amavisd
+		/usr/sbin/amavisd reload
+		RETVAL=$?
+		[ $RETVAL -ne 0 ] && RETVAL=7
+	else
+		msg_not_running Amavisd >&2
+		RETVAL=7
+	fi
 	;;
   restart)
 	$0 stop
 	$0 start
+	exit $?
 	;;
   *)
-	msg_usage "$0 {start|stop|restart|reload|status}"
-	exit 1
+	msg_usage "$0 {start|stop|restart|reload|force-roload|status}"
+	exit 3
 esac
 
 exit $RETVAL

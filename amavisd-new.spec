@@ -105,14 +105,14 @@ cd helper-progs
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_var}/spool/amavis/{runtime,virusmails,db},%{_var}/run/amavisd,%{_sysconfdir}/rc.d/init.d,%{_sbindir}}
+install -d $RPM_BUILD_ROOT{%{_var}/spool/amavis/{runtime,virusmails,db},%{_var}/run/amavisd,/etc/rc.d/init.d,%{_sbindir}}
 
 install amavisd $RPM_BUILD_ROOT%{_sbindir}
 install amavisd-agent $RPM_BUILD_ROOT%{_sbindir}
 install amavisd-nanny $RPM_BUILD_ROOT%{_sbindir}
 install amavisd.conf-sample $RPM_BUILD_ROOT%{_sysconfdir}/amavisd.conf
-install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/amavisd
-install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/amavis-milter
+install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/amavisd
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/amavis-milter
 install helper-progs/amavis $RPM_BUILD_ROOT%{_sbindir}
 install helper-progs/amavis-milter $RPM_BUILD_ROOT%{_sbindir}
 
@@ -169,7 +169,6 @@ else
 	echo "Run \"/etc/rc.d/init.d/amavis-milter start\" to start Amavis-milter daemon."
 fi
 
-
 %preun sendmail
 if [ "$1" = "0" ];then
 	if [ -f /var/lock/subsys/amavis-milter ]; then
@@ -185,12 +184,12 @@ fi
 %doc AAAREADME.first INSTALL RELEASE_NOTES README_FILES/* test-messages
 %attr(755,root,root) %{_sbindir}/amavisd*
 %attr(754,root,root) /etc/rc.d/init.d/amavisd
-%config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/amavisd.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/amavisd.conf
 %attr(750,amavis,amavis) %{_var}/spool/amavis
 %attr(755,amavis,root) %{_var}/run/amavisd
 
 %files sendmail
 %defattr(644,root,root,755)
-%attr(754,root,root) %{_sysconfdir}/rc.d/init.d/amavis-milter
+%attr(754,root,root) /etc/rc.d/init.d/amavis-milter
 %attr(755,root,root) %{_sbindir}/amavis
 %attr(755,root,root) %{_sbindir}/amavis-milter

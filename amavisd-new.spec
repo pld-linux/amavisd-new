@@ -139,8 +139,9 @@ fi
 
 %postun
 if [ "$1" = "0" ]; then
+	echo "Removing user amavis"
 	/usr/sbin/userdel amavis
-	echo "Removing group amavis."
+	echo "Removing group amavis"
 	/usr/sbin/groupdel amavis
 fi
 

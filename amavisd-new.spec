@@ -3,7 +3,7 @@ Summary:	A Mail Virus Scanner with SpamAssasin support - Daemon.
 Summary(pl):	Antywirusowy skaner poczty elektronicznej z obs³ug± SpamAssasina - Demon
 Name:		amavisd-new
 Version:	20020630
-Release:	2
+Release:	3
 License:	GPL
 Group:		Applications/Mail
 Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}.tar.gz
@@ -179,21 +179,6 @@ aclocal
 %{__autoconf}
 %{__automake}
 %configure \
-	--enable-smtp \
-	--enable-postfix \
-	--enable-all \
-	--enable-syslog \
-	--with-smtp-port=10025 \
-	--with-runtime-dir=%{_var}/spool/amavis/runtime \
-	--with-virusdir=%{_var}/spool/amavis/virusmails \
-	--with-logdir=%{_var}/log \
-	--with-amavisuser=amavis \
-	--with-sockname=%{_var}/run/amavisd/amavisd.sock
-
-%{__make}
-mv amavis/amavisd amavis/amavisd.postfix
-
-%configure \
 	--disable-smtp \
 	--enable-exim \
 	--enable-all \
@@ -238,6 +223,21 @@ mv amavis/amavisd amavis/amavisd.exim
 
 %{__make}
 mv amavis/amavisd amavis/amavisd.sendmail
+
+%configure \
+	--enable-smtp \
+	--enable-postfix \
+	--enable-all \
+	--enable-syslog \
+	--with-smtp-port=10025 \
+	--with-runtime-dir=%{_var}/spool/amavis/runtime \
+	--with-virusdir=%{_var}/spool/amavis/virusmails \
+	--with-logdir=%{_var}/log \
+	--with-amavisuser=amavis \
+	--with-sockname=%{_var}/run/amavisd/amavisd.sock
+
+%{__make}
+mv amavis/amavisd amavis/amavisd.postfix
 
 %install
 rm -rf $RPM_BUILD_ROOT

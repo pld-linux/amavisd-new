@@ -245,7 +245,7 @@ install -d $RPM_BUILD_ROOT{%{_var}/spool/amavis/{runtime,virusmails},%{_var}/run
 %{__make} install \
 	amavisuser=$(id -u) \
 	DESTDIR=$RPM_BUILD_ROOT
-install -D %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/amavisd
+install -D %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/amavisd
 
 install amavis/amavisd.{exim,postfix,sendmail} $RPM_BUILD_ROOT%{_sbindir}
 
@@ -299,7 +299,7 @@ ln -sf amavisd.sendmail %{_sbindir}/amavisd
 %defattr(644,root,root,755)
 %doc README* NEWS AUTHORS BUGS ChangeLog FAQ HINTS TODO doc/amavis.html doc/amavis.png
 %attr(755,root,root) %{_sbindir}/amavis
-%attr(754,root,root) %{_sysconfdir}/rc.d/init.d/*
+%attr(754,root,root) /etc/rc.d/init.d/*
 %config(noreplace) %{_sysconfdir}/amavisd.conf
 %attr(750,amavis,root) %{_var}/spool/amavis
 %attr(755,amavis,root) %{_var}/run/amavisd

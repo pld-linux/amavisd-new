@@ -11,7 +11,7 @@ Source1:	%{name}.init
 Patch0:		%{name}-notest-mta.patch
 Patch1:		%{name}-nomilter.patch
 Patch2:		%{name}-qmail.patch
-Patch4:		%{name}-clamav.patch
+Patch3:		%{name}-clamav.patch
 URL:		http://www.amavis.org/
 BuildRequires:	arc
 BuildRequires:	autoconf
@@ -163,7 +163,8 @@ Pakiet ten zawiera back-end dla sendmaila.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch4 -p1
+%patch3 -p1
+cp -a amavis/amavisd.in.all amavis/amavisd.in
 
 %build
 aclocal

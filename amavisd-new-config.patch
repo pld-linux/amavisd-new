@@ -1,6 +1,6 @@
---- amavisd-new-2.1.0/amavisd.conf-sample.orig	2004-08-06 16:54:38.000000000 +0200
-+++ amavisd-new-2.1.0/amavisd.conf-sample	2004-08-06 19:40:58.730887728 +0200
-@@ -58,27 +58,31 @@
+--- amavisd-new-2.2.1/amavisd.conf-sample	2004-12-23 01:38:23.000000000 +0000
++++ amavisd-new-2.2.1.new/amavisd.conf-sample	2004-12-23 20:18:27.372867424 +0000
+@@ -62,27 +62,31 @@
  # $MYHOME serves as a quick default for some other configuration settings.
  # More refined control is available with each individual setting further down.
  # $MYHOME is not used directly by the program. No trailing slash!
@@ -39,26 +39,26 @@
  
  # $helpers_home sets environment variable HOME, and is passed as option
  # 'home_dir_for_helpers' to Mail::SpamAssassin::new. It should be a directory
-@@ -107,6 +111,8 @@
+@@ -111,6 +115,9 @@
  #$forward_method = 'smtp:[127.0.0.1]:10025';  # where to forward checked mail
  #$notify_method = $forward_method;            # where to submit notifications
  
 +# @auth_mech_avail = ('PLAIN','LOGIN'); # empty list disables incoming AUTH
 +
++
  # To make it possible for several hosts to share one content checking daemon,
  # the IP address and/or the port number in $forward_method and $notify_method
  # may be spacified as an asterisk. An asterisk in the colon-separated
-@@ -160,7 +166,8 @@
+@@ -164,7 +171,7 @@
  # and see further down what these two lookup lists really mean.
  #
  # @bypass_virus_checks_maps = (1);  # uncomment to DISABLE anti-virus code
 -# @bypass_spam_checks_maps  = (1);  # uncomment to DISABLE anti-spam code
 +@bypass_spam_checks_maps  = (1);  # uncomment to DISABLE anti-spam code
-+
  #
  # Any setting can be changed with a new assignment, so make sure
  # you do not unintentionally override these settings further down!
-@@ -275,7 +282,7 @@
+@@ -279,7 +286,7 @@
  #$SYSLOG_LEVEL = 'user.info';     # (facility.priority, default 'mail.info')
  
  # Log file (if not using syslog)
@@ -67,16 +67,17 @@
  
  #NOTE: levels are not strictly observed and are somewhat arbitrary
  # 0: startup/exit/failure messages, viruses detected
-@@ -284,7 +291,7 @@
+@@ -288,7 +295,8 @@
  # 3: server, client
  # 4: decompose parts
  # 5: more debug details
 -$log_level = 2;		  # (defaults to 0)
 +# $log_level = 2;		  # (defaults to 0)
++ 
  
  # Customizable template for the most interesting log file entry (e.g. with
  # $log_level=0) (take care to properly quote Perl special characters like '\')
-@@ -453,22 +460,22 @@
+@@ -471,22 +479,22 @@
  # Bounces or rejects produce non-delivery status notification regardless.
  
  # Notify virus sender?
@@ -106,7 +107,7 @@
  
  # Notify also non-local virus/banned recipients if $warn*recip is true?
  #  (including those not matching local_domains*)
-@@ -567,7 +574,8 @@
+@@ -587,7 +595,8 @@
  #   or a directory (no trailing slash)
  #   (the default value is undef, meaning no quarantine)
  #
@@ -116,7 +117,7 @@
  
  #$virus_quarantine_method        = 'local:virus-%i-%n';    # default
  #$spam_quarantine_method         = 'local:spam-%b-%i-%n';  # default
-@@ -1547,13 +1555,12 @@
+@@ -1600,13 +1609,12 @@
  # ['Sophos SAVI', \&sophos_savi ],
  
  # ### http://www.clamav.net/
@@ -124,8 +125,8 @@
 -#   \&ask_daemon, ["CONTSCAN {}\n", "/var/run/clamav/clamd"],
 -#   qr/\bOK$/, qr/\bFOUND$/,
 -#   qr/^.*?: (?!Infected Archive)(.*) FOUND$/ ],
--# # NOTE: run clamd under the same user as amavisd;  match the socket
--# # name (LocalSocket) in clamav.conf to the socket name in this entry
+-# # NOTE: the easiest is to run clamd under the same user as amavisd; match the
+-# # socket name (LocalSocket) in clamav.conf to the socket name in this entry
 -# # When running chrooted one may prefer: ["CONTSCAN {}\n","$MYHOME/clamd"],
 +  ['Clam Antivirus-clamd',
 +    \&ask_daemon, ["CONTSCAN {}\n", '/var/lib/clamav/clamd.socket'],
@@ -136,9 +137,9 @@
  
  # ### http://www.clamav.net/ and CPAN  (memory-hungry! clamd is preferred)
  # ['Mail::ClamAV', \&ask_clamav, "*", [0], [1], qr/^INFECTED: (.+)/],
-@@ -1678,10 +1685,11 @@
-     qr/was infected by virus (.+)/ ],
-   # see: http://www.flatmtn.com/computer/Linux-Antivirus_CAI.html
+@@ -1740,10 +1748,11 @@
+     # NOTE: requires suid wrapper around inocmd32; consider flag: -mod reviewer
+     # see http://marc.theaimsgroup.com/?l=amavis-user&m=109229779912783
  
 -  ### http://mks.com.pl/english.html
 -  ['MkS_Vir for Linux (beta)', ['mks32','mks'],
@@ -152,13 +153,14 @@
  
    ### http://mks.com.pl/english.html
    ['MkS_Vir daemon', 'mksscan',
-@@ -1830,6 +1838,10 @@
+@@ -1938,6 +1947,11 @@
  # ],
  # # other options to consider: -mime -oe -idedir=/usr/local/sav
  
 +   ['MkS_Vir for Linux (beta)', ['mks32','mks'],
 +     '-s {}/*', [0], [1,2],
 +     qr/--[ \t]*(.+)/ ],
++
 +
  # always succeeds (uncomment to consider mail clean if all other scanners fail)
  # ['always-clean', sub {0}],

@@ -162,12 +162,12 @@ Pakiet ten zawiera back-end dla sendmaila.
 
 %prep
 %setup -q -n %{name}-%{version}
+cp -a amavis/amavisd.in.all amavis/amavisd.in
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-cp -a amavis/amavisd.in.all amavis/amavisd.in
 
 %build
 aclocal

@@ -1,7 +1,7 @@
-diff -urN amavisd-snapshot-20020300.org/amavis/amavisd.conf.in amavisd-snapshot-20020300/amavis/amavisd.conf.in
---- amavisd-snapshot-20020300.org/amavis/amavisd.conf.in	Thu Jun  6 22:51:22 2002
-+++ amavisd-snapshot-20020300/amavis/amavisd.conf.in	Thu Jun  6 22:56:59 2002
-@@ -42,6 +42,9 @@
+diff -urN amavisd-new-20020630.org/amavis/amavisd.conf.in amavisd-new-20020630/amavis/amavisd.conf.in
+--- amavisd-new-20020630.org/amavis/amavisd.conf.in	Mon Sep  9 21:11:20 2002
++++ amavisd-new-20020630/amavis/amavisd.conf.in	Mon Sep  9 21:11:31 2002
+@@ -39,6 +39,9 @@
  $avp = "@avp@";
  $AVPDIR = dirname($avp);
  
@@ -11,29 +11,29 @@ diff -urN amavisd-snapshot-20020300.org/amavis/amavisd.conf.in amavisd-snapshot-
  # KasperskyLab AVPDaemon / AvpDaemonClient
  #
  # use AvpDaemon and AvpDaemonClient
-diff -urN amavisd-snapshot-20020300.org/amavis/amavisd.in amavisd-snapshot-20020300/amavis/amavisd.in
---- amavisd-snapshot-20020300.org/amavis/amavisd.in	Thu Jun  6 22:51:22 2002
-+++ amavisd-snapshot-20020300/amavis/amavisd.in	Thu Jun  6 23:19:59 2002
-@@ -332,7 +332,7 @@
- 
- # Av scanners and related vars
- use vars qw ( $antivir $avp $avpdc $AVPDIR $csav $drweb $fprot $fprotd $fsav
--  $inocucmd $mks $nod32 $nod32cli $norman $oav $panda $rav $sophos
-+  $inocucmd $mks $nod32 $nod32cli $norman $oav $panda $rav $sophos $clamav
-   $sophos_ide_path $cscmdline $scs_host $scs_port $uvscan $vbengcl $vexira 
-   $vfind $vscan $sophie_sockname $trophie_sockname );
- 
-@@ -1070,6 +1070,7 @@
+diff -urN amavisd-new-20020630.org/amavis/amavisd.in amavisd-new-20020630/amavis/amavisd.in
+--- amavisd-new-20020630.org/amavis/amavisd.in	Mon Sep  9 21:11:20 2002
++++ amavisd-new-20020630/amavis/amavisd.in	Mon Sep  9 21:12:05 2002
+@@ -76,7 +76,7 @@
+ 	    $virus_quarantine_to $spam_quarantine_to
+ 	)],
+ 	'av' => [qw(
+-	    $antivir $avp $avpdc $AVPDIR $csav $drweb $fprot $fprotd $fsav
++	    $antivir $avp $avpdc $AVPDIR $csav $drweb $fprot $fprotd $fsav $clamav
+ 	    $inocucmd $mks $nod32 $nod32cli $norman $oav $panda $rav $sophos
+ 	    $sophos_ide_path $cscmdline $scs_host $scs_port $uvscan $vbengcl
+ 	    $vexira $vfind $vscan $sophie_sockname $trophie_sockname
+@@ -3715,6 +3715,7 @@
  @avp_scanner_frag@
  @avpdc_scanner_frag@
  @cai_scanner_frag@
 +@clamav_scanner_frag@
  @csav_scanner_frag@
  @cyber_scanner_frag@
- @fprot_scanner_frag@
-diff -urN amavisd-snapshot-20020300.org/amavis/av/clamav amavisd-snapshot-20020300/amavis/av/clamav
---- amavisd-snapshot-20020300.org/amavis/av/clamav	Thu Jan  1 01:00:00 1970
-+++ amavisd-snapshot-20020300/amavis/av/clamav	Fri Jun  7 00:07:04 2002
+ @drweb_scanner_frag@
+diff -urN amavisd-new-20020630.org/amavis/av/clamav amavisd-new-20020630/amavis/av/clamav
+--- amavisd-new-20020630.org/amavis/av/clamav	Thu Jan  1 01:00:00 1970
++++ amavisd-new-20020630/amavis/av/clamav	Mon Sep  9 21:11:31 2002
 @@ -0,0 +1,21 @@
 +#
 +# clamav (GPL) http://www.konarski.edu.pl/~zolw/clam.html
@@ -56,18 +56,18 @@ diff -urN amavisd-snapshot-20020300.org/amavis/av/clamav amavisd-snapshot-200203
 +        }
 +}
 +
-diff -urN amavisd-snapshot-20020300.org/configure.in amavisd-snapshot-20020300/configure.in
---- amavisd-snapshot-20020300.org/configure.in	Thu Jun  6 22:51:22 2002
-+++ amavisd-snapshot-20020300/configure.in	Thu Jun  6 22:59:01 2002
-@@ -385,6 +385,7 @@
+diff -urN amavisd-new-20020630.org/configure.in amavisd-new-20020630/configure.in
+--- amavisd-new-20020630.org/configure.in	Mon Sep  9 21:11:20 2002
++++ amavisd-new-20020630/configure.in	Mon Sep  9 21:15:39 2002
+@@ -397,6 +397,7 @@
    avp_scanner_frag=$srcdir/amavis/av/avp
    avpdc_scanner_frag=$srcdir/amavis/av/avpdc
    cai_scanner_frag=$srcdir/amavis/av/cai
 +  clamav_scanner_frag=$srcdir/amavis/av/clamav
    csav_scanner_frag=$srcdir/amavis/av/csav
    cyber_scanner_frag=$srcdir/amavis/av/cyber
-   fprot_scanner_frag=$srcdir/amavis/av/fprot
-@@ -456,6 +457,15 @@
+   drweb_scanner_frag=$srcdir/amavis/av/drweb
+@@ -472,6 +473,17 @@
    cai_scanner_frag=$srcdir/amavis/av/cai
  fi
  
@@ -75,6 +75,8 @@ diff -urN amavisd-snapshot-20020300.org/configure.in amavisd-snapshot-20020300/c
 +clamav_scanner_frag=/dev/null
 +AC_CHECKING([*** Clam AntiVirus Scanner ***])
 +AC_PATH_PROG(clamscan, clamscan, , $PATH:/bin:/usr/bin:/usr/local/bin)
++$clamav = $clamscan
++AC_SUBST(clamav)
 +if test "x$clamscan" != "x" ; then
 +  avscanner="$avscanner Clam AntiVirus Scanner"
 +  clamav_scanner_frag=$srcdir/amavis/av/clamav
@@ -83,7 +85,7 @@ diff -urN amavisd-snapshot-20020300.org/configure.in amavisd-snapshot-20020300/c
  ### Command AntiVirus for Linux
  csav_scanner_frag=/dev/null
  AC_CHECKING([*** Command AntiVirus for Linux ***])
-@@ -698,7 +708,7 @@
+@@ -740,7 +752,7 @@
  fi
  
  AC_MSG_CHECKING([if any virus scanners are installed at all])
@@ -92,11 +94,11 @@ diff -urN amavisd-snapshot-20020300.org/configure.in amavisd-snapshot-20020300/c
    AC_MSG_RESULT(no)
    AC_MSG_ERROR([
  
-@@ -849,6 +859,7 @@
+@@ -887,6 +899,7 @@
  AC_SUBST_FILE(avp_scanner_frag)
  AC_SUBST_FILE(avpdc_scanner_frag)
  AC_SUBST_FILE(cai_scanner_frag)
 +AC_SUBST_FILE(clamav_scanner_frag)
  AC_SUBST_FILE(csav_scanner_frag)
  AC_SUBST_FILE(cyber_scanner_frag)
- AC_SUBST_FILE(fsec_scanner_frag)
+ AC_SUBST_FILE(drweb_scanner_frag)

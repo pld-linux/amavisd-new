@@ -2,8 +2,8 @@
 Summary:	A Mail Virus Scanner with SpamAssasin support - Daemon.
 Summary(pl):	Antywirusowy skaner poczty elektronicznej z obs³ug± SpamAssasina - Demon
 Name:		amavisd-new
-Version:	20020517
-Release:	2
+Version:	20020630
+Release:	1
 License:	GPL
 Group:		Applications/Mail
 Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}.tar.gz
@@ -13,7 +13,8 @@ Patch1:		%{name}-nomilter.patch
 Patch2:		%{name}-qmail.patch
 Patch3:		%{name}-clamav.patch
 Patch4:		%{name}-paths.patch
-URL:		http://www.amavis.org/
+Patch5:		%{name}-avp.patch
+URL:		http://www.ijs.si/software/amavisd/
 BuildRequires:	arc
 BuildRequires:	autoconf
 BuildRequires:  automake
@@ -28,7 +29,7 @@ BuildRequires:	perl-MIME-tools
 BuildRequires:	perl-Unix-Syslog
 BuildRequires:	perl-Convert-UUlib
 BuildRequires:	perl-Convert-TNEF
-BuildRequires:	perl-libnet
+BuildRequires:	perl-libnet >= 1:1.12
 BuildRequires:	perl-Mail-SpamAssassin
 BuildRequires:	perl-Vipuls-Razor-V1
 BuildRequires:	perl-Net-Server
@@ -52,7 +53,7 @@ Requires:	unrar
 Requires:	zoo
 Requires:	perl-Mail-SpamAssassin
 Requires:	perl-Vipuls-Razor-V1
-Requires:	amavisd-daemon
+Requires:	amavisd-new-daemon
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	AMaViS
 Obsoletes:	amavis
@@ -71,8 +72,9 @@ Wersja zdemonizowana.
 Summary:	A Mail Virus Scanner with SpamAssasin support - postfix back-end.
 Summary(pl):	Antywirusowy skaner poczty elektronicznej - back-end dla postfiksa
 Group:		Applications/Mail
-Provides:	amavisd-daemon
+Provides:	amavisd-new-daemon
 Obsoletes:	amavisd-daemon
+Obsoletes:	amavisd-new-daemon
 Obsoletes:	amavisd-exim
 Obsoletes:	amavisd-qmail
 Obsoletes:	amavisd-sendmail
@@ -94,8 +96,9 @@ Pakiet ten zawiera back-end dla postfiks.
 Summary:	A Mail Virus Scanner with SpamAssasin support - exim backend.
 Summary(pl):	Antywirusowy skaner poczty elektronicznej - backend dla exima
 Group:		Applications/Mail
-Provides:	amavisd-daemon
+Provides:	amavisd-new-daemon
 Obsoletes:	amavisd-daemon
+Obsoletes:	amavisd-new-daemon
 Obsoletes:	amavisd-postfix
 Obsoletes:	amavisd-qmail
 Obsoletes:	amavisd-sendmail
@@ -118,8 +121,9 @@ Pakiet ten zawiera back-end dla exima.
 #Summary:	A Mail Virus Scanner - qmail backend.
 #Summary(pl):	Antywirusowy skaner poczty elektronicznej - backend dla qmaila
 #Group:		Applications/Mail
-#Provides:	amavisd-daemon
+#Provides:	amavisd-new-daemon
 #Obsoletes:	amavisd-daemon
+#Obsoletes:	amavisd-new-daemon
 #Obsoletes:	amavisd-postfix
 #Obsoletes:	amavisd-exim
 #Obsoletes:	amavisd-sendmail
@@ -141,8 +145,9 @@ Pakiet ten zawiera back-end dla exima.
 Summary:	A Mail Virus Scanner with SpamAssasin support - sendmail backend.
 Summary(pl):	Antywirusowy skaner poczty elektronicznej - backend dla sendmaila
 Group:		Applications/Mail
-Provides:	amavisd-daemon
+Provides:	amavisd-new-daemon
 Obsoletes:	amavisd-daemon
+Obsoletes:	amavisd-new-daemon
 Obsoletes:	amavisd-postfix
 Obsoletes:	amavisd-exim
 Obsoletes:	amavisd-qmail
@@ -162,12 +167,12 @@ Pakiet ten zawiera back-end dla sendmaila.
 
 %prep
 %setup -q -n %{name}-%{version}
-cp -a amavis/amavisd.in.all amavis/amavisd.in
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 %build
 aclocal

@@ -1,0 +1,12 @@
+diff -urN amavisd-new-20020630.org/amavis/amavisd.in amavisd-new-20020630/amavis/amavisd.in
+--- amavisd-new-20020630.org/amavis/amavisd.in	Mon Sep  9 21:11:20 2002
++++ amavisd-new-20020630/amavis/amavisd.in	Tue Sep 10 12:25:35 2002
+@@ -3669,7 +3669,7 @@
+ use vars qw($output @virusname $scan_status);
+ 
+ BEGIN {
+-  import Amavis::Conf qw(:av);
++  import Amavis::Conf qw(:av $TEMPBASE);
+   import Amavis::Util qw(do_log am_id retcode);
+ }
+ 

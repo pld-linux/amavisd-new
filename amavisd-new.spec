@@ -2,17 +2,16 @@
 # - Add polish info mail templates
 # - Some perl master check what Patch1 did 
 %include	/usr/lib/rpm/macros.perl
-%define		_real_ver	2.1.0
-%define		_rc		rc1
+%define		_real_ver	2.1.2
 Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
 Summary(pl):	Antywirusowy skaner poczty elektronicznej z obs³ug± SpamAssasina - demon
 Name:		amavisd-new
-Version:	20040806
-Release:	2
+Version:	20040906
+Release:	1
 License:	GPL
 Group:		Applications/Mail
-Source0:	http://www.ijs.si/software/amavisd/%{name}-%{_real_ver}-%{_rc}.tar.gz
-# Source0-md5:	b18090497e6537075b732f966a1e5a11
+Source0:	http://www.ijs.si/software/amavisd/%{name}-%{_real_ver}.tar.gz
+# Source0-md5:	d24bafbe84668dec71a38a074b6bb920
 Source1:	%{name}.init
 Source2:	%{name}-milter.init
 Patch0:		%{name}-config.patch

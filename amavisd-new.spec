@@ -1,6 +1,5 @@
 # TODO:
 # - Add polish info mail templates
-# - Some perl master check what Patch1 did 
 %include	/usr/lib/rpm/macros.perl
 Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
 Summary(pl):	Antywirusowy skaner poczty elektronicznej z obs³ug± SpamAssasina - demon
@@ -100,7 +99,7 @@ cd helper-progs
 ./configure \
 	--with-sendmail=/usr/lib/sendmail \
 	--with-runtime-dir=/var/spool/amavis/runtime \
-	--with-sockname=/var/spool/amavis/runtime/amavisd.sock
+	--with-sockname=/var/run/amavisd/amavisd.sock
 %{__make}
 
 %install
@@ -154,7 +153,7 @@ else
 fi
 
 %preun
-if [ "$1" = "0" ];then
+if [ "$1" = "0" ]; then
 	if [ -f /var/lock/subsys/amavisd ]; then
 		/etc/rc.d/init.d/amavisd stop >&2
 	fi
@@ -177,8 +176,6 @@ if [ "$1" = "0" ];then
 	/sbin/chkconfig --del amavis-milter
 fi
 
-
-
 %files
 %defattr(644,root,root,755)
 %doc AAAREADME.first INSTALL RELEASE_NOTES README_FILES/* test-messages
@@ -186,7 +183,7 @@ fi
 %attr(754,root,root) /etc/rc.d/init.d/amavisd
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/amavisd.conf
 %attr(750,amavis,amavis) %{_var}/spool/amavis
-%attr(755,amavis,root) %{_var}/run/amavisd
+%attr(750,amavis,amavis) %{_var}/run/amavisd
 
 %files sendmail
 %defattr(644,root,root,755)

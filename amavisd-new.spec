@@ -18,7 +18,7 @@ Patch6:		%{name}-recip-delim.patch
 URL:		http://www.amavis.org/
 BuildRequires:	arc
 BuildRequires:	autoconf
-BuildRequires:  automake
+BuildRequires:	automake
 BuildRequires:	bzip2
 BuildRequires:	file
 BuildRequires:	lha
@@ -61,13 +61,13 @@ Obsoletes:	amavis
 
 %description
 AMaViS is a script that interfaces a mail transport agent (MTA) with
-one or more virus scanners and SpamAssasin.
-This is daemonized version of amavis.
+one or more virus scanners and SpamAssasin. This is daemonized version
+of amavis.
 
 %description -l pl
 AMaViS to skrypt po¶rednicz±cy pomiêdzy agentem transferu poczty (MTA)
-a jednym lub wiêcej programów antywirusowych i SpamAssasinem.
-Wersja zdemonizowana.
+a jednym lub wiêcej programów antywirusowych i SpamAssasinem. Wersja
+zdemonizowana.
 
 %package postfix
 Summary:	A Mail Virus Scanner with SpamAssasin support - postfix back-end
@@ -115,9 +115,9 @@ a jednym lub wiêcej programów antywirusowych. Wersja zdemonizowana.
 
 Pakiet ten zawiera back-end dla exima.
 
-# NFY
-#%package qmail
-#Summary:	A Mail Virus Scanner - qmail backend.
+# NFY 
+#%package	qmail
+#Summary:	A Mail Virus Scanner - qmail backend
 #Summary(pl):	Antywirusowy skaner poczty elektronicznej - backend dla qmaila
 #Group:		Applications/Mail
 #Provides:	amavisd-daemon

@@ -24,7 +24,7 @@ case "$1" in
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/amavisd ]; then
 		msg_starting Amavisd
-		daemon 'su -s /bin/sh amavis -c "/bin/nice /usr/sbin/amavisd"'
+		daemon $SERVICE_RUN_NICE_LEVEL /usr/sbin/amavisd
 		touch /var/lock/subsys/amavisd
 	else
 		msg_Already_Running Amavisd
@@ -45,12 +45,15 @@ case "$1" in
   status)
 	status amavisd
 	;;
+  reload)
+	/usr/sbin/amavisd reload
+	;;
   restart)
 	$0 stop
 	$0 start
 	;;
   *)
-	msg_usage "$0 {start|stop|status|restart}"
+	msg_usage "$0 {start|stop|status|reload|restart}"
 	exit 1
 esac
 

@@ -3,8 +3,8 @@
 # - Add triggered adding user clamav to group amavis (like mks does)
 
 %include	/usr/lib/rpm/macros.perl
-Summary:	A Mail Virus Scanner with SpamAssassin support - Daemon
-Summary(pl):	Antywirusowy skaner poczty elektronicznej z obs³ug± SpamAssasina - Demon
+Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
+Summary(pl):	Antywirusowy skaner poczty elektronicznej z obs³ug± SpamAssasina - demon
 Name:		amavisd-new
 Version:	20030616
 Release:	2.4
@@ -14,7 +14,7 @@ Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}-p5.tar.gz
 # Source0-md5:	13c76432e957ccd302856f64526483a2
 Source1:	%{name}.init
 Patch0:		%{name}-config.patch
-# Patch1:         %{name}-bin.patch # I don't get perl and it has rejects
+# Patch1:	%{name}-bin.patch # I don't get perl and it has rejects
 Patch3:		%{name}-cpio-reads-tar.patch
 URL:		http://www.amavis.org/
 BuildRequires:	arc
@@ -118,30 +118,29 @@ rm -rf $RPM_BUILD_ROOT
 
 %pre
 if [ -n "`getgid amavis`" ]; then
-        if [ "`getgid amavis`" != "116" ]; then
-                echo "Error: group amavis doesn't have gid=116. Correct this before installing amavisd-new." 1>&2
-                exit 1
-        fi
+	if [ "`getgid amavis`" != "116" ]; then
+		echo "Error: group amavis doesn't have gid=116. Correct this before installing amavisd-new." 1>&2
+		exit 1
+	fi
 else
-       echo "adding group amavis GID=116."
-        /usr/sbin/groupadd -g 116 -r -f amavis
+	echo "adding group amavis GID=116."
+	/usr/sbin/groupadd -g 116 -r -f amavis
 fi
 
 if [ -n "`id -u amavis 2>/dev/null`" ]; then
-       if [ "`id -u amavis`" != "97" ]; then
-               echo "Error: user amavis doesn't have uid=97. Correct this before installing amavis." 1>&2
-               exit 1
-       fi
+	if [ "`id -u amavis`" != "97" ]; then
+		echo "Error: user amavis doesn't have uid=97. Correct this before installing amavis." 1>&2
+		exit 1
+	fi
 else
-       /usr/sbin/useradd -u 97 -r -d %{_var}/spool/amavis -s /bin/false -c "Anti Virus Checker" -g nobody  amavis 1>&2
+	/usr/sbin/useradd -u 97 -r -d %{_var}/spool/amavis -s /bin/false -c "Anti Virus Checker" -g nobody  amavis 1>&2
 fi
 
 %postun
 if [ "$1" = "0" ]; then
-       /usr/sbin/userdel amavis
-       echo "Removing group amavis."
-       /usr/sbin/groupdel amavis
-
+	/usr/sbin/userdel amavis
+	echo "Removing group amavis."
+	/usr/sbin/groupdel amavis
 fi
 
 %post

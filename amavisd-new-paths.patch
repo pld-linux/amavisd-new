@@ -27,7 +27,7 @@ diff -urN amavisd-new-20020630.org/amavis/amavisd.in amavisd-new-20020630/amavis
  
  # Temporary directory
 -$TEMPBASE = "/var/amavis";
-+$TEMPBASE = "/var/spool/amavis";
++$TEMPBASE = "/var/spool/amavis/runtime";
  
  
  $forward_method = \&Amavis::Out::mail_via_smtp;

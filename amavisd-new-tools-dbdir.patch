@@ -1,0 +1,22 @@
+--- amavisd-new-2.1.0/amavisd-agent.fix	2004-08-06 20:15:48.125251504 +0200
++++ amavisd-new-2.1.0/amavisd-agent	2004-08-06 20:16:01.096279608 +0200
+@@ -105,7 +105,7 @@
+ 
+ # main program starts here
+   my($env) = BerkeleyDB::Env->new(
+-    '-Home'=>'/var/amavis/db', '-Flags'=> DB_INIT_CDB | DB_INIT_MPOOL);
++    '-Home'=>'/var/spool/amavis/db', '-Flags'=> DB_INIT_CDB | DB_INIT_MPOOL);
+   defined $env or die "BDB no env: $BerkeleyDB::Error $!";
+   my($db) = BerkeleyDB::Hash->new(
+     '-Filename'=>'snmp.db', '-Flags'=>DB_RDONLY, '-Env'=>$env );
+--- amavisd-new-2.1.0/amavisd-nanny.fix	2004-08-06 20:17:18.246550984 +0200
++++ amavisd-new-2.1.0/amavisd-nanny	2004-08-06 20:17:45.532402904 +0200
+@@ -60,7 +60,7 @@
+ 
+ # main program starts here
+   my($env) = BerkeleyDB::Env->new(
+-    '-Home'=>'/var/amavis/db', '-Flags'=> DB_INIT_CDB | DB_INIT_MPOOL);
++    '-Home'=>'/var/spool/amavis/db', '-Flags'=> DB_INIT_CDB | DB_INIT_MPOOL);
+   defined $env or die "BDB no env: $BerkeleyDB::Error $!";
+   my($db) = BerkeleyDB::Hash->new(
+     '-Filename'=>'nanny.db', '-Env'=>$env );

@@ -1,17 +1,21 @@
+# TODO:
+# - fix mks interface 
+# - fix clamavis interface
+
 %include	/usr/lib/rpm/macros.perl
 Summary:	A Mail Virus Scanner with SpamAssassin support - Daemon
 Summary(pl):	Antywirusowy skaner poczty elektronicznej z obs³ug± SpamAssasina - Demon
 Name:		amavisd-new
 Version:	20030616
-Release:	2
+Release:	2.1
 License:	GPL
 Group:		Applications/Mail
-Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}-p4.tar.gz
-# Source0-md5:	fc313599e0fb4b91030b7b661d90794d
+Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}-p5.tar.gz
+# Source0-md5:	13c76432e957ccd302856f64526483a2
 Source1:	%{name}.init
 Patch0:		%{name}-config.patch
-Patch1:		%{name}-bin.patch
-Patch2:		%{name}-config-mks.patch
+# Patch1:		%{name}-bin.patch
+# Patch2:		%{name}-config-mks.patch
 Patch3:		%{name}-cpio-reads-tar.patch
 URL:		http://www.amavis.org/
 BuildRequires:	arc

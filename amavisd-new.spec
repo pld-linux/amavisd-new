@@ -174,7 +174,7 @@ cp -a amavis/amavisd.in.all amavis/amavisd.in
 %patch6 -p1
 
 %build
-aclocal
+%{__aclocal}
 %{__autoconf}
 %{__automake}
 %configure \

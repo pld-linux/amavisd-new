@@ -2,15 +2,17 @@
 # - Add polish info mail templates
 # - Some perl master check what Patch1 did 
 %include	/usr/lib/rpm/macros.perl
+%define		_real_ver	2.1.0
+%define		_rc		rc1
 Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
 Summary(pl):	Antywirusowy skaner poczty elektronicznej z obs³ug± SpamAssasina - demon
 Name:		amavisd-new
-Version:	20040701
-Release:	3
+Version:	20040806
+Release:	1
 License:	GPL
 Group:		Applications/Mail
-Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}.tar.gz
-# Source0-md5:	d5566eeaf1e47b6c856f4e676e93d584
+Source0:	http://www.ijs.si/software/amavisd/%{name}-%{_real_ver}-%{_rc}.tar.gz
+# Source0-md5:	b18090497e6537075b732f966a1e5a11
 Source1:	%{name}.init
 Source2:	%{name}-milter.init
 Patch0:		%{name}-config.patch
@@ -89,7 +91,7 @@ a jednym lub wiêcej programów antywirusowych. Wersja zdemonizowana.
 Pakiet ten zawiera back-end dla sendmaila.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{_real_ver}
 %patch0 -p1
 %patch1 -p1
 %if "%{_lib}" == "lib64"
@@ -110,6 +112,8 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_var}/spool/amavis/{runtime,virusmails,db},%{_var}/run/amavisd,%{_sysconfdir}/rc.d/init.d,%{_sbindir}}
 
 install amavisd $RPM_BUILD_ROOT%{_sbindir}
+install amavisd-agent $RPM_BUILD_ROOT%{_sbindir}
+install amavisd-nanny $RPM_BUILD_ROOT%{_sbindir}
 install amavisd.conf-sample $RPM_BUILD_ROOT%{_sysconfdir}/amavisd.conf
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/amavisd
 install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/amavis-milter

@@ -19,28 +19,24 @@ Patch1:		%{name}-dirperms.patch
 Patch2:		%{name}-lib64.patch
 #Patch3:		http://www.ijs.si/software/amavisd/amavisd-new-20030616-p8a.patch
 URL:		http://www.ijs.si/software/amavisd/
-Requires:	arc
-Requires:	autoconf
-Requires:	automake
-Requires:	bzip2
-Requires:	file
-Requires:	lha
-Requires:	ncompress
-Requires:	perl-Archive-Tar
-Requires:	perl-Archive-Zip
-Requires:	perl-Compress-Zlib
+#?Requires:	arc
+BuildRequires:	autoconf
+#?Requires:	lha
+#?Requires:	ncompress
+#?Requires:	perl-Archive-Tar
+#?Requires:	perl-Archive-Zip
+#?Requires:	perl-Compress-Zlib
 Requires:	perl-MIME-tools
 Requires:	perl-Unix-Syslog
-Requires:	perl-Convert-UUlib
-Requires:	perl-Convert-TNEF
+#?Requires:	perl-Convert-UUlib
+#?Requires:	perl-Convert-TNEF
 Requires:	perl-libnet
 Requires:	perl-Mail-SpamAssassin
 Requires:	perl-Net-Server
-Requires:	sh-utils
-Requires:	sendmail-devel
-Requires:	unarj
-Requires:	unrar
-Requires:	zoo
+BuildRequires:	sendmail-devel
+#?Requires:	unarj
+#?Requires:	unrar
+#?Requires:	zoo
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/bin/id
 Requires(pre):	/usr/sbin/groupadd
@@ -64,7 +60,6 @@ Requires:	perl-Convert-UUlib
 Requires:	perl-Compress-Zlib
 Requires:	perl-Archive-Tar
 Requires:	perl-Archive-Zip
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	AMaViS
 Obsoletes:	amavis
 Obsoletes:	amavisd
@@ -116,12 +111,12 @@ Pakiet ten zawiera back-end dla sendmaila.
 
 %build
 cd helper-progs
-autoconf
-./configure --with-sendmail=/usr/sbin/sendmail \
+%{__autoconf}
+./configure \
+	--with-sendmail=/usr/lib/sendmail \
 	--with-runtime-dir=/var/spool/amavis/runtime \
 	--with-sockname=/var/spool/amavis/runtime/amavisd.sock
 %{__make}
-cd ..
 
 %install
 rm -rf $RPM_BUILD_ROOT

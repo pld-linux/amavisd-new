@@ -49,6 +49,8 @@ Requires:	unarj
 Requires:	unrar
 Requires:	zoo
 Requires:	/usr/lib/sendmail
+Provides:	group(amavis)
+Provides:	user(amavis)
 Obsoletes:	AMaViS
 Obsoletes:	amavis
 Obsoletes:	amavisd
@@ -147,9 +149,8 @@ fi
 
 %postun
 if [ "$1" = "0" ]; then
-	/usr/sbin/userdel amavis
-	echo "Removing group amavis."
-	/usr/sbin/groupdel amavis
+	%userremove amavis
+	%groupremove amavis
 fi
 
 %post

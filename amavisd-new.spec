@@ -1,17 +1,17 @@
 # TODO:
 # - Add polish info mail templates
-# - Fix /etc/rc.d/init.d/amavisd-new reload
+# - Some perl master check what Patch1 did 
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
 Summary(pl):	Antywirusowy skaner poczty elektronicznej z obs³ug± SpamAssasina - demon
 Name:		amavisd-new
 Version:	20030616
-Release:	3
+Release:	4
 License:	GPL
 Group:		Applications/Mail
-Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}-p5.tar.gz
-# Source0-md5:	13c76432e957ccd302856f64526483a2
+Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}-p6.tar.gz
+# Source0-md5:	a611af8b952707977b9851dc8fc81640
 Source1:	%{name}.init
 Patch0:		%{name}-config.patch
 # Patch1:	%{name}-bin.patch # I don't get perl and it has rejects

@@ -19,6 +19,13 @@ Patch2:		%{name}-lib64.patch
 URL:		http://www.ijs.si/software/amavisd/
 BuildRequires:	autoconf
 BuildRequires:	sendmail-devel
+Requires(pre):	/usr/bin/getgid
+Requires(pre):	/bin/id
+Requires(pre):	/usr/sbin/groupadd
+Requires(pre):	/usr/sbin/useradd
+Requires(postun):	/usr/sbin/userdel
+Requires(postun):	/usr/sbin/groupdel
+Requires(post,preun):	/sbin/chkconfig
 Requires:	arc
 Requires:	bzip2
 Requires:	file
@@ -38,13 +45,6 @@ Requires:	sh-utils
 Requires:	unarj
 Requires:	unrar
 Requires:	zoo
-Requires(pre):	/usr/bin/getgid
-Requires(pre):	/bin/id
-Requires(pre):	/usr/sbin/groupadd
-Requires(pre):	/usr/sbin/useradd
-Requires(postun):	/usr/sbin/userdel
-Requires(postun):	/usr/sbin/groupdel
-Requires(post,preun):	/sbin/chkconfig
 Requires:	/usr/lib/sendmail
 Obsoletes:	AMaViS
 Obsoletes:	amavis
@@ -72,8 +72,8 @@ zdemonizowana.
 Summary:	A Mail Virus Scanner with SpamAssasin support - sendmail backend
 Summary(pl):	Antywirusowy skaner poczty elektronicznej - backend dla sendmaila
 Group:		Applications/Mail
+Requires:	%{name} = %{version}-%{release}
 Requires:	sendmail
-Requires:	%{name}
 
 %description sendmail
 AMaViS is a script that interfaces a mail transport agent (MTA) with

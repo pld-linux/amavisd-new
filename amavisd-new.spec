@@ -3,7 +3,7 @@ Summary:	A Mail Virus Scanner with SpamAssassin support - Daemon
 Summary(pl):	Antywirusowy skaner poczty elektronicznej z obs³ug± SpamAssasina - Demon
 Name:		amavisd-new
 Version:	20030314
-Release:	2
+Release:	3
 License:	GPL
 Group:		Applications/Mail
 Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}-p1.tar.gz
@@ -110,6 +110,16 @@ install -D %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/amavisd
 rm -rf $RPM_BUILD_ROOT
 
 %pre
+if [ -n "`getgid amavis`" ]; then
+        if [ "`getgid amavis`" != "116" ]; then
+                echo "Error: group amavis doesn't have gid=116. Correct this before installing amavisd-new." 1>&2
+                exit 1
+        fi
+else
+       echo "adding group amavis GID=116."
+        /usr/sbin/groupadd -g 116 -r -f amavis
+fi
+
 if [ -n "`id -u amavis 2>/dev/null`" ]; then
        if [ "`id -u amavis`" != "97" ]; then
                echo "Error: user amavis doesn't have uid=97. Correct this before installing amavis." 1>&2
@@ -122,6 +132,9 @@ fi
 %postun
 if [ "$1" = "0" ]; then
        /usr/sbin/userdel amavis
+       echo "Removing group amavis."
+       /usr/sbin/groupdel amavis
+
 fi
 
 %post
@@ -146,7 +159,7 @@ fi
 %attr(755,root,root) %{_sbindir}/amavisd*
 %attr(754,root,root) /etc/rc.d/init.d/*
 %config(noreplace) %{_sysconfdir}/amavisd.conf
-%attr(750,amavis,root) %{_var}/spool/amavis
+%attr(750,amavis,amavis) %{_var}/spool/amavis
 %attr(755,amavis,root) %{_var}/run/amavisd
 
 #%files sendmail

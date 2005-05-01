@@ -19,7 +19,7 @@ Patch2:		%{name}-lib64.patch
 Patch3:		%{name}-tools-dbdir.patch
 URL:		http://www.ijs.si/software/amavisd/
 BuildRequires:	autoconf
-BuildRequires:	rpmbuild(macros) >= 1.159
+BuildRequires:	rpmbuild(macros) >= 1.202
 BuildRequires:	sendmail-devel
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/bin/id
@@ -119,24 +119,8 @@ install helper-progs/amavis-milter $RPM_BUILD_ROOT%{_sbindir}
 rm -rf $RPM_BUILD_ROOT
 
 %pre
-if [ -n "`getgid amavis`" ]; then
-	if [ "`getgid amavis`" != "116" ]; then
-		echo "Error: group amavis doesn't have gid=116. Correct this before installing amavisd-new." 1>&2
-		exit 1
-	fi
-else
-	echo "adding group amavis GID=116."
-	/usr/sbin/groupadd -g 116 -r -f amavis
-fi
-
-if [ -n "`id -u amavis 2>/dev/null`" ]; then
-	if [ "`id -u amavis`" != "97" ]; then
-		echo "Error: user amavis doesn't have uid=97. Correct this before installing amavis." 1>&2
-		exit 1
-	fi
-else
-	/usr/sbin/useradd -u 97 -r -d %{_var}/spool/amavis -s /bin/false -c "Anti Virus Checker" -g amavis amavis 1>&2
-fi
+%groupadd -g 116 -r -f amavis
+%useradd -u 97 -r -d %{_var}/spool/amavis -s /bin/false -c "Anti Virus Checker" -g amavis amavis
 
 %postun
 if [ "$1" = "0" ]; then

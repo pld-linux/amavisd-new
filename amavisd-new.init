@@ -8,7 +8,7 @@
 #
 # processname:	amavisd
 # config:	/etc/amavisd.conf
-# pidfile:	/var/lock/subsys/amavisd
+# pidfile:	/var/run/amavisd/amavisd.pid
 
 
 # Source function library
@@ -35,7 +35,7 @@ case "$1" in
         # Stop daemons.
         if [ -f /var/lock/subsys/amavisd ]; then
                 msg_stopping Amavisd 
-		killproc amavisd;
+		killproc --pidfile amavisd/amavisd.pid amavisd
                 rm -f /var/lock/subsys/amavisd >/dev/null 2>&1
         else
                 msg_not_running Amavisd

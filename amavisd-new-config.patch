@@ -144,12 +144,12 @@
 -  ### http://mks.com.pl/english.html
 -  ['MkS_Vir for Linux (beta)', ['mks32','mks'],
 -    '-s {}/*', [0], [1,2],
--    qr/--[ \t]*(.+)/ ], 
+-    qr/--[ \t]*(.+)/ ],
 +#  Moved to secondary scanner
 +#  ### http://mks.com.pl/english.html
 +#  ['MkS_Vir for Linux (beta)', ['mks32','mks'],
 +#    '-s {}/*', [0], [1,2],
-+#    qr/--[ \t]*(.+)/ ], 
++#    qr/--[ \t]*(.+)/ ],
  
    ### http://mks.com.pl/english.html
    ['MkS_Vir daemon', 'mksscan',

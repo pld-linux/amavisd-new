@@ -1,0 +1,24 @@
+--- amavisd-new-2.2.1/amavisd.orig	2004-12-23 02:38:39.000000000 +0100
++++ amavisd-new-2.2.1/amavisd	2005-09-09 13:43:08.822055536 +0200
+@@ -7326,8 +7326,8 @@
+           $reason = substr($reason,0,100)."..."  if length($reason) > 100+3;
+           $r->recip_smtp_response( ($final_destiny == D_DISCARD
+                                     ? "250 2.7.1 Ok, discarded"
+-                                    : "550 5.7.1 Message content rejected") .
+-                                   ", id=$am_id - $reason");
++                                    : "550 5.7.1 Message content rejected, $reason"
++			          ) . ", id=$am_id");
+           $r->recip_done(1);
+           # note that 5xx status rejects may later be converted to bounces or
+           # discards, according to $*_destiny setting
+@@ -7414,8 +7414,8 @@
+           my($reason) = (split(/\n/, $bad_headers[0]))[0];
+           $r->recip_smtp_response(($final_destiny == D_DISCARD
+                       ? "250 2.6.0 Ok, message with invalid header discarded"
+-                      : "554 5.6.0 Message with invalid header rejected"
+-                    ) . ", id=$am_id - $reason");
++                      : "554 5.6.0 Message with invalid header rejected, $reason"
++                    ) . ", id=$am_id");
+           $r->recip_done(1);
+           $any_badh++;
+         }

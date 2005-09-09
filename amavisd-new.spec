@@ -34,7 +34,7 @@ Requires:	perl-Archive-Tar
 Requires:	perl-Archive-Zip
 Requires:	perl-Compress-Zlib >= 1.35
 Requires:	perl-Convert-TNEF
-Requires:	perl-Convert-UUlib
+Requires:	perl-Convert-UUlib >= 1.05
 Requires:	perl-libnet
 Requires:	perl-Mail-SpamAssassin
 Requires:	perl-MIME-tools

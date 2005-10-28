@@ -39,6 +39,7 @@ Requires:	perl-libnet
 Requires:	perl-Mail-SpamAssassin
 Requires:	perl-MIME-tools
 Requires:	perl-Net-Server
+Requires:	perl-Time-HiRes >= 1.49
 Requires:	perl-Unix-Syslog
 Requires:	sh-utils
 Requires:	/usr/lib/sendmail

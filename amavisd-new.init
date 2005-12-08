@@ -34,7 +34,7 @@ case "$1" in
   stop)
         # Stop daemons.
         if [ -f /var/lock/subsys/amavisd ]; then
-                msg_stopping Amavisd 
+                msg_stopping Amavisd
 		killproc --pidfile amavisd/amavisd.pid amavisd
                 rm -f /var/lock/subsys/amavisd >/dev/null 2>&1
         else

@@ -21,40 +21,40 @@ Patch4:		%{name}-unify-log-format.patch
 URL:		http://www.ijs.si/software/amavisd/
 BuildRequires:	autoconf
 BuildRequires:	rpm-perlprov
-BuildRequires:	rpmbuild(macros) >= 1.202
+BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	sendmail-devel
-Requires(pre):	/usr/bin/getgid
+Requires(post,preun):	/sbin/chkconfig
+Requires(postun):	/usr/sbin/groupdel
+Requires(postun):	/usr/sbin/userdel
 Requires(pre):	/bin/id
+Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
-Requires(postun):	/usr/sbin/userdel
-Requires(postun):	/usr/sbin/groupdel
-Requires(post,preun):	/sbin/chkconfig
+Requires:	/usr/lib/sendmail
 Requires:	perl-Archive-Tar
 Requires:	perl-Archive-Zip >= 1.14
 Requires:	perl-Compress-Zlib >= 1.35
 Requires:	perl-Convert-TNEF
 Requires:	perl-Convert-UUlib >= 1.05
-Requires:	perl-libnet
-Requires:	perl-Mail-SpamAssassin
 Requires:	perl-MIME-tools
+Requires:	perl-Mail-SpamAssassin
 Requires:	perl-Net-Server
 Requires:	perl-Time-HiRes >= 1.49
 Requires:	perl-Unix-Syslog
+Requires:	perl-libnet
 Requires:	sh-utils
-Requires:	/usr/lib/sendmail
 Provides:	group(amavis)
 Provides:	user(amavis)
 Obsoletes:	AMaViS
 Obsoletes:	amavis
 Obsoletes:	amavisd
 Obsoletes:	amavisd-daemon
-Obsoletes:	amavisd-postfix
 Obsoletes:	amavisd-exim
-Obsoletes:	amavisd-qmail
-Obsoletes:	amavisd-new-postfix
 Obsoletes:	amavisd-new-exim
+Obsoletes:	amavisd-new-postfix
 Obsoletes:	amavisd-new-qmail
+Obsoletes:	amavisd-postfix
+Obsoletes:	amavisd-qmail
 Conflicts:	amavis-stats <= 0.1.12
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -134,33 +134,21 @@ fi
 
 %post
 /sbin/chkconfig --add amavisd
-if [ -f /var/lock/subsys/amavisd ]; then
-	/etc/rc.d/init.d/amavisd restart >&2
-else
-	echo "Run \"/etc/rc.d/init.d/amavisd start\" to start Amavisd daemon."
-fi
+%service amavisd restart "Amavisd daemon"
 
 %preun
 if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/amavisd ]; then
-		/etc/rc.d/init.d/amavisd stop >&2
-	fi
+	%service amavisd stop
 	/sbin/chkconfig --del amavisd
 fi
 
 %post sendmail
 /sbin/chkconfig --add amavis-milter
-if [ -f /var/lock/subsys/amavis-milter ]; then
-	/etc/rc.d/init.d/amavis-milter restart >&2
-else
-	echo "Run \"/etc/rc.d/init.d/amavis-milter start\" to start Amavis-milter daemon."
-fi
+%service amavis-milter restart "Amavis-milter daemon"
 
 %preun sendmail
 if [ "$1" = "0" ];then
-	if [ -f /var/lock/subsys/amavis-milter ]; then
-		/etc/rc.d/init.d/amavis-milter stop >&2
-	fi
+	%service amavis-milter stop
 	/sbin/chkconfig --del amavis-milter
 fi
 

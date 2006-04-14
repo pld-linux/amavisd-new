@@ -1,8 +1,0 @@
---- amavisd~	Fri Jun 27 22:05:02 2003
-+++ amavisd	Sun Jun 29 03:32:37 2003
-@@ -5479,4 +5479,5 @@
- 	    if ($msginfo->sender eq '') {  # don't respond to null reverse path
- 		do_log(4, "Not sending DSN to empty return path");
-+		$msginfo->dsn_sent(2);  # pretend the message was bounced
- 	    } elsif ($msginfo->sender_contact eq '') {
- 		do_log(4, "Not sending DSN to believed-to-be-faked return path");

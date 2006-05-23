@@ -4,20 +4,18 @@
 Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
 Summary(pl):	Antywirusowy skaner poczty elektronicznej z obs³ug± SpamAssasina - demon
 Name:		amavisd-new
-Version:	2.3.3
-Release:	6
+Version:	2.4.1
+Release:	0.1
 Epoch:		1
 License:	GPL
 Group:		Applications/Mail
 Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}.tar.gz
-# Source0-md5:	0b02df514c1a2bf8af346bc9c7e97111
+# Source0-md5:	bf770a3c7eee8a9c93932a04485e6a35
 Source1:	%{name}.init
 Source2:	%{name}-milter.init
 Patch0:		%{name}-config.patch
-Patch1:		%{name}-dirperms.patch
-Patch2:		%{name}-lib64.patch
-Patch3:		%{name}-tools-dbdir.patch
-Patch4:		%{name}-unify-log-format.patch
+Patch1:		%{name}-lib64.patch
+Patch2:		%{name}-tools-dbdir.patch
 URL:		http://www.ijs.si/software/amavisd/
 BuildRequires:	autoconf
 BuildRequires:	rpm-perlprov
@@ -90,12 +88,10 @@ Pakiet ten zawiera back-end dla sendmaila.
 %prep
 %setup -q
 %patch0 -p1
-# %patch1 -p1
 %if "%{_lib}" == "lib64"
-%patch2 -p1
+%patch1 -p1
 %endif
-%patch3 -p1
-%patch4 -p1
+%patch2 -p1
 
 %build
 cd helper-progs

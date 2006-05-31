@@ -1,5 +1,7 @@
 # TODO:
 # - Add polish info mail templates
+# - move amavis part of tmpwatch configuration from tmpwatch.spec
+#
 %include	/usr/lib/rpm/macros.perl
 Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
 Summary(pl):	Antywirusowy skaner poczty elektronicznej z obs³ug± SpamAssasina - demon
@@ -13,6 +15,7 @@ Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}.tar.gz
 # Source0-md5:	bf770a3c7eee8a9c93932a04485e6a35
 Source1:	%{name}.init
 Source2:	%{name}-milter.init
+Source3:	%{name}.tmpwatch
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-lib64.patch
 Patch2:		%{name}-tools-dbdir.patch
@@ -55,6 +58,8 @@ Obsoletes:	amavisd-postfix
 Obsoletes:	amavisd-qmail
 Conflicts:	amavis-stats <= 0.1.12
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		_tmpwatchdir	/etc/tmpwatch
 
 %description
 AMaViS is a script that interfaces a mail transport agent (MTA) with
@@ -104,7 +109,7 @@ cd helper-progs
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_var}/spool/amavis/{runtime,virusmails,db},%{_var}/run/amavisd,/etc/rc.d/init.d,%{_sbindir}}
+install -d $RPM_BUILD_ROOT{%{_var}/spool/amavis/{runtime,virusmails,db},%{_var}/run/amavisd,/etc/rc.d/init.d,%{_sbindir},%{_tmpwatchdir}}
 
 install amavisd $RPM_BUILD_ROOT%{_sbindir}
 install amavisd-agent $RPM_BUILD_ROOT%{_sbindir}
@@ -114,6 +119,7 @@ install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/amavisd
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/amavis-milter
 install helper-progs/amavis $RPM_BUILD_ROOT%{_sbindir}
 install helper-progs/amavis-milter $RPM_BUILD_ROOT%{_sbindir}
+install %{SOURCE3} $RPM_BUILD_ROOT%{_tmpwatchdir}/%{name}.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -154,6 +160,7 @@ fi
 %attr(755,root,root) %{_sbindir}/amavisd*
 %attr(754,root,root) /etc/rc.d/init.d/amavisd
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/amavisd.conf
+%config(noreplace) %verify(not md5 mtime size) %{_tmpwatchdir}/%{name}.conf
 %attr(750,amavis,amavis) %{_var}/spool/amavis
 %attr(750,amavis,amavis) %{_var}/run/amavisd
 

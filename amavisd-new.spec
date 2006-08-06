@@ -39,7 +39,7 @@ Requires:	perl-Convert-TNEF
 Requires:	perl-Convert-UUlib >= 1.05
 Requires:	perl-MIME-tools
 Requires:	perl-Mail-SpamAssassin
-Requires:	perl-Net-Server
+Requires:	perl-Net-Server >= 0.93
 Requires:	perl-Time-HiRes >= 1.49
 Requires:	perl-Unix-Syslog
 Requires:	perl-libnet

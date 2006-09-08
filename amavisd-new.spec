@@ -7,7 +7,7 @@ Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
 Summary(pl):	Antywirusowy skaner poczty elektronicznej z obs³ug± SpamAssasina - demon
 Name:		amavisd-new
 Version:	2.4.2
-Release:	3
+Release:	4
 Epoch:		1
 License:	GPL
 Group:		Applications/Mail

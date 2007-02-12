@@ -4,7 +4,7 @@
 #
 %include	/usr/lib/rpm/macros.perl
 Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
-Summary(pl):	Antywirusowy skaner poczty elektronicznej z obs³ug± SpamAssasina - demon
+Summary(pl.UTF-8):   Antywirusowy skaner poczty elektronicznej z obsÅ‚ugÄ… SpamAssasina - demon
 Name:		amavisd-new
 Version:	2.4.2
 Release:	4
@@ -66,14 +66,14 @@ AMaViS is a script that interfaces a mail transport agent (MTA) with
 one or more virus scanners and SpamAssasin. This is daemonized version
 of amavis.
 
-%description -l pl
-AMaViS to skrypt po¶rednicz±cy pomiêdzy agentem transferu poczty (MTA)
-a jednym lub wiêcej programów antywirusowych i SpamAssasinem. Wersja
+%description -l pl.UTF-8
+AMaViS to skrypt poÅ›redniczÄ…cy pomiÄ™dzy agentem transferu poczty (MTA)
+a jednym lub wiÄ™cej programÃ³w antywirusowych i SpamAssasinem. Wersja
 zdemonizowana.
 
 %package sendmail
 Summary:	A Mail Virus Scanner with SpamAssasin support - sendmail backend
-Summary(pl):	Antywirusowy skaner poczty elektronicznej - backend dla sendmaila
+Summary(pl.UTF-8):   Antywirusowy skaner poczty elektronicznej - backend dla sendmaila
 Group:		Applications/Mail
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	sendmail
@@ -84,9 +84,9 @@ one or more virus scanners. This is daemonized version of amavis.
 
 This package contains backend for sendmail.
 
-%description sendmail -l pl
-AMaViS to skrypt po¶rednicz±cy pomiêdzy agentem transferu poczty (MTA)
-a jednym lub wiêcej programów antywirusowych. Wersja zdemonizowana.
+%description sendmail -l pl.UTF-8
+AMaViS to skrypt poÅ›redniczÄ…cy pomiÄ™dzy agentem transferu poczty (MTA)
+a jednym lub wiÄ™cej programÃ³w antywirusowych. Wersja zdemonizowana.
 
 Pakiet ten zawiera back-end dla sendmaila.
 

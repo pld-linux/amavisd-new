@@ -4,7 +4,7 @@
 #
 %include	/usr/lib/rpm/macros.perl
 Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
-Summary(pl.UTF-8):   Antywirusowy skaner poczty elektronicznej z obsługą SpamAssasina - demon
+Summary(pl.UTF-8):	Antywirusowy skaner poczty elektronicznej z obsługą SpamAssasina - demon
 Name:		amavisd-new
 Version:	2.4.2
 Release:	4
@@ -73,7 +73,7 @@ zdemonizowana.
 
 %package sendmail
 Summary:	A Mail Virus Scanner with SpamAssasin support - sendmail backend
-Summary(pl.UTF-8):   Antywirusowy skaner poczty elektronicznej - backend dla sendmaila
+Summary(pl.UTF-8):	Antywirusowy skaner poczty elektronicznej - backend dla sendmaila
 Group:		Applications/Mail
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	sendmail

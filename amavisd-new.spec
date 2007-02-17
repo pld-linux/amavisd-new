@@ -60,6 +60,7 @@ Conflicts:	amavis-stats <= 0.1.12
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_tmpwatchdir	/etc/tmpwatch
+%define		schemadir	/usr/share/openldap/schema
 
 %description
 AMaViS is a script that interfaces a mail transport agent (MTA) with
@@ -89,6 +90,18 @@ AMaViS to skrypt pośredniczący pomiędzy agentem transferu poczty (MTA)
 a jednym lub więcej programów antywirusowych. Wersja zdemonizowana.
 
 Pakiet ten zawiera back-end dla sendmaila.
+
+%package -n openldap-schema-amavisd-new
+Summary:	Amavisd-new LDAP schema
+Summary(pl.UTF-8):	Schemat LDAP dla amavisd-new
+Group:		Networking/Daemons
+Requires:	openldap-servers
+
+%description -n openldap-schema-amavisd-new
+This package contains LDAP schema for use with amavisd-new.
+
+%description -n openldap-schema-amavisd-new -l pl.UTF-8
+Ten pakiet zawiera schemat LDAP do używania z amavisd-new.
 
 %prep
 %setup -q
@@ -120,6 +133,7 @@ install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/amavis-milter
 install helper-progs/amavis $RPM_BUILD_ROOT%{_sbindir}
 install helper-progs/amavis-milter $RPM_BUILD_ROOT%{_sbindir}
 install %{SOURCE3} $RPM_BUILD_ROOT%{_tmpwatchdir}/%{name}.conf
+install -D LDAP.schema $RPM_BUILD_ROOT%{schemadir}/amavisd-new.schema
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -169,3 +183,7 @@ fi
 %attr(754,root,root) /etc/rc.d/init.d/amavis-milter
 %attr(755,root,root) %{_sbindir}/amavis
 %attr(755,root,root) %{_sbindir}/amavis-milter
+
+%files -n openldap-schema-amavisd-new
+%defattr(644,root,root,755)
+%{schemadir}/*.schema

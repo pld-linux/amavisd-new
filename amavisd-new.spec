@@ -22,7 +22,7 @@ Patch2:		%{name}-tools-dbdir.patch
 URL:		http://www.ijs.si/software/amavisd/
 BuildRequires:	autoconf
 BuildRequires:	rpm-perlprov
-BuildRequires:	rpmbuild(macros) >= 1.268
+BuildRequires:	rpmbuild(macros) >= 1.304
 BuildRequires:	sendmail-devel
 Requires(post,preun):	/sbin/chkconfig
 Requires(postun):	/usr/sbin/groupdel
@@ -166,6 +166,16 @@ fi
 if [ "$1" = "0" ];then
 	%service amavis-milter stop
 	/sbin/chkconfig --del amavis-milter
+fi
+
+%post -n openldap-schema-amavisd-new
+%openldap_schema_register %{schemadir}/amavisd-new.schema
+%service -q ldap restart
+
+%postun -n openldap-schema-amavisd-new
+if [ "$1" = "0" ]; then
+	%openldap_schema_unregister %{schemadir}/amavisd-new.schema
+	%service -q ldap restart
 fi
 
 %files

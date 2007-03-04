@@ -19,10 +19,9 @@ Source3:	%{name}.tmpwatch
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-tools-dbdir.patch
 URL:		http://www.ijs.si/software/amavisd/
-BuildRequires:	autoconf
+BuildRequires:	libmilter-devel
 BuildRequires:	rpm-perlprov
 BuildRequires:	rpmbuild(macros) >= 1.304
-BuildRequires:	libmilter-devel
 Requires(post,preun):	/sbin/chkconfig
 Requires(postun):	/usr/sbin/groupdel
 Requires(postun):	/usr/sbin/userdel

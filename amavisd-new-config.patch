@@ -1,56 +1,55 @@
---- amavisd-new-2.4.5/amavisd.conf-sample.orig	2007-01-30 23:12:24.000000000 +0000
-+++ amavisd-new-2.4.5/amavisd.conf-sample	2007-03-04 00:19:16.457106000 +0000
-@@ -63,7 +63,7 @@
+--- amavisd-new-2.2.1/amavisd.conf-sample	2004-12-23 01:38:23.000000000 +0000
++++ amavisd-new-2.2.1.new/amavisd.conf-sample	2004-12-23 20:18:27.372867424 +0000
+@@ -62,27 +62,31 @@
  # $MYHOME serves as a quick default for some other configuration settings.
  # More refined control is available with each individual setting further down.
  # $MYHOME is not used directly by the program. No trailing slash!
--#$MYHOME = '/var/lib/amavis';   # (default is '/var/amavis'), -H
-+$MYHOME = '/var/spool/amavis';   # (default is '/var/amavis'), -H
+-#$MYHOME = '/var/lib/amavis';   # (default is '/var/amavis')
++$MYHOME = '/var/spool/amavis';   # (default is '/var/amavis')
  
  # $mydomain serves as a quick default for some other configuration settings.
  # More refined control is available with each individual setting further down.
-@@ -74,16 +74,16 @@
+ # $mydomain is never used directly by the program.
+-$mydomain = 'example.com';      # (no useful default)
++#$mydomain = 'example.com';      # (no useful default)
++
++# This seems to be prefixed to host's domain name.
++# You may get mail rejects of virus information as send from not
++# existing host ( virusalert@localhost.whatever.your.domain.is )
++$mydomain = 'mail.whatever.your.domain.is';      # (no useful default)
+ 
+ # $myhostname = 'host.example.com';  # fqdn of this host, default by uname(3)
  
  # Set the user and group to which the daemon will change if started as root
  # (otherwise just keeps the UID unchanged, and these settings have no effect):
--$daemon_user  = 'vscan';   # (no default;  customary: vscan or amavis), -u
--$daemon_group = 'vscan';   # (no default;  customary: vscan or amavis), -g
-+$daemon_user  = 'amavis';   # (no default;  customary: vscan or amavis), -u
-+$daemon_group = 'amavis';   # (no default;  customary: vscan or amavis), -g
+-$daemon_user  = 'vscan';   # (no default;  customary: vscan or amavis)
+-$daemon_group = 'vscan';   # (no default;  customary: vscan or amavis or sweep)
++$daemon_user  = 'amavis';   # (no default;  customary: vscan or amavis)
++$daemon_group = 'amavis';   # (no default;  customary: vscan or amavis or sweep)
  
  # Runtime working directory (cwd), and a place where
  # temporary directories for unpacking mail are created.
  # (no trailing slash, may be a scratch file system)
--$TEMPBASE = $MYHOME;	        # (must be set if other config vars use is), -T
-+$TEMPBASE = $MYHOME/runtime;	# (must be set if other config vars use is), -T
- #$TEMPBASE = "$MYHOME/tmp";     # prefer to keep home dir /var/amavis clean?
+-$TEMPBASE = $MYHOME;	        # (must be set if other config vars use is)
+-#$TEMPBASE = "$MYHOME/tmp";     # prefer to keep home dir /var/amavis clean?
++$TEMPBASE = "$MYHOME/runtime";         # (must be set if other config vars use is)
  
--#$db_home = "$MYHOME/db";    # DB databases directory, default "$MYHOME/db", -D
-+$db_home = "$MYHOME/db";    # DB databases directory, default "$MYHOME/db", -D
+-#$db_home = "$MYHOME/db";	# DB databases directory, default "$MYHOME/db"
++$db_home = "$MYHOME/db";     # DB databases directory, default "$MYHOME/db"
  
  # $helpers_home sets environment variable HOME, and is passed as option
  # 'home_dir_for_helpers' to Mail::SpamAssassin::new. It should be a directory
-@@ -93,8 +93,8 @@
- # Run the daemon in the specified chroot jail if nonempty:
- #$daemon_chroot_dir = $MYHOME;  # (default is undef, meaning: do not chroot), -R
- 
--#$pid_file  = "$MYHOME/amavisd.pid";  # (default is "$MYHOME/amavisd.pid"), -P
--#$lock_file = "$MYHOME/amavisd.lock"; # (default is "$MYHOME/amavisd.lock"), -L
-+$pid_file  = "/var/run/amavisd/amavisd.pid";  # (default is "$MYHOME/amavisd.pid"), -P
-+$lock_file = "/var/run/amavisd/amavisd.lock"; # (default is "$MYHOME/amavisd.lock"), -L
- 
- # set environment variables if you want (no defaults):
- $ENV{TMPDIR} = $TEMPBASE;       # wise to set TMPDIR, but not obligatory
-@@ -112,6 +112,8 @@
+@@ -111,6 +115,9 @@
  #$forward_method = 'smtp:[127.0.0.1]:10025';  # where to forward checked mail
  #$notify_method = $forward_method;            # where to submit notifications
  
-+#@auth_mech_avail = ('PLAIN','LOGIN'); # empty list disables incoming AUTH
++# @auth_mech_avail = ('PLAIN','LOGIN'); # empty list disables incoming AUTH
 +
- #$os_fingerprint_method = 'p0f:127.0.0.1:2345';  # query p0f-analyzer.pl
- 
++
  # To make it possible for several hosts to share one content checking daemon,
-@@ -171,7 +173,7 @@
+ # the IP address and/or the port number in $forward_method and $notify_method
+ # may be spacified as an asterisk. An asterisk in the colon-separated
+@@ -164,7 +171,7 @@
  # and see further down what these two lookup lists really mean.
  #
  # @bypass_virus_checks_maps = (1);  # uncomment to DISABLE anti-virus code
@@ -59,46 +58,66 @@
  #
  # Any setting can be changed with a new assignment, so make sure
  # you do not unintentionally override these settings further down!
-@@ -217,8 +219,8 @@
- # AMAVIS-CLIENT PROTOCOL INPUT SETTINGS (e.g. with amavisd-release, or
- #   sendmail milter through helper clients like amavis-milter.c and amavis.c)
- #   option(s) -p overrides $inet_socket_port and $unix_socketname
--$unix_socketname = "$MYHOME/amavisd.sock"; # amavis helper protocol socket
--#$unix_socketname = undef;        # disable listening on a unix socket
-+#$unix_socketname = "/var/run/amavisd/amavisd.sock"; # amavis helper protocol socket
-+$unix_socketname = undef;        # disable listening on a unix socket
-                                   # (default is undef, i.e. disabled)
-                                   # (usual setting is $MYHOME/amavisd.sock)
- 
-@@ -301,7 +303,7 @@
-            # choose from: emerg, alert, crit, err, warning, notice, info, debug
+@@ -279,7 +286,7 @@
+ #$SYSLOG_LEVEL = 'user.info';     # (facility.priority, default 'mail.info')
  
  # Log file (if not using syslog)
 -$LOGFILE = "$MYHOME/amavis.log";  # (defaults to empty, no log)
-+#$LOGFILE = "$MYHOME/amavis.log";  # (defaults to empty, no log)
++# $LOGFILE = "$MYHOME/amavis.log";  # (defaults to empty, no log)
  
  #NOTE: levels are not strictly observed and are somewhat arbitrary
  # 0: startup/exit/failure messages, viruses detected
-@@ -310,7 +312,7 @@
+@@ -288,7 +295,8 @@
  # 3: server, client
  # 4: decompose parts
  # 5: more debug details
--$log_level = 2;		   # (defaults to 0), -d
-+#$log_level = 2;		   # (defaults to 0), -d
+-$log_level = 2;		  # (defaults to 0)
++# $log_level = 2;		  # (defaults to 0)
++ 
  
  # Customizable template for the most interesting log file entry (e.g. with
  # $log_level=0) (take care to properly quote Perl special characters like '\')
-@@ -689,7 +691,8 @@
+@@ -471,22 +479,22 @@
+ # Bounces or rejects produce non-delivery status notification regardless.
+ 
+ # Notify virus sender?
+-#$warnvirussender = 1;	# (defaults to false (undef))
++$warnvirussender = 1;	# (defaults to false (undef))
+ 
+ # Notify spam sender?
+-#$warnspamsender = 1;	# (defaults to false (undef))
++$warnspamsender = 1;	# (defaults to false (undef))
+ 
+ # Notify sender of banned files?
+-#$warnbannedsender = 1;	# (defaults to false (undef))
++$warnbannedsender = 1;	# (defaults to false (undef))
+ 
+ # Notify sender of syntactically invalid header containing non-ASCII characters?
+-#$warnbadhsender = 1;	# (defaults to false (undef))
++# $warnbadhsender = 1;	# (defaults to false (undef))
+ 
+ # Notify virus (or banned files or bad headers) RECIPIENT?
+ #  (not very useful, but some policies demand it)
+-#$warnvirusrecip = 1;	# (defaults to false (undef))
+-#$warnbannedrecip = 1;	# (defaults to false (undef))
+-#$warnbadhrecip = 1;	# (defaults to false (undef))
++$warnvirusrecip = 1;	# (defaults to false (undef))
++$warnbannedrecip = 1;	# (defaults to false (undef))
++$warnbadhrecip = 1;	# (defaults to false (undef))
+ 
+ # Notify also non-local virus/banned recipients if $warn*recip is true?
+ #  (including those not matching local_domains*)
+@@ -587,7 +595,8 @@
  #   or a directory (no trailing slash)
  #   (the default value is undef, meaning no quarantine)
  #
--$QUARANTINEDIR = '/var/virusmails';  # -Q
-+#$QUARANTINEDIR = '/var/virusmails';  # -Q
-+$QUARANTINEDIR = '/var/spool/amavis/virusmails';  # -Q
+-$QUARANTINEDIR = '/var/virusmails';
++# $QUARANTINEDIR = '/var/virusmails';
++$QUARANTINEDIR = '/var/spool/amavis/virusmails';
  
- #$quarantine_subdir_levels = 1;  # add level of subdirs to disperse quarantine
- 
-@@ -1900,15 +1903,15 @@
+ #$virus_quarantine_method        = 'local:virus-%i-%n';    # default
+ #$spam_quarantine_method         = 'local:spam-%b-%i-%n';  # default
+@@ -1600,13 +1609,12 @@
  # ['Sophos SAVI', \&sophos_savi ],
  
  # ### http://www.clamav.net/
@@ -106,24 +125,19 @@
 -#   \&ask_daemon, ["CONTSCAN {}\n", "/var/run/clamav/clamd"],
 -#   qr/\bOK$/, qr/\bFOUND$/,
 -#   qr/^.*?: (?!Infected Archive)(.*) FOUND$/ ],
--# # NOTE: run clamd under the same user as amavisd, or run it under its own
--# #   uid such as clamav, add user clamav to the amavis group, and then add
--# #   AllowSupplementaryGroups to clamd.conf;
--# # NOTE: match socket name (LocalSocket) in clamav.conf to the socket name in
--# #   this entry; when running chrooted one may prefer socket "$MYHOME/clamd".
-+['ClamAV-clamd',
-+  \&ask_daemon, ["CONTSCAN {}\n", "/var/lib/clamav/clamd.socket"],
-+  qr/\bOK$/, qr/\bFOUND$/,
-+  qr/^.*?: (?!Infected Archive)(.*) FOUND$/ ],
-+# NOTE: run clamd under the same user as amavisd, or run it under its own
-+#   uid such as clamav, add user clamav to the amavis group, and then add
-+#   AllowSupplementaryGroups to clamd.conf;
-+# NOTE: match socket name (LocalSocket) in clamav.conf to the socket name in
-+#   this entry; when running chrooted one may prefer socket "$MYHOME/clamd".
+-# # NOTE: the easiest is to run clamd under the same user as amavisd; match the
+-# # socket name (LocalSocket) in clamav.conf to the socket name in this entry
+-# # When running chrooted one may prefer: ["CONTSCAN {}\n","$MYHOME/clamd"],
++  ['Clam Antivirus-clamd',
++    \&ask_daemon, ["CONTSCAN {}\n", '/var/lib/clamav/clamd.socket'],
++    qr/\bOK$/, qr/\bFOUND$/,
++    qr/^.*?: (?!Infected Archive)(.*) FOUND$/ ],
++
++# NOTE: match the socket name in clamav.conf to the socket name in this entry
  
  # ### http://www.clamav.net/ and CPAN  (memory-hungry! clamd is preferred)
  # ['Mail::ClamAV', \&ask_clamav, "*", [0], [1], qr/^INFECTED: (.+)/],
-@@ -2070,10 +2073,11 @@
+@@ -1740,10 +1748,11 @@
      # NOTE: requires suid wrapper around inocmd32; consider flag: -mod reviewer
      # see http://marc.theaimsgroup.com/?l=amavis-user&m=109229779912783
  
@@ -139,13 +153,14 @@
  
    ### http://mks.com.pl/english.html
    ['MkS_Vir daemon', 'mksscan',
-@@ -2298,6 +2302,10 @@
+@@ -1938,6 +1947,11 @@
  # ],
  # # other options to consider: -mime -oe -idedir=/usr/local/sav
  
-+  ['MkS_Vir for Linux (beta)', ['mks32','mks'],
-+	'-s {}/*', [0], [1,2],
-+	qr/--[ \t]*(.+)/ ],
++   ['MkS_Vir for Linux (beta)', ['mks32','mks'],
++     '-s {}/*', [0], [1,2],
++     qr/--[ \t]*(.+)/ ],
++
 +
  # always succeeds (uncomment to consider mail clean if all other scanners fail)
  # ['always-clean', sub {0}],

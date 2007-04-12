@@ -6,24 +6,22 @@
 Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
 Summary(pl):	Antywirusowy skaner poczty elektronicznej z obs³ug± SpamAssasina - demon
 Name:		amavisd-new
-Version:	2.4.2
+Version:	2.4.5
 Release:	1
 Epoch:		1
 License:	GPL
 Group:		Applications/Mail
 Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}.tar.gz
-# Source0-md5:	d750176de7481498ebd1011e08a488da
+# Source0-md5:	eef8c03855f9e3a4c6c53c06006d77ea
 Source1:	%{name}.init
 Source2:	%{name}-milter.init
 Source3:	%{name}.tmpwatch
 Patch0:		%{name}-config.patch
-Patch1:		%{name}-lib64.patch
-Patch2:		%{name}-tools-dbdir.patch
+Patch1:		%{name}-tools-dbdir.patch
 URL:		http://www.ijs.si/software/amavisd/
-BuildRequires:	autoconf
+BuildRequires:	libmilter-devel
 BuildRequires:	rpm-perlprov
 BuildRequires:	rpmbuild(macros) >= 1.268
-BuildRequires:	sendmail-devel
 Requires(post,preun):	/sbin/chkconfig
 Requires(postun):	/usr/sbin/groupdel
 Requires(postun):	/usr/sbin/userdel
@@ -39,7 +37,7 @@ Requires:	perl-Convert-TNEF
 Requires:	perl-Convert-UUlib >= 1.05
 Requires:	perl-MIME-tools
 Requires:	perl-Mail-SpamAssassin
-Requires:	perl-Net-Server
+Requires:	perl-Net-Server >= 0.93
 Requires:	perl-Time-HiRes >= 1.49
 Requires:	perl-Unix-Syslog
 Requires:	perl-libnet
@@ -93,18 +91,15 @@ Pakiet ten zawiera back-end dla sendmaila.
 %prep
 %setup -q
 %patch0 -p1
-%if "%{_lib}" == "lib64"
 %patch1 -p1
-%endif
-%patch2 -p1
 
 %build
 cd helper-progs
-%{__autoconf}
-./configure \
+%configure \
 	--with-sendmail=/usr/lib/sendmail \
 	--with-runtime-dir=/var/spool/amavis/runtime \
-	--with-sockname=/var/run/amavisd/amavisd.sock
+	--with-sockname=/var/run/amavisd/amavisd.sock \
+	--with-milterlib=%{_libdir}
 %{__make}
 
 %install

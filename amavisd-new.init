@@ -17,29 +17,37 @@
 # Get service config
 [ -f /etc/sysconfig/amavisd ] && . /etc/sysconfig/amavisd
 
-RETVAL=0
-# See how we were called.
-case "$1" in
-  start)
+start() {
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/amavisd ]; then
 		msg_starting Amavisd
-		LC_ALL='' LANG='' LC_TYPE='' LC_CTYPE='' daemon $SERVICE_RUN_NICE_LEVEL /usr/sbin/amavisd -c /etc/amavisd.conf
+		LC_ALL= LANG= LC_TYPE= LC_CTYPE= daemon $SERVICE_RUN_NICE_LEVEL /usr/sbin/amavisd -c /etc/amavisd.conf
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/amavisd
 	else
 		msg_already_running Amavisd
 	fi
+}
+
+stop() {
+	# Stop daemons.
+	if [ -f /var/lock/subsys/amavisd ]; then
+		msg_stopping Amavisd
+		killproc --pidfile amavisd/amavisd.pid amavisd
+		rm -f /var/lock/subsys/amavisd >/dev/null 2>&1
+	else
+		msg_not_running Amavisd
+	fi
+}
+
+RETVAL=0
+# See how we were called.
+case "$1" in
+  start)
+  	start
 	;;
   stop)
-        # Stop daemons.
-        if [ -f /var/lock/subsys/amavisd ]; then
-                msg_stopping Amavisd
-		killproc --pidfile amavisd/amavisd.pid amavisd
-                rm -f /var/lock/subsys/amavisd >/dev/null 2>&1
-        else
-                msg_not_running Amavisd
-        fi
+  	stop
 	;;
   status)
 	status amavisd
@@ -59,9 +67,8 @@ case "$1" in
 	fi
 	;;
   restart|force-restart)
-	$0 stop
-	$0 start
-	exit $?
+	stop
+	start
 	;;
   *)
 	msg_usage "$0 {start|stop|restart|force-restart|reload|force-reload|status}"

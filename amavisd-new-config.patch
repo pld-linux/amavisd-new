@@ -53,12 +53,12 @@
 @@ -171,7 +173,7 @@
  # and see further down what these two lookup lists really mean.
  #
- # @bypass_virus_checks_maps = (1);  # uncomment to DISABLE anti-virus code
--# @bypass_spam_checks_maps  = (1);  # uncomment to DISABLE anti-spam code
-+@bypass_spam_checks_maps  = (1);  # uncomment to DISABLE anti-spam code
+ # @bypass_virus_checks_maps = (1);  # controls running of anti-virus code
+-# @bypass_spam_checks_maps  = (1);  # controls running of anti-spam code
++@bypass_spam_checks_maps  = (1);  # controls running of anti-spam code
+ # $bypass_decode_parts = 1;         # controls running of decoders&dearchivers
  #
  # Any setting can be changed with a new assignment, so make sure
- # you do not unintentionally override these settings further down!
 @@ -217,8 +219,8 @@
  # AMAVIS-CLIENT PROTOCOL INPUT SETTINGS (e.g. with amavisd-release, or
  #   sendmail milter through helper clients like amavis-milter.c and amavis.c)

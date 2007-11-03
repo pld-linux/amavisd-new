@@ -22,7 +22,7 @@
  # temporary directories for unpacking mail are created.
  # (no trailing slash, may be a scratch file system)
 -$TEMPBASE = $MYHOME;	        # (must be set if other config vars use is), -T
-+$TEMPBASE = $MYHOME/runtime;	# (must be set if other config vars use is), -T
++$TEMPBASE = "$MYHOME/runtime";	# (must be set if other config vars use is), -T
  #$TEMPBASE = "$MYHOME/tmp";     # prefer to keep home dir /var/amavis clean?
  
 -#$db_home = "$MYHOME/db";    # DB databases directory, default "$MYHOME/db", -D

@@ -4,15 +4,15 @@
 #
 %include	/usr/lib/rpm/macros.perl
 Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
-Summary(pl.UTF-8):	Antywirusowy skaner poczty elektronicznej z obsÅ‚ugÄ… SpamAssasina - demon
+Summary(pl):	Antywirusowy skaner poczty elektronicznej z obs³ug± SpamAssasina - demon
 Name:		amavisd-new
-Version:	2.5.2
+Version:	2.5.3
 Release:	1
 Epoch:		1
 License:	GPL
 Group:		Applications/Mail
 Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}.tar.gz
-# Source0-md5:	52d227d442fac64916488b83d79806d7
+# Source0-md5:	5cf1a7a481855c6712378c0475058255
 Source1:	%{name}.init
 Source2:	%{name}-milter.init
 Source3:	%{name}.tmpwatch
@@ -21,7 +21,7 @@ Patch1:		%{name}-tools-dbdir.patch
 URL:		http://www.ijs.si/software/amavisd/
 BuildRequires:	libmilter-devel
 BuildRequires:	rpm-perlprov
-BuildRequires:	rpmbuild(macros) >= 1.304
+BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post,preun):	/sbin/chkconfig
 Requires(postun):	/usr/sbin/groupdel
 Requires(postun):	/usr/sbin/userdel
@@ -58,21 +58,20 @@ Conflicts:	amavis-stats <= 0.1.12
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_tmpwatchdir	/etc/tmpwatch
-%define		schemadir	/usr/share/openldap/schema
 
 %description
 AMaViS is a script that interfaces a mail transport agent (MTA) with
 one or more virus scanners and SpamAssasin. This is daemonized version
 of amavis.
 
-%description -l pl.UTF-8
-AMaViS to skrypt poÅ›redniczÄ…cy pomiÄ™dzy agentem transferu poczty (MTA)
-a jednym lub wiÄ™cej programÃ³w antywirusowych i SpamAssasinem. Wersja
+%description -l pl
+AMaViS to skrypt po¶rednicz±cy pomiêdzy agentem transferu poczty (MTA)
+a jednym lub wiêcej programów antywirusowych i SpamAssasinem. Wersja
 zdemonizowana.
 
 %package sendmail
 Summary:	A Mail Virus Scanner with SpamAssasin support - sendmail backend
-Summary(pl.UTF-8):	Antywirusowy skaner poczty elektronicznej - backend dla sendmaila
+Summary(pl):	Antywirusowy skaner poczty elektronicznej - backend dla sendmaila
 Group:		Applications/Mail
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	sendmail
@@ -83,23 +82,11 @@ one or more virus scanners. This is daemonized version of amavis.
 
 This package contains backend for sendmail.
 
-%description sendmail -l pl.UTF-8
-AMaViS to skrypt poÅ›redniczÄ…cy pomiÄ™dzy agentem transferu poczty (MTA)
-a jednym lub wiÄ™cej programÃ³w antywirusowych. Wersja zdemonizowana.
+%description sendmail -l pl
+AMaViS to skrypt po¶rednicz±cy pomiêdzy agentem transferu poczty (MTA)
+a jednym lub wiêcej programów antywirusowych. Wersja zdemonizowana.
 
 Pakiet ten zawiera back-end dla sendmaila.
-
-%package -n openldap-schema-amavisd-new
-Summary:	Amavisd-new LDAP schema
-Summary(pl.UTF-8):	Schemat LDAP dla amavisd-new
-Group:		Networking/Daemons
-Requires:	openldap-servers
-
-%description -n openldap-schema-amavisd-new
-This package contains LDAP schema for use with amavisd-new.
-
-%description -n openldap-schema-amavisd-new -l pl.UTF-8
-Ten pakiet zawiera schemat LDAP do uÅ¼ywania z amavisd-new.
 
 %prep
 %setup -q
@@ -128,7 +115,6 @@ install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/amavis-milter
 install helper-progs/amavis $RPM_BUILD_ROOT%{_sbindir}
 install helper-progs/amavis-milter $RPM_BUILD_ROOT%{_sbindir}
 install %{SOURCE3} $RPM_BUILD_ROOT%{_tmpwatchdir}/%{name}.conf
-install -D LDAP.schema $RPM_BUILD_ROOT%{schemadir}/amavisd-new.schema
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -163,16 +149,6 @@ if [ "$1" = "0" ];then
 	/sbin/chkconfig --del amavis-milter
 fi
 
-%post -n openldap-schema-amavisd-new
-%openldap_schema_register %{schemadir}/amavisd-new.schema
-%service -q ldap restart
-
-%postun -n openldap-schema-amavisd-new
-if [ "$1" = "0" ]; then
-	%openldap_schema_unregister %{schemadir}/amavisd-new.schema
-	%service -q ldap restart
-fi
-
 %files
 %defattr(644,root,root,755)
 %doc AAAREADME.first INSTALL RELEASE_NOTES README_FILES/* test-messages
@@ -188,7 +164,3 @@ fi
 %attr(754,root,root) /etc/rc.d/init.d/amavis-milter
 %attr(755,root,root) %{_sbindir}/amavis
 %attr(755,root,root) %{_sbindir}/amavis-milter
-
-%files -n openldap-schema-amavisd-new
-%defattr(644,root,root,755)
-%{schemadir}/*.schema

@@ -46,7 +46,7 @@ case "$1" in
 		ok
 		[ $RETVAL -ne 0 ] && RETVAL=7
 	else
-		msg_not_running Amavisd
+		msg_not_running Amavisd >&2
 		RETVAL=7
 	fi
 	;;

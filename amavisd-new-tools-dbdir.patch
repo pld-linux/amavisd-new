@@ -1,22 +1,23 @@
---- amavisd-new-2.1.2/amavisd-agent	2004-09-06 17:56:26.000000000 +0000
-+++ amavisd-new-2.1.2.new/amavisd-agent	2004-09-07 21:09:49.980116920 +0000
-@@ -107,7 +107,7 @@
- # main program starts here
-   $SIG{INT} = sub { die "\n" };  # do the END code block
-   my($env) = BerkeleyDB::Env->new(
--    '-Home'=>'/var/amavis/db', '-Flags'=> DB_INIT_CDB | DB_INIT_MPOOL);
-+    '-Home'=>'/var/spool/amavis/db', '-Flags'=> DB_INIT_CDB | DB_INIT_MPOOL);
-   defined $env or die "BDB no env: $BerkeleyDB::Error $!";
-   my($db) = BerkeleyDB::Hash->new(
-     '-Filename'=>'snmp.db', '-Flags'=>DB_RDONLY, '-Env'=>$env );
---- amavisd-new-2.1.2/amavisd-nanny	2004-09-06 17:56:31.000000000 +0000
-+++ amavisd-new-2.1.2.new/amavisd-nanny	2004-09-07 21:10:29.346132376 +0000
-@@ -51,7 +51,7 @@
- my($activettl) = 10*60; # stuck active children are sent a SIGTERM after this
-                         # many seconds
+--- amavisd-new-2.6.0/amavisd-agent.orig    2008-04-10 21:47:12.000000000 +0300
++++ amavisd-new-2.6.0/amavisd-agent    2008-05-07 13:48:25.000000000 +0300
+@@ -50,7 +50,7 @@
  
--my($db_home) = '/var/amavis/db';  # DB databases directory
-+my($db_home) = '/var/spool/amavis/db';  # DB databases directory
- my($dbfile)  = 'nanny.db';
- my($wakeuptime) = 2;  # seconds
+ my($dbfile) = 'snmp.db';
+ my($db_home) =  # DB databases directory
+-  defined $ENV{'AMAVISD_DB_HOME'} ? $ENV{'AMAVISD_DB_HOME'} : '/var/amavis/db';
++  defined $ENV{'AMAVISD_DB_HOME'} ? $ENV{'AMAVISD_DB_HOME'} : '/var/spool/amavis/db';
  
+ my($wakeuptime) = 10;  # -w, sleep time in seconds, may be fractional
+ my($repeatcount);      # -c, repeat count (when defined)
+--- amavisd-new-2.6.0/amavisd-nanny.orig    2008-03-29 00:55:02.000000000 +0200
++++ amavisd-new-2.6.0/amavisd-nanny    2008-05-07 13:49:19.000000000 +0300
+@@ -58,7 +58,7 @@
+ 
+ my($dbfile) = 'nanny.db';
+ my($db_home) =  # DB databases directory
+-  defined $ENV{'AMAVISD_DB_HOME'} ? $ENV{'AMAVISD_DB_HOME'} : '/var/amavis/db';
++  defined $ENV{'AMAVISD_DB_HOME'} ? $ENV{'AMAVISD_DB_HOME'} : '/var/spool/amavis/db';
+ my($wakeuptime) = 2;  # -w, sleep time in seconds, may be fractional
+ my($repeatcount);     # -c, repeat count (when defined)
+ 
+

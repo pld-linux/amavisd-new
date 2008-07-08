@@ -6,13 +6,13 @@
 Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
 Summary(pl.UTF-8):	Antywirusowy skaner poczty elektronicznej z obsługą SpamAssasina - demon
 Name:		amavisd-new
-Version:	2.6.0
+Version:	2.6.1
 Release:	1
 Epoch:		1
 License:	GPL
 Group:		Applications/Mail
 Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}.tar.gz
-# Source0-md5:	71761c55054095279bda559177682164
+# Source0-md5:	2474d4c034f96a58e5b8af91af514689
 Source1:	%{name}.init
 Source2:	%{name}-milter.init
 Source3:	%{name}.tmpwatch
@@ -123,6 +123,7 @@ install -d $RPM_BUILD_ROOT{%{_var}/spool/amavis/{runtime,virusmails,db},%{_var}/
 install amavisd $RPM_BUILD_ROOT%{_sbindir}
 install amavisd-agent $RPM_BUILD_ROOT%{_sbindir}
 install amavisd-nanny $RPM_BUILD_ROOT%{_sbindir}
+install amavisd-release $RPM_BUILD_ROOT%{_sbindir}
 install amavisd.conf-sample $RPM_BUILD_ROOT%{_sysconfdir}/amavisd.conf
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/amavisd
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/amavis-milter

@@ -36,13 +36,49 @@ Requires:	perl-Compress-Zlib >= 1.35
 Requires:	perl-Convert-TNEF
 Requires:	perl-Convert-UUlib >= 1.05
 Requires:	perl-MIME-tools
-Requires:	perl-Mail-SpamAssassin
 Requires:	perl-Net-Server >= 0.93
 Requires:	perl-Time-HiRes >= 1.49
 Requires:	perl-Unix-Syslog
 Requires:	perl-libnet
-Requires:	perl-Mail-DKIM >= 0.31
 Requires:	sh-utils
+#Suggests:	arc
+Suggests:	nomarch
+#Suggests:	arj
+Suggests:	unarj
+Suggests:	binutils
+Suggests:	bzip2
+Suggests:	cabextract
+Suggests:	clamav
+Suggests:	cpio
+Suggests:	dspam
+Suggests:	freeze
+#Suggests:	unfreeze
+#Suggests:	melt
+Suggests:	gzip
+Suggests:	lha
+Suggests:	lzop
+Suggests:	ncompress
+Suggests:	pax
+Suggests:	perl-Authen-SASL
+# required already by perl-Mail-SpamAssassin
+#Suggests:	perl-DB_File
+#Suggests:	perl-IO-Socket-INET6
+# required when doing SQL lookups
+#Suggests:	perl-DBD-mysql
+Suggests:	perl-Digest-MD5
+Suggests:	perl-Mail-DKIM >= 0.31
+Suggests:	perl-Mail-SpamAssassin
+Suggests:	perl-Razor
+Suggests:	perl-SAVI
+Suggests:	perl-ldap
+Suggests:	p0f
+#Suggests:	rar
+Suggests:	unrar
+#Suggests:	ripole
+Suggests:	rpm-utils
+Suggests:	tnef
+Suggests:	unzoo
+#Suggests:	zoo
 Provides:	group(amavis)
 Provides:	user(amavis)
 Obsoletes:	AMaViS

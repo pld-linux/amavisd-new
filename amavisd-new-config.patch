@@ -105,7 +105,7 @@
 -# ['ClamAV-clamd',
 -#   \&ask_daemon, ["CONTSCAN {}\n", "/var/run/clamav/clamd"],
 -#   qr/\bOK$/, qr/\bFOUND$/,
--#   qr/^.*?: (?!Infected Archive)(.*) FOUND$/ ],
+-#   qr/^.*?: (?!Infected Archive)(.*) FOUND$/m ],
 -# # NOTE: run clamd under the same user as amavisd, or run it under its own
 -# #   uid such as clamav, add user clamav to the amavis group, and then add
 -# #   AllowSupplementaryGroups to clamd.conf;
@@ -130,23 +130,23 @@
 -  ### http://mks.com.pl/english.html
 -  ['MkS_Vir for Linux (beta)', ['mks32','mks'],
 -    '-s {}/*', [0], [1,2],
--    qr/--[ \t]*(.+)/ ],
+-    qr/--[ \t]*(.+)/m ],
 +#  Moved to secondary scanner
 +#  ### http://mks.com.pl/english.html
 +#  ['MkS_Vir for Linux (beta)', ['mks32','mks'],
 +#    '-s {}/*', [0], [1,2],
-+#    qr/--[ \t]*(.+)/ ],
++#    qr/--[ \t]*(.+)/m ],
  
    ### http://mks.com.pl/english.html
    ['MkS_Vir daemon', 'mksscan',
 @@ -2298,6 +2302,10 @@
  # ],
- # # other options to consider: -mime -oe -idedir=/usr/local/sav
+ # # other options to consider: -idedir=/usr/local/sav
  
 +  ['MkS_Vir for Linux (beta)', ['mks32','mks'],
 +	'-s {}/*', [0], [1,2],
-+	qr/--[ \t]*(.+)/ ],
++	qr/--[ \t]*(.+)/m ],
 +
- # always succeeds (uncomment to consider mail clean if all other scanners fail)
- # ['always-clean', sub {0}],
+ # Always succeeds and considers mail clean.
+ # Potentially useful when all other scanners fail and it is desirable
  

@@ -21,7 +21,7 @@ start() {
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/amavisd ]; then
 		msg_starting Amavisd
-		LC_ALL= LANG= LC_TYPE= LC_CTYPE= daemon $SERVICE_RUN_NICE_LEVEL /usr/sbin/amavisd -c /etc/amavisd.conf
+		LC_ALL= LANG= LC_TYPE= LC_CTYPE= daemon --pidfile /var/run/amavisd/amavisd.pid $SERVICE_RUN_NICE_LEVEL /usr/sbin/amavisd -c /etc/amavisd.conf
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/amavisd
 	else
@@ -33,8 +33,8 @@ stop() {
 	# Stop daemons.
 	if [ -f /var/lock/subsys/amavisd ]; then
 		msg_stopping Amavisd
-		killproc --pidfile amavisd/amavisd.pid amavisd
-		rm -f /var/lock/subsys/amavisd >/dev/null 2>&1
+		killproc --pidfile /var/run/amavisd/amavisd.pid amavisd
+		rm -f /var/lock/subsys/amavisd /var/run/amavisd/amavisd.pid >/dev/null 2>&1
 	else
 		msg_not_running Amavisd
 	fi
@@ -44,10 +44,10 @@ RETVAL=0
 # See how we were called.
 case "$1" in
   start)
-  	start
+	start
 	;;
   stop)
-  	stop
+	stop
 	;;
   status)
 	status amavisd

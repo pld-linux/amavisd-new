@@ -41,6 +41,7 @@ Requires:	perl-Net-Server >= 0.93
 Requires:	perl-Time-HiRes >= 1.49
 Requires:	perl-Unix-Syslog
 Requires:	perl-libnet
+Requires:	rc-scripts >= 0.4.1.23
 Requires:	sh-utils
 #Suggests:	arc
 Suggests:	nomarch

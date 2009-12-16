@@ -7,7 +7,7 @@ Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
 Summary(pl.UTF-8):	Antywirusowy skaner poczty elektronicznej z obsługą SpamAssasina - demon
 Name:		amavisd-new
 Version:	2.6.4
-Release:	1
+Release:	2
 Epoch:		1
 License:	GPL
 Group:		Applications/Mail
@@ -32,10 +32,10 @@ Requires(pre):	/usr/sbin/useradd
 Requires:	/usr/lib/sendmail
 Requires:	perl-Archive-Tar
 Requires:	perl-Archive-Zip >= 1.14
-Requires:	perl-Compress-Zlib >= 1.35
 Requires:	perl-Convert-BinHex
 Requires:	perl-Convert-TNEF
 Requires:	perl-Convert-UUlib >= 1.05
+Requires:	perl-IO-Compress
 Requires:	perl-MIME-tools
 Requires:	perl-Net-Server >= 0.93
 Requires:	perl-Time-HiRes >= 1.49
@@ -44,9 +44,7 @@ Requires:	perl-libnet
 Requires:	rc-scripts >= 0.4.1.23
 Requires:	sh-utils
 #Suggests:	arc
-Suggests:	nomarch
 #Suggests:	arj
-Suggests:	unarj
 Suggests:	binutils
 Suggests:	bzip2
 Suggests:	cabextract
@@ -54,18 +52,21 @@ Suggests:	clamav
 Suggests:	cpio
 Suggests:	dspam
 Suggests:	freeze
-#Suggests:	unfreeze
-#Suggests:	melt
 Suggests:	gzip
 Suggests:	lha
 Suggests:	lzop
+#Suggests:	melt
 Suggests:	ncompress
+Suggests:	nomarch
 Suggests:	pax
 Suggests:	perl-Authen-SASL
+Suggests:	unarj
+#Suggests:	unfreeze
 # required already by perl-Mail-SpamAssassin
 #Suggests:	perl-DB_File
 #Suggests:	perl-IO-Socket-INET6
 # required when doing SQL lookups
+Suggests:	p0f
 #Suggests:	perl-DBD-mysql
 Suggests:	perl-Digest-MD5
 Suggests:	perl-Mail-DKIM >= 0.31
@@ -73,12 +74,11 @@ Suggests:	perl-Mail-SpamAssassin
 Suggests:	perl-Razor
 Suggests:	perl-SAVI
 Suggests:	perl-ldap
-Suggests:	p0f
 #Suggests:	rar
-Suggests:	unrar
 #Suggests:	ripole
 Suggests:	rpm-utils
 Suggests:	tnef
+Suggests:	unrar
 Suggests:	unzoo
 #Suggests:	zoo
 Provides:	group(amavis)

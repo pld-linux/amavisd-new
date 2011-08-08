@@ -6,22 +6,22 @@
 Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
 Summary(pl.UTF-8):	Antywirusowy skaner poczty elektronicznej z obsługą SpamAssasina - demon
 Name:		amavisd-new
-Version:	2.6.6
-Release:	1
+Version:	2.7.0
+Release:	0.1
 Epoch:		1
 License:	GPL
 Group:		Applications/Mail
-Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}.tar.gz
-# Source0-md5:	6bddb725115c2682110b82d41494df73
+Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}.tar.xz
+# Source0-md5:	54e13e9804358982a05624900c9d0d6e
 Source1:	%{name}.init
 Source2:	%{name}-milter.init
 Source3:	%{name}.tmpwatch
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-tools-dbdir.patch
 URL:		http://www.ijs.si/software/amavisd/
-BuildRequires:	libmilter-devel
 BuildRequires:	rpm-perlprov
 BuildRequires:	rpmbuild(macros) >= 1.304
+BuildRequires:	tar >= 1:1.22
 Requires(post,preun):	/sbin/chkconfig
 Requires(postun):	/usr/sbin/groupdel
 Requires(postun):	/usr/sbin/userdel
@@ -43,6 +43,7 @@ Requires:	perl-Unix-Syslog
 Requires:	perl-libnet
 Requires:	rc-scripts >= 0.4.1.23
 Requires:	sh-utils
+Suggests:	amavisd-milter >= 1.5.0
 #Suggests:	arc
 #Suggests:	arj
 Suggests:	binutils
@@ -109,25 +110,6 @@ AMaViS to skrypt pośredniczący pomiędzy agentem transferu poczty (MTA)
 a jednym lub więcej programów antywirusowych i SpamAssasinem. Wersja
 zdemonizowana.
 
-%package sendmail
-Summary:	A Mail Virus Scanner with SpamAssasin support - sendmail backend
-Summary(pl.UTF-8):	Antywirusowy skaner poczty elektronicznej - backend dla sendmaila
-Group:		Applications/Mail
-Requires:	%{name} = %{epoch}:%{version}-%{release}
-Requires:	sendmail
-
-%description sendmail
-AMaViS is a script that interfaces a mail transport agent (MTA) with
-one or more virus scanners. This is daemonized version of amavis.
-
-This package contains backend for sendmail.
-
-%description sendmail -l pl.UTF-8
-AMaViS to skrypt pośredniczący pomiędzy agentem transferu poczty (MTA)
-a jednym lub więcej programów antywirusowych. Wersja zdemonizowana.
-
-Pakiet ten zawiera back-end dla sendmaila.
-
 %package -n openldap-schema-amavisd-new
 Summary:	Amavisd-new LDAP schema
 Summary(pl.UTF-8):	Schemat LDAP dla amavisd-new
@@ -145,30 +127,17 @@ Ten pakiet zawiera schemat LDAP do używania z amavisd-new.
 %patch0 -p1
 %patch1 -p1
 
-%build
-cd helper-progs
-%configure \
-	--with-sendmail=/usr/lib/sendmail \
-	--with-runtime-dir=/var/spool/amavis/runtime \
-	--with-sockname=/var/run/amavisd/amavisd.sock \
-	--with-milterlib=%{_libdir}
-%{__make}
-
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_var}/spool/amavis/{runtime,virusmails,db},%{_var}/run/amavisd,/etc/rc.d/init.d,%{_sbindir},%{_tmpwatchdir}}
-
-install amavisd $RPM_BUILD_ROOT%{_sbindir}
-install amavisd-agent $RPM_BUILD_ROOT%{_sbindir}
-install amavisd-nanny $RPM_BUILD_ROOT%{_sbindir}
-install amavisd-release $RPM_BUILD_ROOT%{_sbindir}
-install amavisd.conf-sample $RPM_BUILD_ROOT%{_sysconfdir}/amavisd.conf
-install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/amavisd
-install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/amavis-milter
-install helper-progs/amavis $RPM_BUILD_ROOT%{_sbindir}
-install helper-progs/amavis-milter $RPM_BUILD_ROOT%{_sbindir}
-install %{SOURCE3} $RPM_BUILD_ROOT%{_tmpwatchdir}/%{name}.conf
-install -D LDAP.schema $RPM_BUILD_ROOT%{schemadir}/amavisd-new.schema
+install -p amavisd $RPM_BUILD_ROOT%{_sbindir}
+install -p amavisd-agent $RPM_BUILD_ROOT%{_sbindir}
+install -p amavisd-nanny $RPM_BUILD_ROOT%{_sbindir}
+install -p amavisd-release $RPM_BUILD_ROOT%{_sbindir}
+cp -p amavisd.conf $RPM_BUILD_ROOT%{_sysconfdir}/amavisd.conf
+install -p %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/amavisd
+cp -p %{SOURCE3} $RPM_BUILD_ROOT%{_tmpwatchdir}/%{name}.conf
+install -Dp LDAP.schema $RPM_BUILD_ROOT%{schemadir}/amavisd-new.schema
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -193,16 +162,6 @@ if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del amavisd
 fi
 
-%post sendmail
-/sbin/chkconfig --add amavis-milter
-%service amavis-milter restart "Amavis-milter daemon"
-
-%preun sendmail
-if [ "$1" = "0" ];then
-	%service amavis-milter stop
-	/sbin/chkconfig --del amavis-milter
-fi
-
 %post -n openldap-schema-amavisd-new
 %openldap_schema_register %{schemadir}/amavisd-new.schema
 %service -q ldap restart
@@ -222,12 +181,6 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_tmpwatchdir}/%{name}.conf
 %attr(750,amavis,amavis) %{_var}/spool/amavis
 %attr(750,amavis,amavis) %{_var}/run/amavisd
-
-%files sendmail
-%defattr(644,root,root,755)
-%attr(754,root,root) /etc/rc.d/init.d/amavis-milter
-%attr(755,root,root) %{_sbindir}/amavis
-%attr(755,root,root) %{_sbindir}/amavis-milter
 
 %files -n openldap-schema-amavisd-new
 %defattr(644,root,root,755)

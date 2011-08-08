@@ -1,107 +1,57 @@
-diff -ur amavisd-new-2.6.3/amavisd.conf-sample amavisd-new-2.6.3.new/amavisd.conf-sample
---- amavisd-new-2.6.3/amavisd.conf-sample	2009-04-22 02:23:58.000000000 +0200
-+++ amavisd-new-2.6.3.new/amavisd.conf-sample	2009-04-23 08:27:32.281461340 +0200
-@@ -63,7 +63,7 @@
- # $MYHOME serves as a quick default for some other configuration settings.
- # More refined control is available with each individual setting further down.
- # $MYHOME is not used directly by the program. No trailing slash!
--#$MYHOME = '/var/lib/amavis';   # (default is '/var/amavis'), -H
-+$MYHOME = '/var/spool/amavis';   # (default is '/var/amavis'), -H
+--- amavisd-new-2.7.0/amavisd.conf~	2011-07-01 19:21:01.000000000 +0300
++++ amavisd-new-2.7.0/amavisd.conf	2011-08-08 13:03:11.992905314 +0300
+@@ -10,29 +10,29 @@
+ # COMMONLY ADJUSTED SETTINGS:
  
- # $mydomain serves as a quick default for some other configuration settings.
- # More refined control is available with each individual setting further down.
-@@ -74,16 +74,16 @@
- 
- # Set the user and group to which the daemon will change if started as root
- # (otherwise just keeps the UID unchanged, and these settings have no effect):
--$daemon_user  = 'vscan';   # (no default;  customary: vscan or amavis), -u
--$daemon_group = 'vscan';   # (no default;  customary: vscan or amavis), -g
-+$daemon_user  = 'amavis';   # (no default;  customary: vscan or amavis), -u
-+$daemon_group = 'amavis';   # (no default;  customary: vscan or amavis), -g
- 
- # Runtime working directory (cwd), and a place where
- # temporary directories for unpacking mail are created.
- # (no trailing slash, may be a scratch file system)
--$TEMPBASE = $MYHOME;	        # (must be set if other config vars use is), -T
-+$TEMPBASE = $MYHOME/runtime;	        # (must be set if other config vars use is), -T
- #$TEMPBASE = "$MYHOME/tmp";     # prefer to keep home dir /var/amavis clean?
- 
--#$db_home = "$MYHOME/db";    # DB databases directory, default "$MYHOME/db", -D
-+$db_home = "$MYHOME/db";    # DB databases directory, default "$MYHOME/db", -D
- 
- # $helpers_home sets environment variable HOME, and is passed as option
- # 'home_dir_for_helpers' to Mail::SpamAssassin::new. It should be a directory
-@@ -93,8 +93,8 @@
- # Run the daemon in the specified chroot jail if nonempty:
- #$daemon_chroot_dir = $MYHOME;  # (default is undef, meaning: do not chroot), -R
- 
--#$pid_file  = "$MYHOME/amavisd.pid";  # (default is "$MYHOME/amavisd.pid"), -P
--#$lock_file = "$MYHOME/amavisd.lock"; # (default is "$MYHOME/amavisd.lock"), -L
-+$pid_file  = "/var/run/amavisd/amavisd.pid";  # (default is "$MYHOME/amavisd.pid"), -P
-+$lock_file = "/var/run/amavisd/amavisd.lock"; # (default is "$MYHOME/amavisd.lock"), -L
- 
- # set environment variables if you want (no defaults):
- $ENV{TMPDIR} = $TEMPBASE; # used for SA temporary files, by some decoders, etc.
-@@ -114,6 +114,8 @@
- #$forward_method = 'smtp:[127.0.0.1]:10025';  # where to forward checked mail
- #$notify_method = $forward_method;            # where to submit notifications
- 
-+#@auth_mech_avail = ('PLAIN','LOGIN'); # empty list disables incoming AUTH
-+
- #$os_fingerprint_method = 'p0f:127.0.0.1:2345';  # query p0f-analyzer.pl
- 
- # To make it possible for several hosts to share one content checking daemon,
-@@ -173,7 +175,7 @@
- # and see further down what these two lookup lists really mean.
- #
  # @bypass_virus_checks_maps = (1);  # controls running of anti-virus code
 -# @bypass_spam_checks_maps  = (1);  # controls running of anti-spam code
 +@bypass_spam_checks_maps  = (1);  # controls running of anti-spam code
  # $bypass_decode_parts = 1;         # controls running of decoders&dearchivers
- #
- # Any setting can be changed with a new assignment, so make sure
-@@ -223,8 +225,8 @@
- # AMAVIS-CLIENT PROTOCOL INPUT SETTINGS (e.g. with amavisd-release, or
- #   sendmail milter through helper clients like amavis-milter.c and amavis.c)
- #   option(s) -p overrides $inet_socket_port and $unix_socketname
--$unix_socketname = "$MYHOME/amavisd.sock"; # amavis helper protocol socket
--#$unix_socketname = undef;        # disable listening on a unix socket
-+#$unix_socketname = "/var/run/amavisd/amavisd.sock"; # amavis helper protocol socket
-+$unix_socketname = undef;        # disable listening on a unix socket
-                                   # (default is undef, i.e. disabled)
-                                   # (usual setting is $MYHOME/amavisd.sock)
  
-@@ -307,7 +309,7 @@
-            # choose from: emerg, alert, crit, err, warning, notice, info, debug
+ $max_servers = 2;            # num of pre-forked children (2..30 is common), -m
+-$daemon_user  = 'vscan';     # (no default;  customary: vscan or amavis), -u
+-$daemon_group = 'vscan';     # (no default;  customary: vscan or amavis), -g
++$daemon_user  = 'amavis';     # (no default;  customary: vscan or amavis), -u
++$daemon_group = 'amavis';     # (no default;  customary: vscan or amavis), -g
  
- # Log file (if not using syslog)
--$LOGFILE = "$MYHOME/amavis.log";  # (defaults to empty, no log)
-+#$LOGFILE = "$MYHOME/amavis.log";  # (defaults to empty, no log)
+ $mydomain = 'example.com';   # a convenient default for other settings
  
- #NOTE: levels are not strictly observed and are somewhat arbitrary
- # 0: startup/exit/failure messages, viruses detected
-@@ -316,7 +318,7 @@
- # 3: server, client
- # 4: decompose parts
- # 5: more debug details
--$log_level = 2;		   # (defaults to 0), -d
-+#$log_level = 2;		   # (defaults to 0), -d
- 
- # Customizable template for the most interesting log file entry (e.g. with
- # $log_level=0) (take care to properly quote Perl special characters like '\')
-@@ -694,7 +696,8 @@
- #   or a directory (no trailing slash)
- #   (the default value is undef, meaning no quarantine)
- #
+-# $MYHOME = '/var/amavis';   # a convenient default for other settings, -H
+-$TEMPBASE = "$MYHOME/tmp";   # working directory, needs to exist, -T
++$MYHOME = '/var/spool/amavis';   # a convenient default for other settings, -H
++$TEMPBASE = "$MYHOME/runtime";   # working directory, needs to exist, -T
+ $ENV{TMPDIR} = $TEMPBASE;    # environment variable TMPDIR, used by SA, etc.
 -$QUARANTINEDIR = '/var/virusmails';  # -Q
-+#$QUARANTINEDIR = '/var/virusmails';  # -Q
 +$QUARANTINEDIR = '/var/spool/amavis/virusmails';  # -Q
+ # $quarantine_subdir_levels = 1;  # add level of subdirs to disperse quarantine
+ # $release_format = 'resend';     # 'attach', 'plain', 'resend'
+ # $report_format  = 'arf';        # 'attach', 'plain', 'resend', 'arf'
  
- #$quarantine_subdir_levels = 1;  # add level of subdirs to disperse quarantine
+ # $daemon_chroot_dir = $MYHOME;   # chroot directory or undef, -R
  
-@@ -1918,16 +1921,15 @@
- # ### http://www.csupomona.edu/~henson/www/projects/SAVI-Perl/
- # ['Sophos SAVI', \&sophos_savi ],
+-# $db_home   = "$MYHOME/db";      # dir for bdb nanny/cache/snmp databases, -D
++$db_home   = "$MYHOME/db";      # dir for bdb nanny/cache/snmp databases, -D
+ # $helpers_home = "$MYHOME/var";  # working directory for SpamAssassin, -S
+-# $lock_file = "$MYHOME/var/amavisd.lock";  # -L
+-# $pid_file  = "$MYHOME/var/amavisd.pid";   # -P
++$lock_file = "/var/run/amavisd/amavisd.lock";  # -L
++$pid_file  = "/var/run/amavisd/amavisd.pid";   # -P
+ #NOTE: create directories $MYHOME/tmp, $MYHOME/var, $MYHOME/db manually
+ 
+ $log_level = 0;              # verbosity 0..5, -d
+@@ -51,7 +51,8 @@
+ @mynetworks = qw( 127.0.0.0/8 [::1] [FE80::]/10 [FEC0::]/10
+                   10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 );
+ 
+-$unix_socketname = "$MYHOME/amavisd.sock";  # amavisd-release or amavis-milter
++#$unix_socketname = "/var/run/amavisd/amavisd.sock";  # amavisd-release or amavis-milter
++$unix_socketname = undef;        # disable listening on a unix socket
+                # option(s) -p overrides $inet_socket_port and $unix_socketname
+ 
+ $inet_socket_port = 10024;   # listen on this local TCP port(s)
+@@ -370,16 +371,15 @@
+ #   qr/^(?:310|420)[,\s]*(?:.* <<< )?(.+?)(?: ; |$)/m
+ # settings for the SAVAPI3.conf: ArchiveScan=1, HeurLevel=2, MailboxScan=1
  
 -# ### http://www.clamav.net/
 -# ['ClamAV-clamd',
@@ -125,7 +75,7 @@ diff -ur amavisd-new-2.6.3/amavisd.conf-sample amavisd-new-2.6.3.new/amavisd.con
  
  # ### http://www.clamav.net/ and CPAN  (memory-hungry! clamd is preferred)
  # # note that Mail::ClamAV requires perl to be build with threading!
-@@ -2107,16 +2109,21 @@
+@@ -566,16 +566,21 @@
      # NOTE: requires suid wrapper around inocmd32; consider flag: -mod reviewer
      # see http://marc.theaimsgroup.com/?l=amavis-user&m=109229779912783
  
@@ -151,4 +101,3 @@ diff -ur amavisd-new-2.6.3/amavisd.conf-sample amavisd-new-2.6.3.new/amavisd.con
  # ### http://www.nod32.com/,  version v2.52 (old)
  # ['ESET NOD32 for Linux Mail servers',
  #   ['/opt/eset/nod32/bin/nod32cli', 'nod32cli'],
-Tylko w amavisd-new-2.6.3.new/: amavisd.conf-sample~

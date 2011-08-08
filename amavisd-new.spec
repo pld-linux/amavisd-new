@@ -134,6 +134,7 @@ install -p amavisd $RPM_BUILD_ROOT%{_sbindir}
 install -p amavisd-agent $RPM_BUILD_ROOT%{_sbindir}
 install -p amavisd-nanny $RPM_BUILD_ROOT%{_sbindir}
 install -p amavisd-release $RPM_BUILD_ROOT%{_sbindir}
+install -p amavisd-submit $RPM_BUILD_ROOT%{_sbindir}
 cp -p amavisd.conf $RPM_BUILD_ROOT%{_sysconfdir}/amavisd.conf
 install -p %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/amavisd
 cp -p %{SOURCE3} $RPM_BUILD_ROOT%{_tmpwatchdir}/%{name}.conf
@@ -175,7 +176,11 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc AAAREADME.first INSTALL RELEASE_NOTES README_FILES/* test-messages
-%attr(755,root,root) %{_sbindir}/amavisd*
+%attr(755,root,root) %{_sbindir}/amavisd
+%attr(755,root,root) %{_sbindir}/amavisd-agent
+%attr(755,root,root) %{_sbindir}/amavisd-nanny
+%attr(755,root,root) %{_sbindir}/amavisd-release
+%attr(755,root,root) %{_sbindir}/amavisd-submit
 %attr(754,root,root) /etc/rc.d/init.d/amavisd
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/amavisd.conf
 %config(noreplace) %verify(not md5 mtime size) %{_tmpwatchdir}/%{name}.conf

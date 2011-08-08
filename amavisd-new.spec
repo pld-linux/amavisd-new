@@ -14,7 +14,6 @@ Group:		Applications/Mail
 Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}.tar.xz
 # Source0-md5:	54e13e9804358982a05624900c9d0d6e
 Source1:	%{name}.init
-Source2:	%{name}-milter.init
 Source3:	%{name}.tmpwatch
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-tools-dbdir.patch

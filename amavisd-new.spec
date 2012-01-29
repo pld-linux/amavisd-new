@@ -130,7 +130,7 @@ Ten pakiet zawiera schemat LDAP do używania z amavisd-new.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_var}/spool/amavis/{runtime,virusmails,db}} \
+install -d $RPM_BUILD_ROOT%{_var}/spool/amavis/{runtime,virusmails,db} \
 	$RPM_BUILD_ROOT{%{_var}/run/amavisd,/etc/rc.d/init.d,%{_sbindir}} \
 	$RPM_BUILD_ROOT{/etc/tmpfiles.d,%{_tmpwatchdir}}
 

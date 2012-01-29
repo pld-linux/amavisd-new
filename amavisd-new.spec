@@ -71,7 +71,7 @@ Suggests:	p0f
 #Suggests:	perl-DBD-mysql
 Suggests:	perl-Digest-MD5
 Suggests:	perl-Mail-DKIM >= 0.31
-Suggests:	perl-Mail-SpamAssassin
+Suggests:	perl-Mail-SpamAssassin > 3.3.0
 Suggests:	perl-Razor
 Suggests:	perl-SAVI
 Suggests:	perl-ldap
@@ -95,6 +95,7 @@ Obsoletes:	amavisd-new-qmail
 Obsoletes:	amavisd-postfix
 Obsoletes:	amavisd-qmail
 Conflicts:	amavis-stats <= 0.1.12
+Conflicts:	postfix < 2.7.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_tmpwatchdir	/etc/tmpwatch

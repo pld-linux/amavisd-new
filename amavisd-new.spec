@@ -14,6 +14,7 @@ Group:		Applications/Mail
 Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}.tar.xz
 # Source0-md5:	54e13e9804358982a05624900c9d0d6e
 Source1:	%{name}.init
+Source2:	%{name}.tmpfiles
 Source3:	%{name}.tmpwatch
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-tools-dbdir.patch
@@ -128,15 +129,22 @@ Ten pakiet zawiera schemat LDAP do używania z amavisd-new.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_var}/spool/amavis/{runtime,virusmails,db},%{_var}/run/amavisd,/etc/rc.d/init.d,%{_sbindir},%{_tmpwatchdir}}
+install -d $RPM_BUILD_ROOT{%{_var}/spool/amavis/{runtime,virusmails,db}} \
+	$RPM_BUILD_ROOT{%{_var}/run/amavisd,/etc/rc.d/init.d,%{_sbindir}} \
+	$RPM_BUILD_ROOT{/etc/tmpfiles.d,%{_tmpwatchdir}}
+
 install -p amavisd $RPM_BUILD_ROOT%{_sbindir}
 install -p amavisd-agent $RPM_BUILD_ROOT%{_sbindir}
 install -p amavisd-nanny $RPM_BUILD_ROOT%{_sbindir}
 install -p amavisd-release $RPM_BUILD_ROOT%{_sbindir}
 install -p amavisd-submit $RPM_BUILD_ROOT%{_sbindir}
 cp -p amavisd.conf $RPM_BUILD_ROOT%{_sysconfdir}/amavisd.conf
+
 install -p %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/amavisd
 cp -p %{SOURCE3} $RPM_BUILD_ROOT%{_tmpwatchdir}/%{name}.conf
+
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/tmpfiles.d/%{name}.conf
+
 install -Dp LDAP.schema $RPM_BUILD_ROOT%{schemadir}/amavisd-new.schema
 
 %clean
@@ -183,6 +191,7 @@ fi
 %attr(754,root,root) /etc/rc.d/init.d/amavisd
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/amavisd.conf
 %config(noreplace) %verify(not md5 mtime size) %{_tmpwatchdir}/%{name}.conf
+%config(noreplace) %verify(not md5 mtime size) /etc/tmpfiles.d/%{name}.conf
 %attr(750,amavis,amavis) %{_var}/spool/amavis
 %attr(750,amavis,amavis) %{_var}/run/amavisd
 

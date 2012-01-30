@@ -132,7 +132,7 @@ Ten pakiet zawiera schemat LDAP do używania z amavisd-new.
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_var}/spool/amavis/{runtime,virusmails,db} \
 	$RPM_BUILD_ROOT{%{_var}/run/amavisd,/etc/rc.d/init.d,%{_sbindir}} \
-	$RPM_BUILD_ROOT{/etc/tmpfiles.d,%{_tmpwatchdir}}
+	$RPM_BUILD_ROOT{/usr/lib/tmpfiles.d,%{_tmpwatchdir}}
 
 install -p amavisd $RPM_BUILD_ROOT%{_sbindir}
 install -p amavisd-agent $RPM_BUILD_ROOT%{_sbindir}
@@ -144,7 +144,7 @@ cp -p amavisd.conf $RPM_BUILD_ROOT%{_sysconfdir}/amavisd.conf
 install -p %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/amavisd
 cp -p %{SOURCE3} $RPM_BUILD_ROOT%{_tmpwatchdir}/%{name}.conf
 
-install %{SOURCE2} $RPM_BUILD_ROOT/etc/tmpfiles.d/%{name}.conf
+install %{SOURCE2} $RPM_BUILD_ROOT/usr/lib/tmpfiles.d/%{name}.conf
 
 install -Dp LDAP.schema $RPM_BUILD_ROOT%{schemadir}/amavisd-new.schema
 
@@ -192,7 +192,7 @@ fi
 %attr(754,root,root) /etc/rc.d/init.d/amavisd
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/amavisd.conf
 %config(noreplace) %verify(not md5 mtime size) %{_tmpwatchdir}/%{name}.conf
-%config(noreplace) %verify(not md5 mtime size) /etc/tmpfiles.d/%{name}.conf
+/usr/lib/tmpfiles.d/%{name}.conf
 %attr(750,amavis,amavis) %{_var}/spool/amavis
 %attr(750,amavis,amavis) %{_var}/run/amavisd
 

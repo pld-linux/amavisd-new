@@ -1,1 +1,1 @@
-d /var/run/amavisd 750 amavis amavis -
+d /var/run/amavisd 0750 amavis amavis -

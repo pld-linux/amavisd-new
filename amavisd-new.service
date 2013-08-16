@@ -1,0 +1,13 @@
+[Unit]
+Description=Interface between MTA and content checkers
+After=network.target
+
+[Service]
+Type=forking
+EnvironmentFile=-/etc/sysconfig/amavisd
+ExecStart=/usr/sbin/amavisd -c /etc/amavisd.conf
+ExecStop=/usr/sbin/amavisd -c /etc/amavisd.conf stop
+ExecReload=/usr/sbin/amavisd -c /etc/amavisd.conf reload
+
+[Install]
+WantedBy=multi-user.target

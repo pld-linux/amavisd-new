@@ -55,23 +55,23 @@
  
 -# ### http://www.clamav.net/
 -# ['ClamAV-clamd',
--#   \&ask_daemon, ["CONTSCAN {}\n", "/var/run/clamav/clamd"],
+-#   \&ask_daemon, ["CONTSCAN {}\n", "/var/run/clamav/clamd.sock"],
 -#   qr/\bOK$/m, qr/\bFOUND$/m,
 -#   qr/^.*?: (?!Infected Archive)(.*) FOUND$/m ],
--# # NOTE: run clamd under the same user as amavisd, or run it under its own
+-# # NOTE: run clamd under the same user as amavisd - or run it under its own
 -# #   uid such as clamav, add user clamav to the amavis group, and then add
 -# #   AllowSupplementaryGroups to clamd.conf;
 -# # NOTE: match socket name (LocalSocket) in clamav.conf to the socket name in
--# #   this entry; when running chrooted one may prefer socket "$MYHOME/clamd".
+-# #   this entry; when running chrooted one may prefer a socket under $MYHOME.
 +['ClamAV-clamd',
 +  \&ask_daemon, ["CONTSCAN {}\n", "/var/lib/clamav/clamd.socket"],
 +  qr/\bOK$/, qr/\bFOUND$/,
 +  qr/^.*?: (?!Infected Archive)(.*) FOUND$/ ],
-+# NOTE: run clamd under the same user as amavisd, or run it under its own
++# NOTE: run clamd under the same user as amavisd - or run it under its own
 +#   uid such as clamav, add user clamav to the amavis group, and then add
 +#   AllowSupplementaryGroups to clamd.conf;
 +# NOTE: match socket name (LocalSocket) in clamav.conf to the socket name in
-+#   this entry; when running chrooted one may prefer socket "$MYHOME/clamd".
++#   this entry; when running chrooted one may prefer a socket under $MYHOME.
  
  # ### http://www.clamav.net/ and CPAN  (memory-hungry! clamd is preferred)
  # # note that Mail::ClamAV requires perl to be build with threading!

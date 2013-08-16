@@ -6,21 +6,22 @@
 Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
 Summary(pl.UTF-8):	Antywirusowy skaner poczty elektronicznej z obsługą SpamAssasina - demon
 Name:		amavisd-new
-Version:	2.7.0
-Release:	2
+Version:	2.8.1
+Release:	1
 Epoch:		1
 License:	GPL
 Group:		Applications/Mail
 Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}.tar.xz
-# Source0-md5:	54e13e9804358982a05624900c9d0d6e
+# Source0-md5:	d6a9269438ef6ff43ca94ce9ace77afc
 Source1:	%{name}.init
 Source2:	%{name}.tmpfiles
 Source3:	%{name}.tmpwatch
+Source4:	%{name}.service
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-tools-dbdir.patch
 URL:		http://www.ijs.si/software/amavisd/
 BuildRequires:	rpm-perlprov
-BuildRequires:	rpmbuild(macros) >= 1.304
+BuildRequires:	rpmbuild(macros) >= 1.671
 BuildRequires:	tar >= 1:1.22
 Requires(post,preun):	/sbin/chkconfig
 Requires(postun):	/usr/sbin/groupdel
@@ -43,6 +44,7 @@ Requires:	perl-Unix-Syslog
 Requires:	perl-libnet
 Requires:	rc-scripts >= 0.4.1.23
 Requires:	sh-utils
+Requires:	systemd-units >= 38
 Suggests:	amavisd-milter >= 1.5.0
 #Suggests:	arc
 #Suggests:	arj
@@ -135,7 +137,8 @@ Ten pakiet zawiera schemat LDAP do używania z amavisd-new.
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_var}/spool/amavis/{runtime,virusmails,db} \
 	$RPM_BUILD_ROOT{%{_var}/run/amavisd,/etc/rc.d/init.d,%{_sbindir}} \
-	$RPM_BUILD_ROOT{/usr/lib/tmpfiles.d,%{_tmpwatchdir}}
+	$RPM_BUILD_ROOT{/usr/lib/tmpfiles.d,%{_tmpwatchdir}} \
+	$RPM_BUILD_ROOT%{systemdunitdir}
 
 install -p amavisd $RPM_BUILD_ROOT%{_sbindir}
 install -p amavisd-agent $RPM_BUILD_ROOT%{_sbindir}
@@ -148,6 +151,7 @@ install -p %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/amavisd
 cp -p %{SOURCE3} $RPM_BUILD_ROOT%{_tmpwatchdir}/%{name}.conf
 
 install %{SOURCE2} $RPM_BUILD_ROOT/usr/lib/tmpfiles.d/%{name}.conf
+install %{SOURCE4} $RPM_BUILD_ROOT%{systemdunitdir}/amavisd.service
 
 install -Dp LDAP.schema $RPM_BUILD_ROOT%{schemadir}/amavisd-new.schema
 
@@ -163,16 +167,22 @@ if [ "$1" = "0" ]; then
 	%userremove amavis
 	%groupremove amavis
 fi
+%systemd_reload
 
 %post
 /sbin/chkconfig --add amavisd
 %service amavisd restart "Amavisd daemon"
+%systemd_post amavisd.service
 
 %preun
 if [ "$1" = "0" ]; then
 	%service amavisd stop
 	/sbin/chkconfig --del amavisd
 fi
+%systemd_preun amavisd.service
+
+%triggerpostun -- %{name} < 1:2.8.1-1
+%systemd_trigger amavisd.service
 
 %post -n openldap-schema-amavisd-new
 %openldap_schema_register %{schemadir}/amavisd-new.schema
@@ -192,6 +202,7 @@ fi
 %attr(755,root,root) %{_sbindir}/amavisd-nanny
 %attr(755,root,root) %{_sbindir}/amavisd-release
 %attr(755,root,root) %{_sbindir}/amavisd-submit
+%{systemdunitdir}/amavisd.service
 %attr(754,root,root) /etc/rc.d/init.d/amavisd
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/amavisd.conf
 %config(noreplace) %verify(not md5 mtime size) %{_tmpwatchdir}/%{name}.conf

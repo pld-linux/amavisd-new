@@ -72,10 +72,12 @@ Suggests:	unarj
 #Suggests:	perl-IO-Socket-INET6
 # required when doing SQL lookups
 Suggests:	p0f
+Suggests:	perl-Crypt-OpenSSL-RSA
 #Suggests:	perl-DBD-mysql
 Suggests:	perl-Digest-MD5
 Suggests:	perl-Mail-DKIM >= 0.31
 Suggests:	perl-Mail-SpamAssassin > 3.3.0
+Suggests:	perl-Net-DNS
 Suggests:	perl-Razor
 Suggests:	perl-SAVI
 Suggests:	perl-ldap
@@ -139,7 +141,7 @@ Ten pakiet zawiera schemat LDAP do używania z amavisd-new.
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_var}/spool/amavis/{runtime,virusmails,db} \
 	$RPM_BUILD_ROOT{%{_var}/run/amavisd,/etc/rc.d/init.d,%{_sbindir}} \
-	$RPM_BUILD_ROOT{/usr/lib/tmpfiles.d,%{_tmpwatchdir}} \
+	$RPM_BUILD_ROOT{%{systemdtmpfilesdir},%{_tmpwatchdir}} \
 	$RPM_BUILD_ROOT%{systemdunitdir}
 
 install -p amavisd $RPM_BUILD_ROOT%{_sbindir}
@@ -152,8 +154,8 @@ cp -p amavisd.conf $RPM_BUILD_ROOT%{_sysconfdir}/amavisd.conf
 install -p %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/amavisd
 cp -p %{SOURCE3} $RPM_BUILD_ROOT%{_tmpwatchdir}/%{name}.conf
 
-install %{SOURCE2} $RPM_BUILD_ROOT/usr/lib/tmpfiles.d/%{name}.conf
-install %{SOURCE4} $RPM_BUILD_ROOT%{systemdunitdir}/amavisd.service
+cp -p %{SOURCE2} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
+cp -p %{SOURCE4} $RPM_BUILD_ROOT%{systemdunitdir}/amavisd.service
 
 install -Dp LDAP.schema $RPM_BUILD_ROOT%{schemadir}/amavisd-new.schema
 
@@ -208,7 +210,7 @@ fi
 %attr(754,root,root) /etc/rc.d/init.d/amavisd
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/amavisd.conf
 %config(noreplace) %verify(not md5 mtime size) %{_tmpwatchdir}/%{name}.conf
-/usr/lib/tmpfiles.d/%{name}.conf
+%{systemdtmpfilesdir}/%{name}.conf
 %attr(750,amavis,amavis) %{_var}/spool/amavis
 %attr(750,amavis,amavis) %{_var}/run/amavisd
 

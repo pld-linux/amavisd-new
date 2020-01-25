@@ -2,7 +2,6 @@
 # - Add polish info mail templates
 # - move amavis part of tmpwatch configuration from tmpwatch.spec
 #
-%include	/usr/lib/rpm/macros.perl
 Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
 Summary(pl.UTF-8):	Antywirusowy skaner poczty elektronicznej z obsługą SpamAssasina - demon
 Name:		amavisd-new

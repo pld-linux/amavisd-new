@@ -1,24 +1,25 @@
 # TODO:
+# - consider following upstream and renaming to amavis
 # - Add polish info mail templates
 # - move amavis part of tmpwatch configuration from tmpwatch.spec
 #
 Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
 Summary(pl.UTF-8):	Antywirusowy skaner poczty elektronicznej z obsługą SpamAssasina - demon
 Name:		amavisd-new
-Version:	2.10.1
+Version:	2.12.0
 Release:	1
 Epoch:		1
 License:	GPL
 Group:		Applications/Mail
-Source0:	http://www.ijs.si/software/amavisd/%{name}-%{version}.tar.xz
-# Source0-md5:	adb0c64ac6a91249ddeb4ed97747d755
+Source0:	https://gitlab.com/amavis/amavis/-/archive/v%{version}/amavis-v%{version}.tar.bz2
+# Source0-md5:	67cdd043d5d7046ec5995564444ec10f
 Source1:	%{name}.init
 Source2:	%{name}.tmpfiles
 Source3:	%{name}.tmpwatch
 Source4:	%{name}.service
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-tools-dbdir.patch
-URL:		http://www.ijs.si/software/amavisd/
+URL:		https://gitlab.com/amavis/amavis/
 BuildRequires:	rpm-perlprov
 BuildRequires:	rpmbuild(macros) >= 1.671
 BuildRequires:	tar >= 1:1.22
@@ -132,7 +133,7 @@ This package contains LDAP schema for use with amavisd-new.
 Ten pakiet zawiera schemat LDAP do używania z amavisd-new.
 
 %prep
-%setup -q
+%setup -q -n amavis-v%{version}
 %patch0 -p1
 %patch1 -p1
 

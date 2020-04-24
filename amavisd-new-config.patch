@@ -1,12 +1,15 @@
 --- amavisd-new-2.7.0/amavisd.conf~	2011-07-01 19:21:01.000000000 +0300
 +++ amavisd-new-2.7.0/amavisd.conf	2011-08-08 13:03:11.992905314 +0300
-@@ -10,29 +10,29 @@
+@@ -10,32 +10,32 @@
  # COMMONLY ADJUSTED SETTINGS:
  
  # @bypass_virus_checks_maps = (1);  # controls running of anti-virus code
 -# @bypass_spam_checks_maps  = (1);  # controls running of anti-spam code
 +@bypass_spam_checks_maps  = (1);  # controls running of anti-spam code
  # $bypass_decode_parts = 1;         # controls running of decoders&dearchivers
+ 
+ # $myprogram_name = $0; # set to 'amavisd' or similar to avoid process name
+                         # truncation in /proc/<pid>/stat and ps -e output
  
  $max_servers = 2;            # num of pre-forked children (2..30 is common), -m
 -$daemon_user  = 'vscan';     # (no default;  customary: vscan or amavis), -u

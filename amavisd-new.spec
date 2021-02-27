@@ -122,9 +122,7 @@ Summary:	Amavisd-new LDAP schema
 Summary(pl.UTF-8):	Schemat LDAP dla amavisd-new
 Group:		Networking/Daemons
 Requires:	openldap-servers
-%if "%{_rpmversion}" >= "5"
 BuildArch:	noarch
-%endif
 
 %description -n openldap-schema-amavisd-new
 This package contains LDAP schema for use with amavisd-new.

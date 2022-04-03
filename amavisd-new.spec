@@ -3,16 +3,17 @@
 # - Add polish info mail templates
 # - move amavis part of tmpwatch configuration from tmpwatch.spec
 #
+%define	_debugsource_packages	0
 Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
 Summary(pl.UTF-8):	Antywirusowy skaner poczty elektronicznej z obsługą SpamAssasina - demon
 Name:		amavisd-new
-Version:	2.12.0
+Version:	2.12.2
 Release:	1
 Epoch:		1
 License:	GPL
 Group:		Applications/Mail
 Source0:	https://gitlab.com/amavis/amavis/-/archive/v%{version}/amavis-v%{version}.tar.bz2
-# Source0-md5:	67cdd043d5d7046ec5995564444ec10f
+# Source0-md5:	d2ccce027ff4e8502326638e9ef2142b
 Source1:	%{name}.init
 Source2:	%{name}.tmpfiles
 Source3:	%{name}.tmpwatch

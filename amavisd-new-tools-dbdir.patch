@@ -1,6 +1,7 @@
---- amavisd-new-2.6.0/amavisd-agent.orig    2008-04-10 21:47:12.000000000 +0300
-+++ amavisd-new-2.6.0/amavisd-agent    2008-05-07 13:48:25.000000000 +0300
-@@ -50,7 +50,7 @@
+diff -urp amavis-v2.12.1.orig/amavisd-agent amavis-v2.12.1/amavisd-agent
+--- amavis-v2.12.1.orig/amavisd-agent	2020-11-13 13:55:37.000000000 +0100
++++ amavis-v2.12.1/amavisd-agent	2021-01-24 21:28:13.409592502 +0100
+@@ -53,7 +53,7 @@ use BerkeleyDB;
  
  my($dbfile) = 'snmp.db';
  my($db_home) =  # DB databases directory
@@ -9,9 +10,10 @@
  
  my($wakeuptime) = 10;  # -w, sleep time in seconds, may be fractional
  my($repeatcount);      # -c, repeat count (when defined)
---- amavisd-new-2.6.0/amavisd-nanny.orig    2008-03-29 00:55:02.000000000 +0200
-+++ amavisd-new-2.6.0/amavisd-nanny    2008-05-07 13:49:19.000000000 +0300
-@@ -58,7 +58,7 @@
+diff -urp amavis-v2.12.1.orig/amavisd-nanny amavis-v2.12.1/amavisd-nanny
+--- amavis-v2.12.1.orig/amavisd-nanny	2020-11-13 13:55:37.000000000 +0100
++++ amavis-v2.12.1/amavisd-nanny	2021-01-24 21:28:13.409592502 +0100
+@@ -61,7 +61,7 @@ my($activettl) = 10*60; # stuck active c
  
  my($dbfile) = 'nanny.db';
  my($db_home) =  # DB databases directory
@@ -20,4 +22,3 @@
  my($wakeuptime) = 2;  # -w, sleep time in seconds, may be fractional
  my($repeatcount);     # -c, repeat count (when defined)
  
-

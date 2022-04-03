@@ -1,6 +1,7 @@
---- amavisd-new-2.7.0/amavisd.conf~	2011-07-01 19:21:01.000000000 +0300
-+++ amavisd-new-2.7.0/amavisd.conf	2011-08-08 13:03:11.992905314 +0300
-@@ -10,32 +10,32 @@
+diff -urp amavis-v2.12.1.orig/amavisd.conf amavis-v2.12.1/amavisd.conf
+--- amavis-v2.12.1.orig/amavisd.conf	2020-11-13 13:55:37.000000000 +0100
++++ amavis-v2.12.1/amavisd.conf	2021-01-24 21:25:54.841592502 +0100
+@@ -10,32 +10,32 @@ use strict;
  # COMMONLY ADJUSTED SETTINGS:
  
  # @bypass_virus_checks_maps = (1);  # controls running of anti-virus code
@@ -42,7 +43,7 @@
  #NOTE: create directories $MYHOME/tmp, $MYHOME/var, $MYHOME/db manually
  
  $log_level = 0;              # verbosity 0..5, -d
-@@ -51,7 +51,8 @@
+@@ -55,7 +55,8 @@ $enable_dkim_signing = 1;    # load DKIM
  @mynetworks = qw( 127.0.0.0/8 [::1] [FE80::]/10 [FEC0::]/10
                    10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 );
  
@@ -52,8 +53,8 @@
                 # option(s) -p overrides $inet_socket_port and $unix_socketname
  
  $inet_socket_port = 10024;   # listen on this local TCP port(s)
-@@ -370,16 +371,15 @@
- #   qr/^(?:310|420)[,\s]*(?:.* <<< )?(.+?)(?: ; |$)/m
+@@ -382,16 +383,15 @@ $banned_filename_re = new_RE(
+ #   qr/^(?:310|420)[,\s]*(?:.* <<< )?(.+?)(?: ; |$)/m ],
  # settings for the SAVAPI3.conf: ArchiveScan=1, HeurLevel=2, MailboxScan=1
  
 -# ### http://www.clamav.net/
@@ -78,7 +79,7 @@
  
  # ### http://www.clamav.net/ and CPAN  (memory-hungry! clamd is preferred)
  # # note that Mail::ClamAV requires perl to be build with threading!
-@@ -566,16 +566,21 @@
+@@ -580,16 +580,21 @@ $banned_filename_re = new_RE(
      # NOTE: requires suid wrapper around inocmd32; consider flag: -mod reviewer
      # see http://marc.theaimsgroup.com/?l=amavis-user&m=109229779912783
  

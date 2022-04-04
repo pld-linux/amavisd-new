@@ -3,7 +3,6 @@
 # - Add polish info mail templates
 # - move amavis part of tmpwatch configuration from tmpwatch.spec
 #
-%define	_debugsource_packages	0
 Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
 Summary(pl.UTF-8):	Antywirusowy skaner poczty elektronicznej z obsługą SpamAssasina - demon
 Name:		amavisd-new
@@ -105,6 +104,7 @@ Conflicts:	amavis-stats <= 0.1.12
 Conflicts:	postfix < 2.7.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+%define		_debugsource_packages	0
 %define		_tmpwatchdir	/etc/tmpwatch
 %define		schemadir	/usr/share/openldap/schema
 

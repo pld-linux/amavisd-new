@@ -1,6 +1,6 @@
-diff -urp amavis-v2.12.1.orig/amavisd.conf amavis-v2.12.1/amavisd.conf
---- amavis-v2.12.1.orig/amavisd.conf	2020-11-13 13:55:37.000000000 +0100
-+++ amavis-v2.12.1/amavisd.conf	2021-01-24 21:25:54.841592502 +0100
+diff -urp amavis-v2.15.0.orig/conf/amavisd.conf amavis-v2.15.0/conf/amavisd.conf
+--- amavis-v2.15.0.orig/conf/amavisd.conf	2026-09-02 12:18:17.000000000 +0200
++++ amavis-v2.15.0/conf/amavisd.conf	2026-10-29 01:49:25.571021461 +0100
 @@ -10,32 +10,32 @@ use strict;
  # COMMONLY ADJUSTED SETTINGS:
  
@@ -13,10 +13,10 @@ diff -urp amavis-v2.12.1.orig/amavisd.conf amavis-v2.12.1/amavisd.conf
                          # truncation in /proc/<pid>/stat and ps -e output
  
  $max_servers = 2;            # num of pre-forked children (2..30 is common), -m
--$daemon_user  = 'vscan';     # (no default;  customary: vscan or amavis), -u
--$daemon_group = 'vscan';     # (no default;  customary: vscan or amavis), -g
-+$daemon_user  = 'amavis';     # (no default;  customary: vscan or amavis), -u
-+$daemon_group = 'amavis';     # (no default;  customary: vscan or amavis), -g
+-$daemon_user   = 'vscan';    # (no default;  customary: vscan or amavis), -u
+-@daemon_groups = 'vscan';    # (leave empty to use $daemon_user's supplementary groups), -g
++$daemon_user   = 'amavis';   # (no default;  customary: vscan or amavis), -u
++@daemon_groups = 'amavis';   # (leave empty to use $daemon_user's supplementary groups), -g
  
  $mydomain = 'example.com';   # a convenient default for other settings
  
@@ -34,7 +34,7 @@ diff -urp amavis-v2.12.1.orig/amavisd.conf amavis-v2.12.1/amavisd.conf
  # $daemon_chroot_dir = $MYHOME;   # chroot directory or undef, -R
  
 -# $db_home   = "$MYHOME/db";      # dir for bdb nanny/cache/snmp databases, -D
-+$db_home   = "$MYHOME/db";      # dir for bdb nanny/cache/snmp databases, -D
++$db_home   = "$MYHOME/db";        # dir for bdb nanny/cache/snmp databases, -D
  # $helpers_home = "$MYHOME/var";  # working directory for SpamAssassin, -S
 -# $lock_file = "$MYHOME/var/amavisd.lock";  # -L
 -# $pid_file  = "$MYHOME/var/amavisd.pid";   # -P
@@ -53,33 +53,7 @@ diff -urp amavis-v2.12.1.orig/amavisd.conf amavis-v2.12.1/amavisd.conf
                 # option(s) -p overrides $inet_socket_port and $unix_socketname
  
  $inet_socket_port = 10024;   # listen on this local TCP port(s)
-@@ -382,16 +383,15 @@ $banned_filename_re = new_RE(
- #   qr/^(?:310|420)[,\s]*(?:.* <<< )?(.+?)(?: ; |$)/m ],
- # settings for the SAVAPI3.conf: ArchiveScan=1, HeurLevel=2, MailboxScan=1
- 
--# ### http://www.clamav.net/
--# ['ClamAV-clamd',
--#   \&ask_daemon, ["CONTSCAN {}\n", "/var/run/clamav/clamd.sock"],
--#   qr/\bOK$/m, qr/\bFOUND$/m,
--#   qr/^.*?: (?!Infected Archive)(.*) FOUND$/m ],
--# # NOTE: run clamd under the same user as amavisd - or run it under its own
--# #   uid such as clamav, add user clamav to the amavis group, and then add
--# #   AllowSupplementaryGroups to clamd.conf;
--# # NOTE: match socket name (LocalSocket) in clamav.conf to the socket name in
--# #   this entry; when running chrooted one may prefer a socket under $MYHOME.
-+['ClamAV-clamd',
-+  \&ask_daemon, ["CONTSCAN {}\n", "/var/lib/clamav/clamd.socket"],
-+  qr/\bOK$/, qr/\bFOUND$/,
-+  qr/^.*?: (?!Infected Archive)(.*) FOUND$/ ],
-+# NOTE: run clamd under the same user as amavisd - or run it under its own
-+#   uid such as clamav, add user clamav to the amavis group, and then add
-+#   AllowSupplementaryGroups to clamd.conf;
-+# NOTE: match socket name (LocalSocket) in clamav.conf to the socket name in
-+#   this entry; when running chrooted one may prefer a socket under $MYHOME.
- 
- # ### http://www.clamav.net/ and CPAN  (memory-hungry! clamd is preferred)
- # # note that Mail::ClamAV requires perl to be build with threading!
-@@ -580,16 +580,21 @@ $banned_filename_re = new_RE(
+@@ -596,16 +597,21 @@ $banned_filename_re = new_RE(
      # NOTE: requires suid wrapper around inocmd32; consider flag: -mod reviewer
      # see http://marc.theaimsgroup.com/?l=amavis-user&m=109229779912783
  

@@ -6,13 +6,13 @@
 Summary:	A Mail Virus Scanner with SpamAssassin support - daemon
 Summary(pl.UTF-8):	Antywirusowy skaner poczty elektronicznej z obsługą SpamAssasina - demon
 Name:		amavisd-new
-Version:	2.12.2
+Version:	2.15.0
 Release:	1
 Epoch:		1
 License:	GPL
 Group:		Applications/Mail
 Source0:	https://gitlab.com/amavis/amavis/-/archive/v%{version}/amavis-v%{version}.tar.bz2
-# Source0-md5:	d2ccce027ff4e8502326638e9ef2142b
+# Source0-md5:	d330204f86aec494f23ca93674574c29
 Source1:	%{name}.init
 Source2:	%{name}.tmpfiles
 Source3:	%{name}.tmpwatch
@@ -39,7 +39,7 @@ Requires:	perl-Convert-UUlib >= 1.05
 Requires:	perl-File-LibMagic
 Requires:	perl-IO-Compress
 Requires:	perl-MIME-tools
-Requires:	perl-Net-LibIDN
+Requires:	perl-Net-LibIDN2
 Requires:	perl-Net-Server >= 0.93
 Requires:	perl-Time-HiRes >= 1.49
 Requires:	perl-Unix-Syslog
@@ -104,7 +104,10 @@ Conflicts:	amavis-stats <= 0.1.12
 Conflicts:	postfix < 2.7.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_debugsource_packages	0
+# perl and shell only, no compilable sources
+%undefine	_debugsource_packages
+# optional backends (SQL, LDAP, DKIM, SpamAssassin, Rspamd, ZeroMQ), loaded only when configured
+%define		_noautoreq_perl	DBI Mail::DKIM.* Mail::SpamAssassin Net::LDAP.* ZMQ::FFI.* LWP::UserAgent JSON Crypt::OpenSSL::RSA Net::DNS::Resolver
 %define		_tmpwatchdir	/etc/tmpwatch
 %define		schemadir	/usr/share/openldap/schema
 
@@ -143,12 +146,15 @@ install -d $RPM_BUILD_ROOT%{_var}/spool/amavis/{runtime,virusmails,db} \
 	$RPM_BUILD_ROOT{%{systemdtmpfilesdir},%{_tmpwatchdir}} \
 	$RPM_BUILD_ROOT%{systemdunitdir}
 
-install -p amavisd $RPM_BUILD_ROOT%{_sbindir}
-install -p amavisd-agent $RPM_BUILD_ROOT%{_sbindir}
-install -p amavisd-nanny $RPM_BUILD_ROOT%{_sbindir}
-install -p amavisd-release $RPM_BUILD_ROOT%{_sbindir}
-install -p amavisd-submit $RPM_BUILD_ROOT%{_sbindir}
-cp -p amavisd.conf $RPM_BUILD_ROOT%{_sysconfdir}/amavisd.conf
+install -p bin/amavisd $RPM_BUILD_ROOT%{_sbindir}
+install -p bin/amavisd-agent $RPM_BUILD_ROOT%{_sbindir}
+install -p bin/amavisd-nanny $RPM_BUILD_ROOT%{_sbindir}
+install -p bin/amavisd-release $RPM_BUILD_ROOT%{_sbindir}
+install -p bin/amavisd-submit $RPM_BUILD_ROOT%{_sbindir}
+cp -p conf/amavisd.conf $RPM_BUILD_ROOT%{_sysconfdir}/amavisd.conf
+
+install -d $RPM_BUILD_ROOT%{perl_vendorlib}
+cp -pr lib/* $RPM_BUILD_ROOT%{perl_vendorlib}
 
 install -p %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/amavisd
 cp -p %{SOURCE3} $RPM_BUILD_ROOT%{_tmpwatchdir}/%{name}.conf
@@ -156,7 +162,7 @@ cp -p %{SOURCE3} $RPM_BUILD_ROOT%{_tmpwatchdir}/%{name}.conf
 cp -p %{SOURCE2} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
 cp -p %{SOURCE4} $RPM_BUILD_ROOT%{systemdunitdir}/amavisd.service
 
-install -Dp LDAP.schema $RPM_BUILD_ROOT%{schemadir}/amavisd-new.schema
+install -Dp contrib/LDAP.schema $RPM_BUILD_ROOT%{schemadir}/amavisd-new.schema
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -199,12 +205,15 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc AAAREADME.first INSTALL RELEASE_NOTES README_FILES/* test-messages
+%doc AAAREADME.first README.md RELEASE_NOTES README_FILES/*
 %attr(755,root,root) %{_sbindir}/amavisd
 %attr(755,root,root) %{_sbindir}/amavisd-agent
 %attr(755,root,root) %{_sbindir}/amavisd-nanny
 %attr(755,root,root) %{_sbindir}/amavisd-release
 %attr(755,root,root) %{_sbindir}/amavisd-submit
+%{perl_vendorlib}/Amavis.pm
+%{perl_vendorlib}/Amavis
+%{perl_vendorlib}/Mail/SpamAssassin/Logger/Amavislog.pm
 %{systemdunitdir}/amavisd.service
 %attr(754,root,root) /etc/rc.d/init.d/amavisd
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/amavisd.conf
